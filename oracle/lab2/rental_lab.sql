@@ -60,7 +60,7 @@ END;
 -- Create table.
 CREATE TABLE rental_lab
 ( rental_lab_id                   NUMBER
-, customer_lab_id                 NUMBER CONSTRAINT nn_rental_lab_1 NOT NULL
+, customer_id                 NUMBER CONSTRAINT nn_rental_lab_1 NOT NULL
 , check_out_date              DATE   CONSTRAINT nn_rental_lab_2 NOT NULL
 , return_date                 DATE   CONSTRAINT nn_rental_lab_3 NOT NULL
 , created_by                  NUMBER CONSTRAINT nn_rental_lab_4 NOT NULL
@@ -68,7 +68,7 @@ CREATE TABLE rental_lab
 , last_updated_by             NUMBER CONSTRAINT nn_rental_lab_6 NOT NULL
 , last_update_date            DATE   CONSTRAINT nn_rental_lab_7 NOT NULL
 , CONSTRAINT pk_rental_lab_1      PRIMARY KEY(rental_lab_id)
-, CONSTRAINT fk_rental_lab_1      FOREIGN KEY(customer_lab_id) REFERENCES contact_lab(contact_lab_id)
+, CONSTRAINT fk_rental_lab_1      FOREIGN KEY(customer_id) REFERENCES contact_lab(contact_lab_id)
 , CONSTRAINT fk_rental_lab_2      FOREIGN KEY(created_by) REFERENCES system_user_lab(system_user_lab_id)
 , CONSTRAINT fk_rental_lab_3      FOREIGN KEY(last_updated_by) REFERENCES system_user_lab(system_user_lab_id));
 

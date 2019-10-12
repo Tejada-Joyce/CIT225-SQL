@@ -12,7 +12,7 @@ SQL> -- ------------------------------------------------------------------
 SQL> VARIABLE table_name     VARCHAR2(30)
 SQL> 
 SQL> BEGIN
-  2    :table_name := UPPER('street_address_lab');
+  2    :table_name := UPPER('rental_lab');
   3  END;
   4  /
 
@@ -24,7 +24,7 @@ SQL> SELECT :table_name FROM dual;
 
 :TABLE_NAME                                                                     
 --------------------------------                                                
-STREET_ADDRESS_LAB                                                              
+RENTAL_LAB                                                                      
 
 1 row selected.
 
@@ -54,18 +54,19 @@ PL/SQL procedure successfully completed.
 
 SQL> 
 SQL> -- Create table.
-SQL> CREATE TABLE street_address_lab
-  2  ( street_address_lab_id	       NUMBER
-  3  , address_lab_id		       NUMBER	    CONSTRAINT nn_saddress_lab_1 NOT NULL
-  4  , street_address		   VARCHAR2(30) CONSTRAINT nn_saddress_lab_2 NOT NULL
-  5  , created_by		   NUMBER	CONSTRAINT nn_saddress_lab_3 NOT NULL
-  6  , creation_date		   DATE 	CONSTRAINT nn_saddress_lab_4 NOT NULL
-  7  , last_updated_by		   NUMBER	CONSTRAINT nn_saddress_lab_5 NOT NULL
-  8  , last_update_date 	   DATE 	CONSTRAINT nn_saddress_lab_6 NOT NULL
-  9  , CONSTRAINT pk_s_address_lab_1   PRIMARY KEY(street_address_lab_id)
- 10  , CONSTRAINT fk_s_address_lab_1   FOREIGN KEY(address_lab_id) REFERENCES address_lab(address_lab_id)
- 11  , CONSTRAINT fk_s_address_lab_3   FOREIGN KEY(created_by) REFERENCES system_user_lab(system_user_lab_id)
- 12  , CONSTRAINT fk_s_address_lab_4   FOREIGN KEY(last_updated_by) REFERENCES system_user_lab(system_user_lab_id));
+SQL> CREATE TABLE rental_lab
+  2  ( rental_lab_id		       NUMBER
+  3  , customer_id		   NUMBER CONSTRAINT nn_rental_lab_1 NOT NULL
+  4  , check_out_date		   DATE   CONSTRAINT nn_rental_lab_2 NOT NULL
+  5  , return_date		   DATE   CONSTRAINT nn_rental_lab_3 NOT NULL
+  6  , created_by		   NUMBER CONSTRAINT nn_rental_lab_4 NOT NULL
+  7  , creation_date		   DATE   CONSTRAINT nn_rental_lab_5 NOT NULL
+  8  , last_updated_by		   NUMBER CONSTRAINT nn_rental_lab_6 NOT NULL
+  9  , last_update_date 	   DATE   CONSTRAINT nn_rental_lab_7 NOT NULL
+ 10  , CONSTRAINT pk_rental_lab_1      PRIMARY KEY(rental_lab_id)
+ 11  , CONSTRAINT fk_rental_lab_1      FOREIGN KEY(customer_id) REFERENCES contact_lab(contact_lab_id)
+ 12  , CONSTRAINT fk_rental_lab_2      FOREIGN KEY(created_by) REFERENCES system_user_lab(system_user_lab_id)
+ 13  , CONSTRAINT fk_rental_lab_3      FOREIGN KEY(last_updated_by) REFERENCES system_user_lab(system_user_lab_id));
 
 Table created.
 
@@ -94,31 +95,18 @@ SQL> SELECT   table_name
  16  ORDER BY 2;
 
                            Column                                               
-TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+Table Name       COLUMN_ID Name                   NULLABLE DATA_TYPE            
 ---------------- --------- ---------------------- -------- ------------         
-STREET_ADDRESS_L         1 STREET_ADDRESS_LAB_ID  NOT NULL NUMBER(22)           
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         2 ADDRESS_LAB_ID         NOT NULL NUMBER(22)           
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         3 STREET_ADDRESS         NOT NULL VARCHAR2(30)         
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         4 CREATED_BY             NOT NULL NUMBER(22)           
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         5 CREATION_DATE          NOT NULL DATE                 
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         6 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         7 LAST_UPDATE_DATE       NOT NULL DATE                 
-AB                                                                              
-                                                                                
+RENTAL_LAB               1 RENTAL_LAB_ID          NOT NULL NUMBER(22)           
+RENTAL_LAB               2 CUSTOMER_ID            NOT NULL NUMBER(22)           
+RENTAL_LAB               3 CHECK_OUT_DATE         NOT NULL DATE                 
+RENTAL_LAB               4 RETURN_DATE            NOT NULL DATE                 
+RENTAL_LAB               5 CREATED_BY             NOT NULL NUMBER(22)           
+RENTAL_LAB               6 CREATION_DATE          NOT NULL DATE                 
+RENTAL_LAB               7 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+RENTAL_LAB               8 LAST_UPDATE_DATE       NOT NULL DATE                 
 
-7 rows selected.
+8 rows selected.
 
 SQL> 
 SQL> -- Display non-unique constraints.
@@ -136,17 +124,18 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+Constraint Name        SEARCH_CONDITION                     C                   
 ---------------------- ------------------------------------ -                   
-PK_S_ADDRESS_LAB_1                                          P                   
-NN_SADDRESS_LAB_1      "ADDRESS_LAB_ID" IS NOT NULL         C                   
-NN_SADDRESS_LAB_2      "STREET_ADDRESS" IS NOT NULL         C                   
-NN_SADDRESS_LAB_3      "CREATED_BY" IS NOT NULL             C                   
-NN_SADDRESS_LAB_4      "CREATION_DATE" IS NOT NULL          C                   
-NN_SADDRESS_LAB_5      "LAST_UPDATED_BY" IS NOT NULL        C                   
-NN_SADDRESS_LAB_6      "LAST_UPDATE_DATE" IS NOT NULL       C                   
+PK_RENTAL_LAB_1                                             P                   
+NN_RENTAL_LAB_1        "CUSTOMER_ID" IS NOT NULL            C                   
+NN_RENTAL_LAB_2        "CHECK_OUT_DATE" IS NOT NULL         C                   
+NN_RENTAL_LAB_3        "RETURN_DATE" IS NOT NULL            C                   
+NN_RENTAL_LAB_4        "CREATED_BY" IS NOT NULL             C                   
+NN_RENTAL_LAB_5        "CREATION_DATE" IS NOT NULL          C                   
+NN_RENTAL_LAB_6        "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_RENTAL_LAB_7        "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
-7 rows selected.
+8 rows selected.
 
 SQL> 
 SQL> -- Display foreign key constraints.
@@ -170,21 +159,21 @@ SQL> SELECT   uc.constraint_name||CHR(10)
 Constraint Name:                       References:                              
  Table.Column                           Table.Column                            
 -------------------------------------- ---------------------------------------- 
-FK_S_ADDRESS_LAB_1                     REFERENCES                               
-(STREET_ADDRESS_LAB.ADDRESS_LAB_ID)    (ADDRESS_LAB.ADDRESS_LAB_ID)             
+FK_RENTAL_LAB_1                        REFERENCES                               
+(RENTAL_LAB.CUSTOMER_ID)               (CONTACT_LAB.CONTACT_LAB_ID)             
                                                                                 
-FK_S_ADDRESS_LAB_3                     REFERENCES                               
-(STREET_ADDRESS_LAB.CREATED_BY)        (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
+FK_RENTAL_LAB_2                        REFERENCES                               
+(RENTAL_LAB.CREATED_BY)                (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
                                                                                 
-FK_S_ADDRESS_LAB_4                     REFERENCES                               
-(STREET_ADDRESS_LAB.LAST_UPDATED_BY)   (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
+FK_RENTAL_LAB_3                        REFERENCES                               
+(RENTAL_LAB.LAST_UPDATED_BY)           (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
                                                                                 
 
 3 rows selected.
 
 SQL> 
-SQL> -- Create sequence.
-SQL> CREATE SEQUENCE street_address_lab_s1 START WITH 1001 NOCACHE;
+SQL> -- Create a sequence.
+SQL> CREATE SEQUENCE rental_lab_s1 START WITH 1001 NOCACHE;
 
 Sequence created.
 
@@ -197,9 +186,7 @@ SQL> SELECT   sequence_name
 
 Sequence Name                                                                   
 --------------------                                                            
-STREET_ADDRESS_LAB_S                                                            
-1                                                                               
-                                                                                
+RENTAL_LAB_S1                                                                   
 
 1 row selected.
 

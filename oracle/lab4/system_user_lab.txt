@@ -12,7 +12,7 @@ SQL> -- ------------------------------------------------------------------
 SQL> VARIABLE table_name     VARCHAR2(30)
 SQL> 
 SQL> BEGIN
-  2    :table_name := UPPER('street_address_lab');
+  2    :table_name := UPPER('system_user_lab');
   3  END;
   4  /
 
@@ -24,7 +24,7 @@ SQL> SELECT :table_name FROM dual;
 
 :TABLE_NAME                                                                     
 --------------------------------                                                
-STREET_ADDRESS_LAB                                                              
+SYSTEM_USER_LAB                                                                 
 
 1 row selected.
 
@@ -54,18 +54,21 @@ PL/SQL procedure successfully completed.
 
 SQL> 
 SQL> -- Create table.
-SQL> CREATE TABLE street_address_lab
-  2  ( street_address_lab_id	       NUMBER
-  3  , address_lab_id		       NUMBER	    CONSTRAINT nn_saddress_lab_1 NOT NULL
-  4  , street_address		   VARCHAR2(30) CONSTRAINT nn_saddress_lab_2 NOT NULL
-  5  , created_by		   NUMBER	CONSTRAINT nn_saddress_lab_3 NOT NULL
-  6  , creation_date		   DATE 	CONSTRAINT nn_saddress_lab_4 NOT NULL
-  7  , last_updated_by		   NUMBER	CONSTRAINT nn_saddress_lab_5 NOT NULL
-  8  , last_update_date 	   DATE 	CONSTRAINT nn_saddress_lab_6 NOT NULL
-  9  , CONSTRAINT pk_s_address_lab_1   PRIMARY KEY(street_address_lab_id)
- 10  , CONSTRAINT fk_s_address_lab_1   FOREIGN KEY(address_lab_id) REFERENCES address_lab(address_lab_id)
- 11  , CONSTRAINT fk_s_address_lab_3   FOREIGN KEY(created_by) REFERENCES system_user_lab(system_user_lab_id)
- 12  , CONSTRAINT fk_s_address_lab_4   FOREIGN KEY(last_updated_by) REFERENCES system_user_lab(system_user_lab_id));
+SQL> CREATE TABLE system_user_lab
+  2  ( system_user_lab_id	       NUMBER
+  3  , system_user_name 	   VARCHAR2(20) CONSTRAINT nn_system_user_lab_1 NOT NULL
+  4  , system_user_group_id	   NUMBER	CONSTRAINT nn_system_user_lab_2 NOT NULL
+  5  , system_user_type 	   NUMBER	CONSTRAINT nn_system_user_lab_3 NOT NULL
+  6  , first_name		   VARCHAR2(20)
+  7  , middle_name		   VARCHAR2(20)
+  8  , last_name		   VARCHAR2(20)
+  9  , created_by		   NUMBER	CONSTRAINT nn_system_user_lab_4 NOT NULL
+ 10  , creation_date		   DATE 	CONSTRAINT nn_system_user_lab_5 NOT NULL
+ 11  , last_updated_by		   NUMBER	CONSTRAINT nn_system_user_lab_6 NOT NULL
+ 12  , last_update_date 	   DATE 	CONSTRAINT nn_system_user_lab_7 NOT NULL
+ 13  , CONSTRAINT pk_system_user_lab_1 PRIMARY KEY(system_user_lab_id)
+ 14  , CONSTRAINT fk_system_user_lab_1 FOREIGN KEY(created_by) REFERENCES system_user_lab(system_user_lab_id)
+ 15  , CONSTRAINT fk_system_user_lab_2 FOREIGN KEY(last_updated_by) REFERENCES system_user_lab(system_user_lab_id));
 
 Table created.
 
@@ -94,31 +97,21 @@ SQL> SELECT   table_name
  16  ORDER BY 2;
 
                            Column                                               
-TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+Table Name       COLUMN_ID Name                   NULLABLE DATA_TYPE            
 ---------------- --------- ---------------------- -------- ------------         
-STREET_ADDRESS_L         1 STREET_ADDRESS_LAB_ID  NOT NULL NUMBER(22)           
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         2 ADDRESS_LAB_ID         NOT NULL NUMBER(22)           
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         3 STREET_ADDRESS         NOT NULL VARCHAR2(30)         
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         4 CREATED_BY             NOT NULL NUMBER(22)           
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         5 CREATION_DATE          NOT NULL DATE                 
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         6 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
-AB                                                                              
-                                                                                
-STREET_ADDRESS_L         7 LAST_UPDATE_DATE       NOT NULL DATE                 
-AB                                                                              
-                                                                                
+SYSTEM_USER_LAB          1 SYSTEM_USER_LAB_ID     NOT NULL NUMBER(22)           
+SYSTEM_USER_LAB          2 SYSTEM_USER_NAME       NOT NULL VARCHAR2(20)         
+SYSTEM_USER_LAB          3 SYSTEM_USER_GROUP_ID   NOT NULL NUMBER(22)           
+SYSTEM_USER_LAB          4 SYSTEM_USER_TYPE       NOT NULL NUMBER(22)           
+SYSTEM_USER_LAB          5 FIRST_NAME                      VARCHAR2(20)         
+SYSTEM_USER_LAB          6 MIDDLE_NAME                     VARCHAR2(20)         
+SYSTEM_USER_LAB          7 LAST_NAME                       VARCHAR2(20)         
+SYSTEM_USER_LAB          8 CREATED_BY             NOT NULL NUMBER(22)           
+SYSTEM_USER_LAB          9 CREATION_DATE          NOT NULL DATE                 
+SYSTEM_USER_LAB         10 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+SYSTEM_USER_LAB         11 LAST_UPDATE_DATE       NOT NULL DATE                 
 
-7 rows selected.
+11 rows selected.
 
 SQL> 
 SQL> -- Display non-unique constraints.
@@ -132,19 +125,18 @@ SQL> SELECT   uc.constraint_name
   5  ON       uc.table_name = ucc.table_name
   6  AND      uc.constraint_name = ucc.constraint_name
   7  WHERE    uc.table_name = :table_name
-  8  AND      uc.constraint_type IN (UPPER('c'),UPPER('p'))
-  9  ORDER BY uc.constraint_type DESC
- 10  ,	      uc.constraint_name;
+  8  AND      uc.constraint_type = UPPER('c')
+  9  ORDER BY uc.constraint_name;
 
-CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+Constraint Name        SEARCH_CONDITION                     C                   
 ---------------------- ------------------------------------ -                   
-PK_S_ADDRESS_LAB_1                                          P                   
-NN_SADDRESS_LAB_1      "ADDRESS_LAB_ID" IS NOT NULL         C                   
-NN_SADDRESS_LAB_2      "STREET_ADDRESS" IS NOT NULL         C                   
-NN_SADDRESS_LAB_3      "CREATED_BY" IS NOT NULL             C                   
-NN_SADDRESS_LAB_4      "CREATION_DATE" IS NOT NULL          C                   
-NN_SADDRESS_LAB_5      "LAST_UPDATED_BY" IS NOT NULL        C                   
-NN_SADDRESS_LAB_6      "LAST_UPDATE_DATE" IS NOT NULL       C                   
+NN_SYSTEM_USER_LAB_1   "SYSTEM_USER_NAME" IS NOT NULL       C                   
+NN_SYSTEM_USER_LAB_2   "SYSTEM_USER_GROUP_ID" IS NOT NULL   C                   
+NN_SYSTEM_USER_LAB_3   "SYSTEM_USER_TYPE" IS NOT NULL       C                   
+NN_SYSTEM_USER_LAB_4   "CREATED_BY" IS NOT NULL             C                   
+NN_SYSTEM_USER_LAB_5   "CREATION_DATE" IS NOT NULL          C                   
+NN_SYSTEM_USER_LAB_6   "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_SYSTEM_USER_LAB_7   "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
 7 rows selected.
 
@@ -170,26 +162,44 @@ SQL> SELECT   uc.constraint_name||CHR(10)
 Constraint Name:                       References:                              
  Table.Column                           Table.Column                            
 -------------------------------------- ---------------------------------------- 
-FK_S_ADDRESS_LAB_1                     REFERENCES                               
-(STREET_ADDRESS_LAB.ADDRESS_LAB_ID)    (ADDRESS_LAB.ADDRESS_LAB_ID)             
+FK_SYSTEM_USER_LAB_1                   REFERENCES                               
+(SYSTEM_USER_LAB.CREATED_BY)           (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
                                                                                 
-FK_S_ADDRESS_LAB_3                     REFERENCES                               
-(STREET_ADDRESS_LAB.CREATED_BY)        (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
-                                                                                
-FK_S_ADDRESS_LAB_4                     REFERENCES                               
-(STREET_ADDRESS_LAB.LAST_UPDATED_BY)   (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
+FK_SYSTEM_USER_LAB_2                   REFERENCES                               
+(SYSTEM_USER_LAB.LAST_UPDATED_BY)      (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
                                                                                 
 
-3 rows selected.
+2 rows selected.
+
+SQL> 
+SQL> -- Create unique index.
+SQL> CREATE UNIQUE INDEX uq_system_user_lab_1
+  2    ON system_user_lab (system_user_name);
+
+Index created.
+
+SQL> 
+SQL> -- Display unique indexes.
+SQL> COLUMN index_name FORMAT A20 HEADING "Index Name"
+SQL> SELECT   index_name
+  2  FROM     user_indexes
+  3  WHERE    table_name = :table_name;
+
+Index Name                                                                      
+--------------------                                                            
+PK_SYSTEM_USER_LAB_1                                                            
+UQ_SYSTEM_USER_LAB_1                                                            
+
+2 rows selected.
 
 SQL> 
 SQL> -- Create sequence.
-SQL> CREATE SEQUENCE street_address_lab_s1 START WITH 1001 NOCACHE;
+SQL> CREATE SEQUENCE system_user_lab_s1 START WITH 1001 NOCACHE;
 
 Sequence created.
 
 SQL> 
-SQL> -- Display sequence value.
+SQL> -- Display sequence.
 SQL> COLUMN sequence_name FORMAT A20 HEADING "Sequence Name"
 SQL> SELECT   sequence_name
   2  FROM     user_sequences
@@ -197,9 +207,7 @@ SQL> SELECT   sequence_name
 
 Sequence Name                                                                   
 --------------------                                                            
-STREET_ADDRESS_LAB_S                                                            
-1                                                                               
-                                                                                
+SYSTEM_USER_LAB_S1                                                              
 
 1 row selected.
 

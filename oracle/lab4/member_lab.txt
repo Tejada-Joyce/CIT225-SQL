@@ -12,7 +12,7 @@ SQL> -- ------------------------------------------------------------------
 SQL> VARIABLE table_name     VARCHAR2(30)
 SQL> 
 SQL> BEGIN
-  2    :table_name := UPPER('item_lab');
+  2    :table_name := UPPER('member_lab');
   3  END;
   4  /
 
@@ -24,7 +24,7 @@ SQL> SELECT :table_name FROM dual;
 
 :TABLE_NAME                                                                     
 --------------------------------                                                
-ITEM_LAB                                                                        
+MEMBER_LAB                                                                      
 
 1 row selected.
 
@@ -53,23 +53,22 @@ SQL> DECLARE
 PL/SQL procedure successfully completed.
 
 SQL> 
-SQL> -- Create a table.
-SQL> CREATE TABLE item_lab
-  2  ( item_lab_id		       NUMBER
-  3  , item_barcode		   VARCHAR2(14) CONSTRAINT nn_item_lab_1 NOT NULL
-  4  , item_type		   NUMBER	CONSTRAINT nn_item_lab_2 NOT NULL
-  5  , item_title		   VARCHAR2(60) CONSTRAINT nn_item_lab_3 NOT NULL
-  6  , item_subtitle		   VARCHAR2(60)
-  7  , item_rating		   VARCHAR2(8)	CONSTRAINT nn_item_lab_4 NOT NULL
-  8  , item_release_date	   DATE 	CONSTRAINT nn_item_lab_5 NOT NULL
-  9  , created_by		   NUMBER	CONSTRAINT nn_item_lab_6 NOT NULL
- 10  , creation_date		   DATE 	CONSTRAINT nn_item_lab_7 NOT NULL
- 11  , last_updated_by		   NUMBER	CONSTRAINT nn_item_lab_8 NOT NULL
- 12  , last_update_date 	   DATE 	CONSTRAINT nn_item_lab_9 NOT NULL
- 13  , CONSTRAINT pk_item_lab_1        PRIMARY KEY(item_lab_id)
- 14  , CONSTRAINT fk_item_lab_1        FOREIGN KEY(item_type) REFERENCES common_lookup_lab(common_lookup_lab_id)
- 15  , CONSTRAINT fk_item_lab_2        FOREIGN KEY(created_by) REFERENCES system_user_lab(system_user_lab_id)
- 16  , CONSTRAINT fk_item_lab_3        FOREIGN KEY(last_updated_by) REFERENCES system_user_lab(system_user_lab_id));
+SQL> -- Create table.
+SQL> CREATE TABLE member_lab
+  2  ( member_lab_id		       NUMBER
+  3  , member_type		   NUMBER
+  4  , account_number		   VARCHAR2(10) CONSTRAINT nn_member_lab_2 NOT NULL
+  5  , credit_card_number	   VARCHAR2(19) CONSTRAINT nn_member_lab_3 NOT NULL
+  6  , credit_card_type 	   NUMBER	CONSTRAINT nn_member_lab_4 NOT NULL
+  7  , created_by		   NUMBER	CONSTRAINT nn_member_lab_5 NOT NULL
+  8  , creation_date		   DATE 	CONSTRAINT nn_member_lab_6 NOT NULL
+  9  , last_updated_by		   NUMBER	CONSTRAINT nn_member_lab_7 NOT NULL
+ 10  , last_update_date 	   DATE 	CONSTRAINT nn_member_lab_8 NOT NULL
+ 11  , CONSTRAINT pk_member_lab_1      PRIMARY KEY(member_lab_id)
+ 12  , CONSTRAINT fk_member_lab_1      FOREIGN KEY(member_type) REFERENCES common_lookup_lab(common_lookup_lab_id)
+ 13  , CONSTRAINT fk_member_lab_2      FOREIGN KEY(credit_card_type) REFERENCES common_lookup_lab(common_lookup_lab_id)
+ 14  , CONSTRAINT fk_member_lab_3      FOREIGN KEY(created_by) REFERENCES system_user_lab(system_user_lab_id)
+ 15  , CONSTRAINT fk_member_lab_4      FOREIGN KEY(last_updated_by) REFERENCES system_user_lab(system_user_lab_id));
 
 Table created.
 
@@ -98,21 +97,19 @@ SQL> SELECT   table_name
  16  ORDER BY 2;
 
                            Column                                               
-TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+Table Name       COLUMN_ID Name                   NULLABLE DATA_TYPE            
 ---------------- --------- ---------------------- -------- ------------         
-ITEM_LAB                 1 ITEM_LAB_ID            NOT NULL NUMBER(22)           
-ITEM_LAB                 2 ITEM_BARCODE           NOT NULL VARCHAR2(14)         
-ITEM_LAB                 3 ITEM_TYPE              NOT NULL NUMBER(22)           
-ITEM_LAB                 4 ITEM_TITLE             NOT NULL VARCHAR2(60)         
-ITEM_LAB                 5 ITEM_SUBTITLE                   VARCHAR2(60)         
-ITEM_LAB                 6 ITEM_RATING            NOT NULL VARCHAR2(8)          
-ITEM_LAB                 7 ITEM_RELEASE_DATE      NOT NULL DATE                 
-ITEM_LAB                 8 CREATED_BY             NOT NULL NUMBER(22)           
-ITEM_LAB                 9 CREATION_DATE          NOT NULL DATE                 
-ITEM_LAB                10 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
-ITEM_LAB                11 LAST_UPDATE_DATE       NOT NULL DATE                 
+MEMBER_LAB               1 MEMBER_LAB_ID          NOT NULL NUMBER(22)           
+MEMBER_LAB               2 MEMBER_TYPE                     NUMBER(22)           
+MEMBER_LAB               3 ACCOUNT_NUMBER         NOT NULL VARCHAR2(10)         
+MEMBER_LAB               4 CREDIT_CARD_NUMBER     NOT NULL VARCHAR2(19)         
+MEMBER_LAB               5 CREDIT_CARD_TYPE       NOT NULL NUMBER(22)           
+MEMBER_LAB               6 CREATED_BY             NOT NULL NUMBER(22)           
+MEMBER_LAB               7 CREATION_DATE          NOT NULL DATE                 
+MEMBER_LAB               8 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+MEMBER_LAB               9 LAST_UPDATE_DATE       NOT NULL DATE                 
 
-11 rows selected.
+9 rows selected.
 
 SQL> 
 SQL> -- Display non-unique constraints.
@@ -130,20 +127,18 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+Constraint Name        SEARCH_CONDITION                     C                   
 ---------------------- ------------------------------------ -                   
-PK_ITEM_LAB_1                                               P                   
-NN_ITEM_LAB_1          "ITEM_BARCODE" IS NOT NULL           C                   
-NN_ITEM_LAB_2          "ITEM_TYPE" IS NOT NULL              C                   
-NN_ITEM_LAB_3          "ITEM_TITLE" IS NOT NULL             C                   
-NN_ITEM_LAB_4          "ITEM_RATING" IS NOT NULL            C                   
-NN_ITEM_LAB_5          "ITEM_RELEASE_DATE" IS NOT NULL      C                   
-NN_ITEM_LAB_6          "CREATED_BY" IS NOT NULL             C                   
-NN_ITEM_LAB_7          "CREATION_DATE" IS NOT NULL          C                   
-NN_ITEM_LAB_8          "LAST_UPDATED_BY" IS NOT NULL        C                   
-NN_ITEM_LAB_9          "LAST_UPDATE_DATE" IS NOT NULL       C                   
+PK_MEMBER_LAB_1                                             P                   
+NN_MEMBER_LAB_2        "ACCOUNT_NUMBER" IS NOT NULL         C                   
+NN_MEMBER_LAB_3        "CREDIT_CARD_NUMBER" IS NOT NULL     C                   
+NN_MEMBER_LAB_4        "CREDIT_CARD_TYPE" IS NOT NULL       C                   
+NN_MEMBER_LAB_5        "CREATED_BY" IS NOT NULL             C                   
+NN_MEMBER_LAB_6        "CREATION_DATE" IS NOT NULL          C                   
+NN_MEMBER_LAB_7        "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_MEMBER_LAB_8        "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
-10 rows selected.
+8 rows selected.
 
 SQL> 
 SQL> -- Display foreign key constraints.
@@ -167,26 +162,58 @@ SQL> SELECT   uc.constraint_name||CHR(10)
 Constraint Name:                       References:                              
  Table.Column                           Table.Column                            
 -------------------------------------- ---------------------------------------- 
-FK_ITEM_LAB_1                          REFERENCES                               
-(ITEM_LAB.ITEM_TYPE)                   (COMMON_LOOKUP_LAB.COMMON_LOOKUP_LAB_ID) 
+FK_MEMBER_LAB_1                        REFERENCES                               
+(MEMBER_LAB.MEMBER_TYPE)               (COMMON_LOOKUP_LAB.COMMON_LOOKUP_LAB_ID) 
                                                                                 
-FK_ITEM_LAB_2                          REFERENCES                               
-(ITEM_LAB.CREATED_BY)                  (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
+FK_MEMBER_LAB_2                        REFERENCES                               
+(MEMBER_LAB.CREDIT_CARD_TYPE)          (COMMON_LOOKUP_LAB.COMMON_LOOKUP_LAB_ID) 
                                                                                 
-FK_ITEM_LAB_3                          REFERENCES                               
-(ITEM_LAB.LAST_UPDATED_BY)             (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
+FK_MEMBER_LAB_3                        REFERENCES                               
+(MEMBER_LAB.CREATED_BY)                (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
+                                                                                
+FK_MEMBER_LAB_4                        REFERENCES                               
+(MEMBER_LAB.LAST_UPDATED_BY)           (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
                                                                                 
 
-3 rows selected.
+4 rows selected.
+
+SQL> 
+SQL> -- Create a non-unique index.
+SQL> CREATE INDEX member_lab_n1 ON member_lab(credit_card_type);
+
+Index created.
+
+SQL> 
+SQL> -- Display the non-unique index.
+SQL> COLUMN sequence_name   FORMAT A22 HEADING "Sequence Name"
+SQL> COLUMN column_position FORMAT 999 HEADING "Column|Position"
+SQL> COLUMN column_name     FORMAT A22 HEADING "Column|Name"
+SQL> SELECT   ui.index_name
+  2  ,	      uic.column_position
+  3  ,	      uic.column_name
+  4  FROM     user_indexes ui INNER JOIN user_ind_columns uic
+  5  ON       ui.index_name = uic.index_name
+  6  AND      ui.table_name = uic.table_name
+  7  WHERE    ui.table_name = :table_name
+  8  AND NOT  ui.index_name IN (SELECT constraint_name
+  9  				FROM   user_constraints)
+ 10  ORDER BY ui.index_name
+ 11  ,	      uic.column_position;
+
+                       Column Column                                            
+Index Name           Position Name                                              
+-------------------- -------- ----------------------                            
+MEMBER_LAB_N1               1 CREDIT_CARD_TYPE                                  
+
+1 row selected.
 
 SQL> 
 SQL> -- Create a sequence.
-SQL> CREATE SEQUENCE item_lab_s1 START WITH 1001 NOCACHE;
+SQL> CREATE SEQUENCE member_lab_s1 START WITH 1001 NOCACHE;
 
 Sequence created.
 
 SQL> 
-SQL> -- Display sequence value.
 SQL> COLUMN sequence_name FORMAT A20 HEADING "Sequence Name"
 SQL> SELECT   sequence_name
   2  FROM     user_sequences
@@ -194,10 +221,10 @@ SQL> SELECT   sequence_name
 
 Sequence Name                                                                   
 --------------------                                                            
-ITEM_LAB_S1                                                                     
+MEMBER_LAB_S1                                                                   
 
 1 row selected.
 
 SQL> 
-SQL> -- Close the log file.
+SQL> -- Close log file.
 SQL> SPOOL OFF

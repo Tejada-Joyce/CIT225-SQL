@@ -33,11 +33,10 @@
  
 -- ... insert calls to other code script files here ...
  
-SPOOL apply_oracle_lab4.txt
 
-@@group_account_lab1.sql
-@@group_account_lab2.sql
-@@group_account_lab3.sql
+@@group_account1_lab.sql
+@@group_account2_lab.sql
+@@group_account3_lab.sql
 @@item_inserts_lab.sql
 @@create_insert_contacts_lab.sql
 @@individual_accounts_lab.sql
@@ -116,7 +115,7 @@ FROM     member_lab m INNER JOIN contact_lab c ON m.member_lab_id = c.member_lab
          telephone_lab t ON c.contact_lab_id = t.contact_lab_id AND a.address_lab_id = t.address_lab_id
 WHERE    m.member_type = (SELECT common_lookup_lab_id
                           FROM   common_lookup_lab
-                          WHERE  common_lookup_context = 'MEMBER'
+                          WHERE  common_lookup_context = 'MEMBER_LAB'
                           AND    common_lookup_type = 'INDIVIDUAL');
 
 -- ------------------------------------------------------------------
@@ -147,4 +146,4 @@ ORDER BY r.rental_lab_id;
 SPOOL OFF
 
 
-SPOOL OFF
+

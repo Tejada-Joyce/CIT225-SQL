@@ -93,7 +93,8 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-TABLE_NAME       COLUMN_ID COLUMN_NAME            NULLABLE DATA_TYPE            
+                           Column                                               
+Table Name       COLUMN_ID Name                   NULLABLE DATA_TYPE            
 ---------------- --------- ---------------------- -------- ------------         
 COMMON_LOOKUP_LA         1 COMMON_LOOKUP_LAB_ID   NOT NULL NUMBER(22)           
 B                                                                               
@@ -138,7 +139,7 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+Constraint Name        SEARCH_CONDITION                     C                   
 ---------------------- ------------------------------------ -                   
 PK_CLOOKUP_LAB_1                                            P                   
 NN_CLOOKUP_LAB_1       "COMMON_LOOKUP_CONTEXT" IS NOT NULL  C                   

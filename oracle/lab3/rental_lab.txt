@@ -56,7 +56,7 @@ SQL>
 SQL> -- Create table.
 SQL> CREATE TABLE rental_lab
   2  ( rental_lab_id		       NUMBER
-  3  , customer_lab_id		       NUMBER CONSTRAINT nn_rental_lab_1 NOT NULL
+  3  , customer_id		   NUMBER CONSTRAINT nn_rental_lab_1 NOT NULL
   4  , check_out_date		   DATE   CONSTRAINT nn_rental_lab_2 NOT NULL
   5  , return_date		   DATE   CONSTRAINT nn_rental_lab_3 NOT NULL
   6  , created_by		   NUMBER CONSTRAINT nn_rental_lab_4 NOT NULL
@@ -64,7 +64,7 @@ SQL> CREATE TABLE rental_lab
   8  , last_updated_by		   NUMBER CONSTRAINT nn_rental_lab_6 NOT NULL
   9  , last_update_date 	   DATE   CONSTRAINT nn_rental_lab_7 NOT NULL
  10  , CONSTRAINT pk_rental_lab_1      PRIMARY KEY(rental_lab_id)
- 11  , CONSTRAINT fk_rental_lab_1      FOREIGN KEY(customer_lab_id) REFERENCES contact_lab(contact_lab_id)
+ 11  , CONSTRAINT fk_rental_lab_1      FOREIGN KEY(customer_id) REFERENCES contact_lab(contact_lab_id)
  12  , CONSTRAINT fk_rental_lab_2      FOREIGN KEY(created_by) REFERENCES system_user_lab(system_user_lab_id)
  13  , CONSTRAINT fk_rental_lab_3      FOREIGN KEY(last_updated_by) REFERENCES system_user_lab(system_user_lab_id));
 
@@ -95,10 +95,10 @@ SQL> SELECT   table_name
  16  ORDER BY 2;
 
                            Column                                               
-Table Name       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
 ---------------- --------- ---------------------- -------- ------------         
 RENTAL_LAB               1 RENTAL_LAB_ID          NOT NULL NUMBER(22)           
-RENTAL_LAB               2 CUSTOMER_LAB_ID        NOT NULL NUMBER(22)           
+RENTAL_LAB               2 CUSTOMER_ID            NOT NULL NUMBER(22)           
 RENTAL_LAB               3 CHECK_OUT_DATE         NOT NULL DATE                 
 RENTAL_LAB               4 RETURN_DATE            NOT NULL DATE                 
 RENTAL_LAB               5 CREATED_BY             NOT NULL NUMBER(22)           
@@ -124,10 +124,10 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-Constraint Name        SEARCH_CONDITION                     C                   
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
 ---------------------- ------------------------------------ -                   
 PK_RENTAL_LAB_1                                             P                   
-NN_RENTAL_LAB_1        "CUSTOMER_LAB_ID" IS NOT NULL        C                   
+NN_RENTAL_LAB_1        "CUSTOMER_ID" IS NOT NULL            C                   
 NN_RENTAL_LAB_2        "CHECK_OUT_DATE" IS NOT NULL         C                   
 NN_RENTAL_LAB_3        "RETURN_DATE" IS NOT NULL            C                   
 NN_RENTAL_LAB_4        "CREATED_BY" IS NOT NULL             C                   
@@ -160,7 +160,7 @@ Constraint Name:                       References:
  Table.Column                           Table.Column                            
 -------------------------------------- ---------------------------------------- 
 FK_RENTAL_LAB_1                        REFERENCES                               
-(RENTAL_LAB.CUSTOMER_LAB_ID)           (CONTACT_LAB.CONTACT_LAB_ID)             
+(RENTAL_LAB.CUSTOMER_ID)               (CONTACT_LAB.CONTACT_LAB_ID)             
                                                                                 
 FK_RENTAL_LAB_2                        REFERENCES                               
 (RENTAL_LAB.CREATED_BY)                (SYSTEM_USER_LAB.SYSTEM_USER_LAB_ID)     
