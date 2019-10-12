@@ -96,8 +96,7 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-                           Column                                               
-Table Name       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+TABLE_NAME       COLUMN_ID COLUMN_NAME            NULLABLE DATA_TYPE            
 ---------------- --------- ---------------------- -------- ------------         
 SYSTEM_USER_LAB          1 SYSTEM_USER_LAB_ID     NOT NULL NUMBER(22)           
 SYSTEM_USER_LAB          2 SYSTEM_USER_NAME       NOT NULL VARCHAR2(20)         
@@ -128,7 +127,7 @@ SQL> SELECT   uc.constraint_name
   8  AND      uc.constraint_type = UPPER('c')
   9  ORDER BY uc.constraint_name;
 
-Constraint Name        SEARCH_CONDITION                     C                   
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
 ---------------------- ------------------------------------ -                   
 NN_SYSTEM_USER_LAB_1   "SYSTEM_USER_NAME" IS NOT NULL       C                   
 NN_SYSTEM_USER_LAB_2   "SYSTEM_USER_GROUP_ID" IS NOT NULL   C                   

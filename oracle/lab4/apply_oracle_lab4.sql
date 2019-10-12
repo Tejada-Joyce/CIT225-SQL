@@ -145,5 +145,6 @@ ORDER BY r.rental_lab_id;
 
 SPOOL OFF
 
-
+-- Make all changes permanent.
+COMMIT;
 

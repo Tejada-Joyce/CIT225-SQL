@@ -98,7 +98,7 @@ SQL> SELECT   table_name
  16  ORDER BY 2;
 
                            Column                                               
-Table Name       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
 ---------------- --------- ---------------------- -------- ------------         
 ITEM_LAB                 1 ITEM_LAB_ID            NOT NULL NUMBER(22)           
 ITEM_LAB                 2 ITEM_BARCODE           NOT NULL VARCHAR2(14)         
@@ -130,7 +130,7 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-Constraint Name        SEARCH_CONDITION                     C                   
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
 ---------------------- ------------------------------------ -                   
 PK_ITEM_LAB_1                                               P                   
 NN_ITEM_LAB_1          "ITEM_BARCODE" IS NOT NULL           C                   

@@ -80,15 +80,15 @@ SQL> SELECT   cr.full_name
 Name                                            Out         Return              
 (Last, First MI) Item Title                     Date        Date                
 ---------------- ------------------------------ ----------- -----------         
-Winn, Brian      RoboCop                        11-OCT-19   16-OCT-19           
-Winn, Brian      The Hunt for Red October       11-OCT-19   16-OCT-19           
-Vizquel, Doreen  Camelot                        11-OCT-19   16-OCT-19           
-Vizquel, Doreen  I Remember Mama                11-OCT-19   16-OCT-19           
-Vizquel, Oscar   Star Wars I                    11-OCT-19   16-OCT-19           
-Vizquel, Oscar   Star Wars II                   11-OCT-19   16-OCT-19           
-Vizquel, Oscar   Star Wars III                  11-OCT-19   16-OCT-19           
-Sweeney, Ian M   Cars                           11-OCT-19   16-OCT-19           
-Sweeney, Meaghan Hook                           11-OCT-19   16-OCT-19           
+Winn, Brian      RoboCop                        12-OCT-19   17-OCT-19           
+Winn, Brian      The Hunt for Red October       12-OCT-19   17-OCT-19           
+Vizquel, Doreen  Camelot                        12-OCT-19   17-OCT-19           
+Vizquel, Doreen  I Remember Mama                12-OCT-19   17-OCT-19           
+Vizquel, Oscar   Star Wars I                    12-OCT-19   17-OCT-19           
+Vizquel, Oscar   Star Wars II                   12-OCT-19   17-OCT-19           
+Vizquel, Oscar   Star Wars III                  12-OCT-19   17-OCT-19           
+Sweeney, Ian M   Cars                           12-OCT-19   17-OCT-19           
+Sweeney, Meaghan Hook                           12-OCT-19   17-OCT-19           
 
 9 rows selected.
 

@@ -710,30 +710,28 @@ SQL> SELECT   common_lookup_lab_id
   3  ,	      common_lookup_type
   4  FROM     common_lookup_lab;
 
- Member                                                                         
- Lookup                        Common                                           
-   ID # COMMON_LOOKUP_CONTEXT  Lookup Type                                      
-------- ---------------------- ------------------                               
-      1 SYSTEM_USER_LAB        SYSTEM_ADMIN                                     
-      2 SYSTEM_USER_LAB        DBA                                              
-      3 SYSTEM_USER_LAB        SYSTEM_GROUP                                     
-      4 SYSTEM_USER_LAB        COST_CENTER                                      
-      5 SYSTEM_USER_LAB        INDIVIDUAL                                       
-   1001 CONTACT_LAB            EMPLOYEE                                         
-   1002 CONTACT_LAB            CUSTOMER                                         
-   1003 MEMBER_LAB             INDIVIDUAL                                       
-   1004 MEMBER_LAB             GROUP                                            
-   1005 MEMBER_LAB             DISCOVER_CARD                                    
-   1006 MEMBER_LAB             MASTER_CARD                                      
-   1007 MEMBER_LAB             VISA_CARD                                        
-   1008 MULTIPLE               HOME                                             
-   1009 MULTIPLE               WORK                                             
-   1010 ITEM_LAB               DVD_FULL_SCREEN                                  
-   1011 ITEM_LAB               DVD_WIDE_SCREEN                                  
-   1012 ITEM_LAB               NINTENDO_GAMECUBE                                
-   1013 ITEM_LAB               PLAYSTATION2                                     
-   1014 ITEM_LAB               XBOX                                             
-   1015 ITEM_LAB               BLU-RAY                                          
+COMMON_LOOKUP_LAB_ID COMMON_LOOKUP_CONTEXT  COMMON_LOOKUP_TYPE                  
+-------------------- ---------------------- ------------------                  
+                   1 SYSTEM_USER_LAB        SYSTEM_ADMIN                        
+                   2 SYSTEM_USER_LAB        DBA                                 
+                   3 SYSTEM_USER_LAB        SYSTEM_GROUP                        
+                   4 SYSTEM_USER_LAB        COST_CENTER                         
+                   5 SYSTEM_USER_LAB        INDIVIDUAL                          
+                1001 CONTACT_LAB            EMPLOYEE                            
+                1002 CONTACT_LAB            CUSTOMER                            
+                1003 MEMBER_LAB             INDIVIDUAL                          
+                1004 MEMBER_LAB             GROUP                               
+                1005 MEMBER_LAB             DISCOVER_CARD                       
+                1006 MEMBER_LAB             MASTER_CARD                         
+                1007 MEMBER_LAB             VISA_CARD                           
+                1008 MULTIPLE               HOME                                
+                1009 MULTIPLE               WORK                                
+                1010 ITEM_LAB               DVD_FULL_SCREEN                     
+                1011 ITEM_LAB               DVD_WIDE_SCREEN                     
+                1012 ITEM_LAB               NINTENDO_GAMECUBE                   
+                1013 ITEM_LAB               PLAYSTATION2                        
+                1014 ITEM_LAB               XBOX                                
+                1015 ITEM_LAB               BLU-RAY                             
 
 20 rows selected.
 
@@ -756,11 +754,9 @@ SQL> SELECT   common_lookup_lab_id
   3  WHERE    common_lookup_context = 'SYSTEM_USER_LAB'
   4  AND      common_lookup_type = 'SYSTEM_GROUP';
 
- Member                                                                         
- Lookup                                                                         
-   ID #                                                                         
--------                                                                         
-      3                                                                         
+COMMON_LOOKUP_LAB_ID                                                            
+--------------------                                                            
+                   3                                                            
 
 1 row selected.
 
@@ -770,11 +766,9 @@ SQL> SELECT   common_lookup_lab_id
   3  WHERE    common_lookup_context = 'SYSTEM_USER_LAB'
   4  AND      common_lookup_type = 'SYSTEM_ADMIN';
 
- Member                                                                         
- Lookup                                                                         
-   ID #                                                                         
--------                                                                         
-      1                                                                         
+COMMON_LOOKUP_LAB_ID                                                            
+--------------------                                                            
+                   1                                                            
 
 1 row selected.
 
