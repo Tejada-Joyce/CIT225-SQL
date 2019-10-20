@@ -40,29 +40,159 @@ SPOOL apply_oracle_lab5.txt
 --  Step 1: Write joins with the USING subclause.
 -- --------------------------------------------------
 
+--  A
+SELECT member_id
+,      contact_id
+FROM member 
+INNER JOIN contact 
+USING (member_id);
 
+--  B
+SELECT m.member_id
+,      c.contact_id
+FROM member m
+,    contact c
+WHERE m.member_id = c.member_id
 
+--  C
+SELECT contact_id
+,      address_id
+FROM contact 
+INNER JOIN address 
+USING (contact_id);
+
+--  D
+SELECT c.contact_id
+,      a.address_id
+FROM contact c
+,    address a
+WHERE c.contact_id = a.contact_id;
+
+--  E
+SELECT address_id
+,      street_address_id
+FROM address 
+INNER JOIN street_address 
+USING (address_id);
+
+--  F
+SELECT a.address_id
+,      sa.street_address_id
+FROM address a
+,    street_address sa
+WHERE a.address_id = sa.address_id;
+
+--  G
+SELECT address_id
+,      telephone_id
+FROM address 
+INNER JOIN telephone 
+USING (address_id);
+
+--  H
+SELECT a.address_id
+,      t.telephone_id
+FROM address a
+,    telephone t
+WHERE a.address_id = t.address_id;
 
 -- --------------------------------------------------
 --  Step 2: Write joins with the ON subclause.
 -- --------------------------------------------------
 
+--  A
+SELECT c.contact_id
+,      su.system_user_id
+FROM contact c
+INNER JOIN system_user su
+ON c.created_by = su.system_user_id;
 
+--  B
+SELECT c.contact_id
+,      su.system_user_id
+FROM contact c
+,    system_user su
+WHERE c.created_by = su.system_user_id;
 
+--  C
+SELECT c.contact_id
+,      su.system_user_id
+FROM contact c
+INNER JOIN system_user su
+ON c.last_updated_by = su.system_user_id;
+
+--  D
+SELECT c.contact_id
+,      su.system_user_id
+FROM contact c
+,    system_user su
+WHERE c.last_updated_by = su.system_user_id;
 
 -- --------------------------------------------------
 --  Step 3: Write self joins.
 -- --------------------------------------------------
 
+--  A
+COL system_user_id  FORMAT 999999  HEADING "System|User|ID #|--------|Table #1"
+COL created_by      FORMAT 999999  HEADING "Created|By|ID #|--------|Table #1"
+COL system_user_pk  FORMAT 999999  HEADING "System|User|ID #|--------|Table #2"
 
+SELECT   su1.system_user_id
+,        su1.created_by
+,        su2.created_by AS system_user_pk
+FROM     system_user su1 
+INNER JOIN system_user su2
+ON       su1.created_by = su2.system_user_id;
 
+--  B
+COL system_user_id   FORMAT 999999  HEADING "System|User|ID #|--------|Table #1"
+COL last_updated_by  FORMAT 999999  HEADING "Last|Updated|By|ID #|--------|Table #1"
+COL system_user_pk   FORMAT 999999  HEADING "System|User|ID #|--------|Table #2"
+
+SELECT   su1.system_user_id
+,        su1.last_updated_by
+,        su2.created_by AS system_user_pk
+FROM     system_user su1 
+INNER JOIN system_user su2
+ON       su1.last_updated_by = su2.system_user_id;
+
+-- C
+COL user_id        FORMAT 999999  HEADING "System|User|ID #|--------|Table #1"
+COL user_name      FORMAT A8      HEADING "System|User|Name|--------|Table #1"
+COL cby_user_id    FORMAT 999999  HEADING "System|User|ID #|--------|Table #2"
+COL cby_user_name  FORMAT A8      HEADING "System|User|Name|--------|Table #2"
+COL lby_user_id    FORMAT 999999  HEADING "System|User|ID #|--------|Table #3"
+COL lby_user_name  FORMAT A8      HEADING "System|User|Name|--------|Table #3"
+
+SELECT   su1.system_user_id AS user_id  
+,        su1.system_user_name AS user_name
+,        su2.system_user_id AS cby_user_id
+,        su2.system_user_name AS cby_user_name
+,        su3.system_user_id AS lby_user_id
+,        su3.system_user_name AS lby_user_name
+FROM     system_user su1
+INNER JOIN system_user su2
+ON    su1.created_by = su2.system_user_id 
+INNER JOIN system_user su3    
+ON      su1.last_updated_by = su3.system_user_id;  
 
 -- --------------------------------------------------
 --  Step 4: Write three table joins.
 -- --------------------------------------------------
 
+SELECT   r.rental_id AS "Rental ID #"
+,        ri.rental_id AS "Rental ID #"
+,        ri.item_id AS "Item ID #"
+,        i.item_id AS "Item ID #"
+FROM     rental r
+INNER JOIN   rental_item ri
+ON r.rental_id = ri.rental_id   
+INNER JOIN   item i
+ON   ri.item_id = i.item_id;  
 
 
+ALTER TABLE rental
+DROP CONSTRAINT nn_rental_3;
 
 -- --------------------------------------------------
 --  Step 5: Write a filtering WHERE clause.
@@ -315,7 +445,7 @@ COL long_month  FORMAT A9 HEADING "Long|Month"
 COL start_date  FORMAT A9 HEADING "Start|Date"
 COL end_date    FORMAT A9 HEADING "End|Date"
 
-/* Query the results from the table. */
+/* Query the results from the table. */ 
 SELECT * FROM mock_calendar;
 
 SELECT   d.department_name
@@ -323,7 +453,7 @@ SELECT   d.department_name
 FROM     employee e INNER JOIN department d
 ON       e.department_id = d.department_id INNER JOIN salary s
 ON       e.salary_id = s.salary_id
-WHERE    ... provide the logic and syntax ...
+WHERE    NVL(s.effective_start_date, TRUNC(SYSDATE) + 1) BETWEEN TRUNC(SYSDATE) - 60 AND TRUNC(SYSDATE) + 1
 GROUP BY d.department_name
 ORDER BY d.department_name;
 
