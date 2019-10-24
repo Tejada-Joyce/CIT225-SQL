@@ -44,8 +44,9 @@ SELECT  'Step #1' AS "Step Number" FROM dual;
 --  Step 1: Write the ALTER statement.
 -- --------------------------------------------------
 
-
-
+ALTER TABLE rental_item
+ADD (rental_item_price  NUMBER)
+ADD (rental_item_type   NUMBER);
 
 -- ----------------------------------------------------------------------
 --  Verification #1: Verify the table structure.
@@ -98,15 +99,30 @@ END;
 -- --------------------------------------------------
 --  Step 1: Write the CREATE TABLE statement.
 -- --------------------------------------------------
-
-
+CREATE TABLE price
+( price_id                  NUMBER(22)
+, item_id                   NUMBER(22)      CONSTRAINT nn_price_1 NOT NULL
+, price_type                NUMBER(22)       
+, active_flag               VARCHAR2(1)     CONSTRAINT nn_price_2 NOT NULL
+, start_date                DATE            CONSTRAINT nn_price_3 NOT NULL
+, end_date                  DATE            
+, amount                    NUMBER(22)      CONSTRAINT nn_price_4 NOT NULL
+, created_by                NUMBER(22)      CONSTRAINT nn_price_5 NOT NULL
+, creation_date             DATE            CONSTRAINT nn_price_6 NOT NULL
+, last_updated_by           NUMBER(22)      CONSTRAINT nn_price_7 NOT NULL
+, last_update_date          DATE            CONSTRAINT nn_price_8 NOT NULL
+, CONSTRAINT pk_price_1     PRIMARY KEY(price_id)
+, CONSTRAINT fk_price_1     FOREIGN KEY(item_id) REFERENCES item(item_id)
+, CONSTRAINT fk_price_2     FOREIGN KEY(price_type) REFERENCES common_lookup(common_lookup_id)
+, CONSTRAINT yn_price       CHECK(active_flag IN ('Y','N'))
+, CONSTRAINT fk_price_3     FOREIGN KEY(created_by) REFERENCES system_user(system_user_id)
+, CONSTRAINT fk_price_4     FOREIGN KEY(last_updated_by) REFERENCES system_user(system_user_id));
 
 
 -- --------------------------------------------------
 --  Step 2: Write the CREATE SEQUENCE statement.
 -- --------------------------------------------------
-
-
+CREATE SEQUENCE price_s1 START WITH 1001;
 
 
 -- ----------------------------------------------------------------------
@@ -135,7 +151,7 @@ WHERE    table_name = 'PRICE'
 ORDER BY 2;
 -- ----------------------------------------------------------------------
 --  Objective #3: Verify the table constraints.
--- ----------------------------------------------------------------------
+----------------------------------------------------------------------
 COLUMN constraint_name   FORMAT A16
 COLUMN search_condition  FORMAT A30
 SELECT   uc.constraint_name
@@ -163,7 +179,7 @@ AND      uc.constraint_type = 'C';
 --  Step #3a: Rename ITEM_RELEASE_DATE Column.
 -- ----------------------------------------------------------------------
 
-
+ALTER TABLE item RENAME COLUMN item_release_date TO release_date;
 
 
 -- ----------------------------------------------------------------------
@@ -190,9 +206,89 @@ ORDER BY 2;
 -- ----------------------------------------------------------------------
 --  Step #3b: Insert three rows in the ITEM table.
 -- ----------------------------------------------------------------------
+INSERT INTO item
+( item_id
+, item_barcode
+, item_type
+, item_title
+, item_subtitle
+, item_rating
+, release_date
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( item_s1.nextval
+,'29585-04530'
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'ITEM'
+  AND      common_lookup_type = 'DVD_WIDE_SCREEN')
+,'Tron'
+,'Legacy'
+,'PG'
+, TRUNC(SYSDATE) - 1
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
 
+INSERT INTO item
+( item_id
+, item_barcode
+, item_type
+, item_title
+, item_subtitle
+, item_rating
+, release_date
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( item_s1.nextval
+,'35864-41010'
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'ITEM'
+  AND      common_lookup_type = 'DVD_WIDE_SCREEN')
+,'Ender''s Game'
+, NULL
+,'PG13'
+, TRUNC(SYSDATE) - 1
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
 
-
+INSERT INTO item
+( item_id
+, item_barcode
+, item_type
+, item_title
+, item_subtitle
+, item_rating
+, release_date
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( item_s1.nextval
+,'52894-13466'
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'ITEM'
+  AND      common_lookup_type = 'DVD_WIDE_SCREEN')
+,'Elysium'
+, NULL
+,'R'
+, TRUNC(SYSDATE) - 1
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
 
 -- ----------------------------------------------------------------------
 --  Verification #3b: Verify the column name change.
@@ -210,21 +306,410 @@ WHERE   (SYSDATE - i.release_date) < 31;
 --  Step #3c: Insert three new rows in the MEMBER, CONTACT, ADDRESS,
 --            STREET_ADDRESS, and TELEPHONE tables.
 -- ----------------------------------------------------------------------
+INSERT INTO member
+( member_id
+, member_type
+, account_number
+, credit_card_number
+, credit_card_type
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( member_s1.nextval                               -- member_id
+, (SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'MEMBER'
+  AND      common_lookup_type = 'GROUP')          -- member_type
+,'US00011'                                        -- account_number
+,'6011-0000-0000-0078'                            -- credit_card_number
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'MEMBER'
+  AND      common_lookup_type = 'DISCOVER_CARD')  -- credit_card_type
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
 
+-- ------------------------------------------------------------------
+--  Insert first contact.
+-- ------------------------------------------------------------------
+INSERT INTO contact
+( contact_id
+, member_id
+, contact_type
+, first_name
+, last_name
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( contact_s1.nextval                              -- contact_id
+, member_s1.currval                               -- member_id
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'CONTACT'
+  AND      common_lookup_type = 'CUSTOMER')       -- contact_type
+,'Harry'                                        -- first_name
+,'Potter'                                        -- last_name
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
 
+INSERT INTO address
+( address_id
+, contact_id
+, address_type
+, city
+, state_province
+, postal_code
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( address_s1.nextval                              -- address_id
+, contact_s1.currval                              -- contact_id
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_type = 'HOME')           -- address_type
+,'Provo'                                          -- city
+,'Utah'                                           -- state_province
+,'84604'                                          -- postal_code
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
 
+INSERT INTO street_address
+( street_address_id
+, address_id
+, street_address
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+ VALUES
+( street_address_s1.nextval                       -- street_address_id
+, address_s1.currval                              -- address_id
+,'900 E, 300 N'                                   -- street_address
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
 
+INSERT INTO telephone
+( telephone_id
+, contact_id
+, address_id
+, telephone_type
+, country_code
+, area_code
+, telephone_number
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+ VALUES
+( telephone_s1.nextval                            -- telephone_id
+, address_s1.currval                              -- address_id
+, contact_s1.currval                              -- contact_id
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'MULTIPLE'
+  AND      common_lookup_type = 'HOME')           -- telephone_type
+,'USA'                                            -- country_code
+,'801'                                            -- area_code
+,'333-3333'                                       -- telephone_number
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
+
+-- ------------------------------------------------------------------
+--  Insert second contact.
+-- ------------------------------------------------------------------
+INSERT INTO contact
+( contact_id
+, member_id
+, contact_type
+, first_name
+, last_name
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( contact_s1.nextval                              -- contact_id
+, member_s1.currval                               -- member_id
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'CONTACT'
+  AND      common_lookup_type = 'CUSTOMER')       -- contact_type
+,'Ginny'                                        -- first_name
+,'Potter'                                        -- last_name
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
+
+INSERT INTO address
+( address_id
+, contact_id
+, address_type
+, city
+, state_province
+, postal_code
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( address_s1.nextval                              -- address_id
+, contact_s1.currval                              -- contact_id
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_type = 'HOME')           -- address_type
+,'Provo'                                          -- city
+,'Utah'                                           -- state_province
+,'84604'                                          -- postal_code
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
+
+INSERT INTO street_address
+( street_address_id
+, address_id
+, street_address
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+ VALUES
+( street_address_s1.nextval                       -- street_address_id
+, address_s1.currval                              -- address_id
+,'900 E, 300 N'                                   -- street_address
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
+
+INSERT INTO telephone
+( telephone_id
+, contact_id
+, address_id
+, telephone_type
+, country_code
+, area_code
+, telephone_number
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+ VALUES
+( telephone_s1.nextval                            -- telephone_id
+, address_s1.currval                              -- address_id
+, contact_s1.currval                              -- contact_id
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'MULTIPLE'
+  AND      common_lookup_type = 'HOME')           -- telephone_type
+,'USA'                                            -- country_code
+,'801'                                            -- area_code
+,'333-3333'                                       -- telephone_number
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
+
+-- ------------------------------------------------------------------
+--  Insert third contact.
+-- ------------------------------------------------------------------
+INSERT INTO contact
+( contact_id
+, member_id
+, contact_type
+, first_name
+, middle_name
+, last_name
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( contact_s1.nextval                              -- contact_id
+, member_s1.currval                               -- member_id
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'CONTACT'
+  AND      common_lookup_type = 'CUSTOMER')       -- contact_type
+,'Lily'                                           -- first_name
+,'Luna'                                           -- middle_name
+,'Potter'                                         -- last_name
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
+
+INSERT INTO address
+( address_id
+, contact_id
+, address_type
+, city
+, state_province
+, postal_code
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( address_s1.nextval                              -- address_id
+, contact_s1.currval                              -- contact_id
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_type = 'HOME')           -- address_type
+,'Provo'                                          -- city
+,'Utah'                                           -- state_province
+,'84604'                                          -- postal_code
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
+
+INSERT INTO street_address
+( street_address_id
+, address_id
+, street_address
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+ VALUES
+( street_address_s1.nextval                       -- street_address_id
+, address_s1.currval                              -- address_id
+,'900 E, 300 N'                                   -- street_address
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
+
+INSERT INTO telephone
+( telephone_id
+, contact_id
+, address_id
+, telephone_type
+, country_code
+, area_code
+, telephone_number
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+ VALUES
+( telephone_s1.nextval                            -- telephone_id
+, address_s1.currval                              -- address_id
+, contact_s1.currval                              -- contact_id
+,(SELECT   common_lookup_id
+  FROM     common_lookup
+  WHERE    common_lookup_context = 'MULTIPLE'
+  AND      common_lookup_type = 'HOME')           -- telephone_type
+,'USA'                                            -- country_code
+,'801'                                            -- area_code
+,'333-3333'                                       -- telephone_number
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
 -- ----------------------------------------------------------------------
 --  Verification #3c: Verify the three new CONTACTS and their related
 --                    information set.
 -- ----------------------------------------------------------------------
-SET NULL ''
-COLUMN full_name FORMAT A20
-COLUMN city      FORMAT A10
-COLUMN state     FORMAT A10
-SELECT   c.last_name || ', ' || c.first_name AS full_name
+COLUMN account_number  FORMAT A10  HEADING "Account|Number"
+COLUMN full_name       FORMAT A16  HEADING "Name|(Last, First MI)"
+COLUMN street_address  FORMAT A14  HEADING "Street Address"
+COLUMN city            FORMAT A10  HEADING "City"
+COLUMN state           FORMAT A10  HEADING "State"
+COLUMN postal_code     FORMAT A6   HEADING "Postal|Code"
+SELECT   m.account_number
+,        c.last_name || ', ' || c.first_name
+||       CASE
+           WHEN c.middle_name IS NOT NULL THEN
+             ' ' || c.middle_name || ' '
+         END AS full_name
+,        sa.street_address
 ,        a.city
 ,        a.state_province AS state
+,        a.postal_code
 FROM     member m INNER JOIN contact c
 ON       m.member_id = c.member_id INNER JOIN address a
 ON       c.contact_id = a.contact_id INNER JOIN street_address sa
@@ -235,8 +720,183 @@ WHERE    c.last_name = 'Potter';
 -- ----------------------------------------------------------------------
 --  Step #3d: Insert three new RENTAL and RENTAL_ITEM table rows..
 -- ----------------------------------------------------------------------
+INSERT INTO rental
+( rental_id
+, customer_id
+, check_out_date
+, return_date
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( rental_s1.nextval
+,(SELECT   contact_id
+  FROM     contact
+  WHERE    last_name = 'Potter'
+  AND      first_name = 'Harry')
+, TRUNC(SYSDATE)
+, TRUNC(SYSDATE) + 1
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
 
+INSERT INTO rental
+( rental_id
+, customer_id
+, check_out_date
+, return_date
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( rental_s1.nextval
+,(SELECT   contact_id
+  FROM     contact
+  WHERE    last_name = 'Potter'
+  AND      first_name = 'Ginny')
+, TRUNC(SYSDATE)
+, TRUNC(SYSDATE) + 3
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
 
+INSERT INTO rental
+( rental_id
+, customer_id
+, check_out_date
+, return_date
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( rental_s1.nextval
+,(SELECT   contact_id
+  FROM     contact
+  WHERE    last_name = 'Potter'
+  AND      first_name = 'Lily'
+  AND      middle_name = 'Luna')
+, TRUNC(SYSDATE)
+, TRUNC(SYSDATE) + 5
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
+
+INSERT INTO rental_item
+( rental_item_id
+, rental_id
+, item_id
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date)
+VALUES
+( rental_item_s1.nextval
+,(SELECT   r.rental_id
+  FROM     rental r
+  ,        contact c
+  WHERE    r.customer_id = c.contact_id
+  AND      c.last_name = 'Potter'
+  AND      c.first_name = 'Harry')
+,(SELECT   i.item_id
+  FROM     item i
+  ,        common_lookup cl
+  WHERE    i.item_title = 'Tron'
+  AND      i.item_subtitle = 'Legacy'
+  AND      i.item_type = cl.common_lookup_id
+  AND      cl.common_lookup_type = 'DVD_WIDE_SCREEN')
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
+
+INSERT INTO rental_item
+( rental_item_id
+, rental_id
+, item_id
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date)
+VALUES
+( rental_item_s1.nextval
+,(SELECT   r.rental_id
+  FROM     rental r
+  ,        contact c
+  WHERE    r.customer_id = c.contact_id
+  AND      c.last_name = 'Potter'
+  AND      c.first_name = 'Harry')
+,(SELECT   i.item_id
+  FROM     item i
+  ,        common_lookup cl
+  WHERE    i.item_title = 'Star Wars I'
+  AND      i.item_subtitle = 'Phantom Menace'
+  AND      i.item_type = cl.common_lookup_id
+  AND      cl.common_lookup_type = 'DVD_WIDE_SCREEN')
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
+
+INSERT INTO rental_item
+( rental_item_id
+, rental_id
+, item_id
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date)
+VALUES
+( rental_item_s1.nextval
+,(SELECT   r.rental_id
+  FROM     rental r
+  ,        contact c
+  WHERE    r.customer_id = c.contact_id
+  AND      c.last_name = 'Potter'
+  AND      c.first_name = 'Ginny')
+,(SELECT   i.item_id
+  FROM     item i
+  ,        common_lookup cl
+  WHERE    i.item_title = 'Ender''s Game'
+  AND      i.item_type = cl.common_lookup_id
+  AND      cl.common_lookup_type = 'DVD_WIDE_SCREEN')
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
+
+INSERT INTO rental_item
+( rental_item_id
+, rental_id
+, item_id
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date)
+VALUES
+( rental_item_s1.nextval
+,(SELECT   r.rental_id
+  FROM     rental r
+  ,        contact c
+  WHERE    r.customer_id = c.contact_id
+  AND      c.last_name = 'Potter'
+  AND      c.first_name = 'Lily'
+  AND      c.middle_name = 'Luna')
+,(SELECT   i.item_id
+  FROM     item i
+  ,        common_lookup cl
+  WHERE    i.item_title = 'Elysium'
+  AND      i.item_type = cl.common_lookup_id
+  AND      cl.common_lookup_type = 'DVD_WIDE_SCREEN')
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE);
 
 
 -- ----------------------------------------------------------------------
@@ -272,8 +932,8 @@ ORDER BY 2;
 -- ----------------------------------------------------------------------
 --  Step #4a: Drop Indexes.
 -- ----------------------------------------------------------------------
-
-
+DROP INDEX common_lookup_n1;
+DROP INDEX common_lookup_u2;
 
 
 -- ----------------------------------------------------------------------
@@ -289,9 +949,10 @@ WHERE    table_name = 'COMMON_LOOKUP';
 -- ----------------------------------------------------------------------
 --  Step #4b: Add three new columns.
 -- ----------------------------------------------------------------------
-
-
-
+ALTER TABLE common_lookup
+ADD (common_lookup_table  VARCHAR(30))
+ADD (common_lookup_column   VARCHAR(30))
+ADD (common_lookup_code   VARCHAR(30));
 
 -- ----------------------------------------------------------------------
 --  Verification #4b: Verify the unique indexes are dropped.
@@ -321,8 +982,37 @@ ORDER BY 2;
 -- ----------------------------------------------------------------------
 --  Step #4c: Migrate data subject to re-engineered COMMON_LOOKUP table.
 -- ----------------------------------------------------------------------
+
 -- ----------------------------------------------------------------------
---  Step #4c(1): Query the pre-change state of the table.
+--  Step #4c: Query the pre-change state of the table.
+-- ----------------------------------------------------------------------
+COLUMN common_lookup_context  FORMAT A14  HEADING "Common|Lookup Context"
+COLUMN common_lookup_table    FORMAT A12  HEADING "Common|Lookup Table"
+COLUMN common_lookup_column   FORMAT A18  HEADING "Common|Lookup Column"
+COLUMN common_lookup_type     FORMAT A18  HEADING "Common|Lookup Type"
+SELECT   common_lookup_context
+,        common_lookup_table
+,        common_lookup_column
+,        common_lookup_type
+FROM     common_lookup
+ORDER BY 1, 2, 3;
+
+-- ----------------------------------------------------------------------
+--  Step #4c(1): Query the post COMMON_LOOKUP_TABLE changes where the
+--               COMMON_LOOKUP_CONTEXT is equal to the table names.
+-- ----------------------------------------------------------------------
+
+-- ----------------------------------------------------------------------
+--  Step #4c(1): Update the records.
+-- ----------------------------------------------------------------------
+
+UPDATE   common_lookup
+SET      common_lookup_table = common_lookup_context
+WHERE    common_lookup_context <> 'MULTIPLE';
+
+
+-- ----------------------------------------------------------------------
+--  Step #4c(1): Verify update of the records.
 -- ----------------------------------------------------------------------
 COLUMN common_lookup_context  FORMAT A14  HEADING "Common|Lookup Context"
 COLUMN common_lookup_table    FORMAT A12  HEADING "Common|Lookup Table"
@@ -337,13 +1027,14 @@ ORDER BY 1, 2, 3;
 
 -- ----------------------------------------------------------------------
 --  Step #4c(2): Query the post COMMON_LOOKUP_TABLE changes where the
---               COMMON_LOOKUP_CONTEXT is equal to the table names.
+--               COMMON_LOOKUP_CONTEXT is not equal to the table names.
 -- ----------------------------------------------------------------------
 -- ----------------------------------------------------------------------
 --  Step #4c(2): Update the records.
 -- ----------------------------------------------------------------------
-
-
+UPDATE  common_lookup
+SET     common_lookup_table = 'ADDRESS'
+WHERE   common_lookup_context = 'MULTIPLE';
 
 
 -- ----------------------------------------------------------------------
@@ -361,42 +1052,18 @@ FROM     common_lookup
 ORDER BY 1, 2, 3;
 
 -- ----------------------------------------------------------------------
---  Step #4c(3): Query the post COMMON_LOOKUP_TABLE changes where the
---               COMMON_LOOKUP_CONTEXT is not equal to the table names.
+--  Step #4c(3): Query the post COMMON_LOOKUP_COLUMN change.
 -- ----------------------------------------------------------------------
 -- ----------------------------------------------------------------------
---  Step #4c(3): Update the records.
+--  Step #4c(3): Update the type records.
 -- ----------------------------------------------------------------------
-
-
-
-
--- ----------------------------------------------------------------------
---  Step #4c(3): Verify update of the records.
--- ----------------------------------------------------------------------
-COLUMN common_lookup_context  FORMAT A14  HEADING "Common|Lookup Context"
-COLUMN common_lookup_table    FORMAT A12  HEADING "Common|Lookup Table"
-COLUMN common_lookup_column   FORMAT A18  HEADING "Common|Lookup Column"
-COLUMN common_lookup_type     FORMAT A18  HEADING "Common|Lookup Type"
-SELECT   common_lookup_context
-,        common_lookup_table
-,        common_lookup_column
-,        common_lookup_type
-FROM     common_lookup
-ORDER BY 1, 2, 3;
-
--- ----------------------------------------------------------------------
---  Step #4c(4): Query the post COMMON_LOOKUP_COLUMN change.
--- ----------------------------------------------------------------------
--- ----------------------------------------------------------------------
---  Step #4c(4): Update the type records.
--- ----------------------------------------------------------------------
-
-
+UPDATE   common_lookup
+SET      common_lookup_column = common_lookup_context || '_TYPE'
+WHERE    common_lookup_context <> 'MULTIPLE';
 
 
 -- ----------------------------------------------------------------------
---  Step #4c(4): Verify update of the type records.
+--  Step #4c(3): Verify update of the type records.
 -- ----------------------------------------------------------------------
 COLUMN common_lookup_context  FORMAT A14  HEADING "Common|Lookup Context"
 COLUMN common_lookup_table    FORMAT A12  HEADING "Common|Lookup Table"
@@ -418,8 +1085,9 @@ ORDER BY 1, 2, 3;
 -- ----------------------------------------------------------------------
 --  Step #4c(4): Update the ADDRESS table type records.
 -- ----------------------------------------------------------------------
-
-
+UPDATE      common_lookup
+SET         common_lookup_column = 'ADDRESS_TYPE'
+WHERE       common_lookup_context = 'MULTIPLE';
 
 
 -- ----------------------------------------------------------------------
@@ -440,49 +1108,70 @@ WHERE    common_lookup_table IN
 ORDER BY 1, 2, 3;
 
 -- ----------------------------------------------------------------------
---  Step #4c(5): Query the post COMMON_LOOKUP_COLUMN change.
--- ----------------------------------------------------------------------
--- ----------------------------------------------------------------------
---  Step #4c(4): Alter the table and remove the unused column.
+--  Step #4d: Alter the table.
 -- ----------------------------------------------------------------------
 
-
+ ALTER TABLE common_lookup
+ DROP CONSTRAINT nn_clookup_1;
 
 
 -- ----------------------------------------------------------------------
---  Step #4c(4): Verify modification of table structure.
--- ----------------------------------------------------------------------
-SET NULL ''
-COLUMN table_name   FORMAT A14
-COLUMN column_id    FORMAT 9999
-COLUMN column_name  FORMAT A22
-COLUMN data_type    FORMAT A12
-SELECT   table_name
-,        column_id
-,        column_name
-,        CASE
-           WHEN nullable = 'N' THEN 'NOT NULL'
-           ELSE ''
-         END AS nullable
-,        CASE
-           WHEN data_type IN ('CHAR','VARCHAR2','NUMBER') THEN
-             data_type||'('||data_length||')'
-           ELSE
-             data_type
-         END AS data_type
-FROM     user_tab_columns
-WHERE    table_name = 'COMMON_LOOKUP'
-ORDER BY 2;
-
--- ----------------------------------------------------------------------
---  Step #4c(6): Insert new rows for the TELEPHONE table.
+--  Step #4d: Insert new rows for the TELEPHONE table.
 -- ----------------------------------------------------------------------
 
+INSERT INTO common_lookup 
+( common_lookup_id
+, common_lookup_table
+, common_lookup_column
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( common_lookup_s1.nextval
+, 'TELEPHONE'
+, 'TELEPHONE_TYPE'
+, 'HOME'
+, 'Home'
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
 
-
-
+INSERT INTO common_lookup 
+( common_lookup_id
+, common_lookup_table
+, common_lookup_column
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date )
+VALUES
+( common_lookup_s1.nextval
+, 'TELEPHONE'
+, 'TELEPHONE_TYPE'
+, 'WORK'
+, 'Work'
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- created_by
+, SYSDATE                                         -- creation_date
+,(SELECT   system_user_id
+  FROM     system_user
+  WHERE    system_user_name = 'SYSADMIN')         -- last_updated_by
+, SYSDATE                                         -- last_update_date
+);
 -- ----------------------------------------------------------------------
---  Step #4c(6): Verify insert of new rows to the TELEPHONE table.
+--  Step #4d: Verify insert of new rows to the TELEPHONE table.
 -- ----------------------------------------------------------------------
 COLUMN common_lookup_context  FORMAT A14  HEADING "Common|Lookup Context"
 COLUMN common_lookup_table    FORMAT A12  HEADING "Common|Lookup Table"
@@ -499,14 +1188,29 @@ WHERE    common_lookup_table IN
 ORDER BY 1, 2, 3;
 
 -- ----------------------------------------------------------------------
---  Step #4d: Alter the table structure.
+--  Step #4e: Alter the table structure.
+-- ----------------------------------------------------------------------
+-- ----------------------------------------------------------------------
+--  Step #4e(1):  Drop COMMON_LOOKUP_CONTEXT column
+-- ----------------------------------------------------------------------
+ALTER TABLE common_lookup
+DROP COLUMN common_lookup_context;
+
+
+
+-- ----------------------------------------------------------------------
+--  Step #4e(2-3):  Add a NOT NULL constraint to the COMMON_LOOKUP_TABLE 
+--                  and the COMMON_LOOKUP_COLUMN columns.
 -- ----------------------------------------------------------------------
 
+ALTER TABLE common_lookup
+MODIFY (common_lookup_table VARCHAR2(30) CONSTRAINT nn_clookup_8 NOT NULL);
 
-
+ALTER TABLE common_lookup
+MODIFY (common_lookup_column VARCHAR2(30) CONSTRAINT nn_clookup_9 NOT NULL);
 
 -- ----------------------------------------------------------------------
---  Step #4d: Verify changes to the table structure.
+--  Step #4e(1-3): Verify changes to the table structure.
 -- ----------------------------------------------------------------------
 SET NULL ''
 COLUMN table_name   FORMAT A14
@@ -530,7 +1234,9 @@ FROM     user_tab_columns
 WHERE    table_name = 'COMMON_LOOKUP'
 ORDER BY 2;
 
--- Display non-unique constraints.
+-- ----------------------------------------------------------------------
+--  Step #4e(2-3): Display non-unique constraints.
+-- ----------------------------------------------------------------------
 COLUMN constraint_name   FORMAT A22  HEADING "Constraint Name"
 COLUMN search_condition  FORMAT A36  HEADING "Search Condition"
 COLUMN constraint_type   FORMAT A10  HEADING "Constraint|Type"
@@ -545,15 +1251,18 @@ AND      uc.constraint_type IN (UPPER('c'),UPPER('p'))
 ORDER BY uc.constraint_type DESC
 ,        uc.constraint_name;
 
--- ----------------------------------------------------------------------
---  Step #4d: Add unique index.
--- ----------------------------------------------------------------------
-
-
-
 
 -- ----------------------------------------------------------------------
---  Step #4d: Verify new unique index.
+--  Step #4e(4): Add unique index.
+-- ----------------------------------------------------------------------
+CREATE UNIQUE INDEX clookup_u1
+ON common_lookup ( common_lookup_table
+                 , common_lookup_column
+                 , common_lookup_type);
+
+
+-- ----------------------------------------------------------------------
+--  Step #4e(4): Verify new unique index.
 -- ----------------------------------------------------------------------
 COLUMN sequence_name   FORMAT A22 HEADING "Sequence Name"
 COLUMN column_position FORMAT 999 HEADING "Column|Position"
@@ -569,14 +1278,33 @@ ORDER BY ui.index_name
 ,        uic.column_position;
 
 -- ----------------------------------------------------------------------
---  Step #4d: Update the foreign keys of the TELEPHONE table.
+--  Step #4f: Update the foreign keys of the TELEPHONE table.
 -- ----------------------------------------------------------------------
-
-
-
+UPDATE telephone
+SET telephone_type = (  SELECT common_lookup_id 
+                        FROM common_lookup
+                        WHERE common_lookup_table = 'TELEPHONE'
+                        AND common_lookup_column = 'TELEPHONE_TYPE'
+                        AND common_lookup_type = 'HOME' )
+WHERE telephone_type = (    SELECT common_lookup_id 
+                            FROM common_lookup
+                            WHERE common_lookup_table = 'ADDRESS'
+                            AND common_lookup_type = 'HOME' );
+                            
+UPDATE telephone
+SET telephone_type = (  SELECT common_lookup_id 
+                        FROM common_lookup
+                        WHERE common_lookup_table = 'TELEPHONE'
+                        AND common_lookup_column = 'TELEPHONE_TYPE'
+                        AND common_lookup_type = 'WORK' )
+WHERE telephone_type = (    SELECT common_lookup_id 
+                            FROM common_lookup
+                            WHERE common_lookup_table = 'ADDRESS'
+                            AND common_lookup_type = 'WORK' );
+                            
 
 -- ----------------------------------------------------------------------
---  Step #4d: Verify the foreign keys of the TELEPHONE table.
+--  Step #4f: Verify the foreign keys of the TELEPHONE table.
 -- ----------------------------------------------------------------------
 COLUMN common_lookup_table  FORMAT A14 HEADING "Common|Lookup Table"
 COLUMN common_lookup_column FORMAT A14 HEADING "Common|Lookup Column"
