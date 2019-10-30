@@ -28,25 +28,58 @@ SPOOL apply_oracle_lab7.txt
 SET ECHO ON
 SET PAGESIZE 999
 
--- ----------------------------------------------------------------------
---  Step #1 : Add two columns to the RENTAL_ITEM table.
--- ----------------------------------------------------------------------
-SELECT  'Step #1' AS "Step Number" FROM dual;
+-- --------------------------------------------------------
+--  Step #1
+--  -------
+--  Insert two ACTIVE_FLAG records in the COMMON_LOOKUP table.
+-- --------------------------------------------------------
 
--- ----------------------------------------------------------------------
---  Objective #1: Add the RENTAL_ITEM_PRICE and RENTAL_ITEM_TYPE columns
---                to the RENTAL_ITEM table. Both columns should use a
---                NUMBER data type in Oracle, and an int unsigned data
---                type.
--- ----------------------------------------------------------------------
+-- Insert step #1 statements here.
+INSERT INTO common_lookup
+( common_lookup_id
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date
+, common_lookup_table
+, common_lookup_column
+, common_lookup_code )
+VALUES 
+( common_lookup_s1.nextval
+, 'YES'
+, 'Yes'
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE
+, 'PRICE'
+, 'ACTIVE_FLAG'
+, 'Y');
 
--- ----------------------------------------------------------------------
---  Step #1 : Insert new rows to support PRICE table.
--- ----------------------------------------------------------------------
-
-
-
-
+INSERT INTO common_lookup
+( common_lookup_id
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date
+, common_lookup_table
+, common_lookup_column
+, common_lookup_code )
+VALUES 
+( common_lookup_s1.nextval
+, 'NO'
+, 'No'
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE
+, 'PRICE'
+, 'ACTIVE_FLAG'
+, 'N');
 
 -- ----------------------------------------------------------------------
 --  Verification #1: Verify the common_lookup contents.
@@ -66,10 +99,143 @@ ORDER BY 1, 2, 3 DESC;
 --  Step #2 : Insert new rows to support PRICE and RENTAL_ITEM table.
 -- ----------------------------------------------------------------------
 
+INSERT INTO common_lookup
+( common_lookup_id
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date
+, common_lookup_table
+, common_lookup_column
+, common_lookup_code )
+VALUES 
+( common_lookup_s1.nextval
+, '1-DAY RENTAL'
+, '1-Day Rental'
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE
+, 'PRICE'
+, 'PRICE_TYPE'
+, '1');
 
+INSERT INTO common_lookup
+( common_lookup_id
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date
+, common_lookup_table
+, common_lookup_column
+, common_lookup_code )
+VALUES 
+( common_lookup_s1.nextval
+, '3-DAY RENTAL'
+, '3-Day Rental'
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE
+, 'PRICE'
+, 'PRICE_TYPE'
+, '3');
 
+INSERT INTO common_lookup
+( common_lookup_id
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date
+, common_lookup_table
+, common_lookup_column
+, common_lookup_code )
+VALUES 
+( common_lookup_s1.nextval
+, '5-DAY RENTAL'
+, '5-Day Rental'
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE
+, 'PRICE'
+, 'PRICE_TYPE'
+, '5');
 
+INSERT INTO common_lookup
+( common_lookup_id
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date
+, common_lookup_table
+, common_lookup_column
+, common_lookup_code )
+VALUES 
+( common_lookup_s1.nextval
+, '1-DAY RENTAL'
+, '1-Day Rental'
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE
+, 'RENTAL_ITEM'
+, 'RENTAL_ITEM_TYPE'
+, '1');
 
+INSERT INTO common_lookup
+( common_lookup_id
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date
+, common_lookup_table
+, common_lookup_column
+, common_lookup_code )
+VALUES 
+( common_lookup_s1.nextval
+, '3-DAY RENTAL'
+, '3-Day Rental'
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE
+, 'RENTAL_ITEM'
+, 'RENTAL_ITEM_TYPE'
+, '3');
+
+INSERT INTO common_lookup
+( common_lookup_id
+, common_lookup_type
+, common_lookup_meaning
+, created_by
+, creation_date
+, last_updated_by
+, last_update_date
+, common_lookup_table
+, common_lookup_column
+, common_lookup_code )
+VALUES 
+( common_lookup_s1.nextval
+, '5-DAY RENTAL'
+, '5-Day Rental'
+, 1001
+, SYSDATE
+, 1001
+, SYSDATE
+, 'RENTAL_ITEM'
+, 'RENTAL_ITEM_TYPE'
+, '5');
 -- ----------------------------------------------------------------------
 --  Verification #2: Verify the common_lookup contents.
 -- ----------------------------------------------------------------------
@@ -80,9 +246,9 @@ SELECT   common_lookup_table
 ,        common_lookup_column
 ,        common_lookup_type
 FROM     common_lookup
-WHERE    common_lookup_table = 'PRICE'
-AND      common_lookup_column = 'PRICE_TYPE'
-ORDER BY 3;
+WHERE    common_lookup_table IN ('PRICE','RENTAL_ITEM')
+AND      common_lookup_column IN ('PRICE_TYPE','RENTAL_ITEM_TYPE')
+ORDER BY 1, 3;
 
 -- ----------------------------------------------------------------------
 --  Step #3a : Add columns to RENTAL_ITEM table and seed values.
@@ -122,6 +288,7 @@ SET      rental_item_type =
             AND      cl.common_lookup_table = 'RENTAL_ITEM'
             AND      cl.common_lookup_column = 'RENTAL_ITEM_TYPE');
 
+-- Verify the UPDATE statement.
 SELECT   ROW_COUNT
 ,        col_count
 FROM    (SELECT   COUNT(*) AS ROW_COUNT
@@ -129,64 +296,7 @@ FROM    (SELECT   COUNT(*) AS ROW_COUNT
         (SELECT   COUNT(rental_item_type) AS col_count
          FROM     rental_item
          WHERE    rental_item_type IS NOT NULL) cc;
-
--- ----------------------------------------------------------------------
---  Step #3b : Add columns to RENTAL_ITEM table and seed values.
--- ----------------------------------------------------------------------
-
-
-
-
--- ----------------------------------------------------------------------
---  Step #3c : Modify rental_item_type to not null constrained.
--- ----------------------------------------------------------------------
-
-
-
-
-
--- ----------------------------------------------------------------------
---  Step #3c : Verify changes to the rental_item table.
--- ----------------------------------------------------------------------
--- Query the RENTAL_ITEM table.
-COLUMN table_name   FORMAT A14
-COLUMN column_id    FORMAT 9999
-COLUMN column_name  FORMAT A22
-COLUMN data_type    FORMAT A12
-SELECT   table_name
-,        column_id
-,        column_name
-,        CASE
-           WHEN nullable = 'N' THEN 'NOT NULL'
-           ELSE ''
-         END AS nullable
-,        CASE
-           WHEN data_type IN ('CHAR','VARCHAR2','NUMBER') THEN
-             data_type||'('||data_length||')'
-           ELSE
-             data_type
-         END AS data_type
-FROM     user_tab_columns
-WHERE    table_name = 'RENTAL_ITEM'
-ORDER BY 2;
-
--- Query and verify the foreign key.
-COLUMN table_name      FORMAT A12 HEADING "TABLE NAME"
-COLUMN constraint_name FORMAT A18 HEADING "CONSTRAINT NAME"
-COLUMN constraint_type FORMAT A12 HEADING "CONSTRAINT|TYPE"
-COLUMN column_name     FORMAT A18 HEADING "COLUMN NAME"
-SELECT   uc.table_name
-,        uc.constraint_name
-,        CASE
-           WHEN uc.constraint_type = 'R' THEN
-            'FOREIGN KEY'
-         END AS constraint_type
-,        ucc.column_name
-FROM     user_constraints uc INNER JOIN user_cons_columns ucc
-ON       uc.constraint_name = ucc.constraint_name
-WHERE    uc.table_name = 'RENTAL_ITEM'
-AND      ucc.column_name = 'RENTAL_ITEM_TYPE';
-
+         
 -- Verify the foreign key constraints.
 COL ROWNUM              FORMAT 999999  HEADING "Row|Number"
 COL rental_item_type    FORMAT 999999  HEADING "Rental|Item|Type"
@@ -213,9 +323,45 @@ WHERE    cl.common_lookup_table = 'RENTAL_ITEM'
 AND      cl.common_lookup_column = 'RENTAL_ITEM_TYPE'
 AND      cl.common_lookup_type LIKE '%-DAY RENTAL'
 ORDER BY r.rental_id
-,        ri.rental_id;
+,        ri.rental_id;         
 
--- Query the rental item.
+-- --------------------------------------------------------------------------
+--  Step #3b : Add the FK_RENTAL_ITEM_7 foreign key to the RENTAL_ITEM table. 
+-- --------------------------------------------------------------------------
+
+ALTER TABLE rental_item
+ADD CONSTRAINT fk_rental_item_7
+FOREIGN KEY (rental_item_type) REFERENCES common_lookup (common_lookup_id);
+
+-- ----------------------------------------------------------------------
+--  Step #3b : Verify changes to the rental_item table.
+-- ----------------------------------------------------------------------
+COLUMN table_name      FORMAT A12 HEADING "TABLE NAME"
+COLUMN constraint_name FORMAT A18 HEADING "CONSTRAINT NAME"
+COLUMN constraint_type FORMAT A12 HEADING "CONSTRAINT|TYPE"
+COLUMN column_name     FORMAT A18 HEADING "COLUMN NAME"
+SELECT   uc.table_name
+,        uc.constraint_name
+,        CASE
+           WHEN uc.constraint_type = 'R' THEN
+            'FOREIGN KEY'
+         END AS constraint_type
+,        ucc.column_name
+FROM     user_constraints uc INNER JOIN user_cons_columns ucc
+ON       uc.constraint_name = ucc.constraint_name
+WHERE    uc.table_name = 'RENTAL_ITEM'
+AND      ucc.column_name = 'RENTAL_ITEM_TYPE';
+-- ----------------------------------------------------------------------
+--  Step #3c : Modify rental_item_type to not null constrained.
+-- ----------------------------------------------------------------------
+
+ALTER TABLE rental_item
+MODIFY (rental_item_type NUMBER CONSTRAINT nn_rental_item_7 NOT NULL);
+
+
+-- ----------------------------------------------------------------------
+--  Step #3c : Verify changes to the rental_item table.
+-- ----------------------------------------------------------------------
 COLUMN CONSTRAINT FORMAT A10
 SELECT   TABLE_NAME
 ,        column_name
@@ -230,7 +376,6 @@ AND      column_name = 'RENTAL_ITEM_TYPE';
 -- ----------------------------------------------------------------------
 --  Step #4 : Fix query to get 135 rows.
 -- ----------------------------------------------------------------------
-SELECT count(*) from item;
 
 COLUMN item_id     FORMAT 9999 HEADING "ITEM|ID"
 COLUMN active_flag FORMAT A6   HEADING "ACTIVE|FLAG"
@@ -244,15 +389,32 @@ SELECT   i.item_id
 ,        cl.common_lookup_id AS price_type
 ,        cl.common_lookup_type AS price_desc
 ,        CASE
-           WHEN  ...implement logic "B"... THEN ...result VALUE...
-           ELSE  ...result VALUE ...
+           WHEN  (TRUNC(SYSDATE) - i.release_date) <= 30 OR (TRUNC(SYSDATE) - i.release_date) > 30 AND af.active_flag = 'N'
+           THEN  i.release_date
+           ELSE  i.release_date + 31
          END AS start_date
 ,        CASE
-           WHEN  ...implement logic "C"... THEN ...result VALUE...
+           WHEN  (TRUNC(SYSDATE) - i.release_date) > 30 AND af.active_flag = 'N' THEN i.release_date + 30
          END AS end_date
 ,        CASE
-           WHEN  ...implement logic "D"... THEN ...result VALUE...
-           ELSE  ...result VALUE ...
+           WHEN  (TRUNC(SYSDATE) - i.release_date) <= 30 THEN 
+            CASE 
+                WHEN dr.rental_days = 1 THEN 3
+                WHEN dr.rental_days = 3 THEN 10
+                WHEN dr.rental_days = 5 THEN 15
+            END 
+           WHEN  (TRUNC(SYSDATE) - i.release_date) > 30 AND af.active_flag = 'N' THEN 
+            CASE 
+                WHEN dr.rental_days = 1 THEN 3
+                WHEN dr.rental_days = 3 THEN 10
+                WHEN dr.rental_days = 5 THEN 15
+            END    
+           ELSE 
+            CASE 
+                WHEN dr.rental_days = 1 THEN 1
+                WHEN dr.rental_days = 3 THEN 3
+                WHEN dr.rental_days = 5 THEN 5
+            END 
          END AS amount
 FROM     item i CROSS JOIN
         (SELECT 'Y' AS active_flag FROM dual
@@ -266,7 +428,10 @@ FROM     item i CROSS JOIN
          common_lookup cl ON dr.rental_days = SUBSTR(cl.common_lookup_type,1,1)
 WHERE    cl.common_lookup_table = 'PRICE'
 AND      cl.common_lookup_column = 'PRICE_TYPE'
-AND NOT ( ... implement logic "A" ... )
+AND NOT ( af.active_flag = 'N' AND (TRUNC(SYSDATE) - 30) < i.release_date )
 ORDER BY 1, 2, 3;
 
 SPOOL OFF
+
+-- Make all changes permanent.
+COMMIT;
