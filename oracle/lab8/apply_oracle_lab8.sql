@@ -28,9 +28,16 @@ SPOOL apply_oracle_lab8.txt
 SET ECHO ON
 SET PAGESIZE 999
 
--- ----------------------------------------------------------------------
---  Step #1 : Add two columns to the RENTAL_ITEM table.
--- ----------------------------------------------------------------------
+-- --------------------------------------------------------
+--  Step #1
+--  -------------------------------------------------------
+--  Using the query from Lab 7, Step 4, insert the 135
+--  rows in the PRICE table created in Lab 6.
+-- --------------------------------------------------------
+ 
+-- Insert step #1 statements here.
+ 
+-- --------------------------------------------------------
 INSERT INTO price
 ( price_id
 , item_id
@@ -43,57 +50,60 @@ INSERT INTO price
 , creation_date
 , last_updated_by
 , last_update_date )
-( SELECT price_s.NEXTVAL
-  ,        item_id
-  ,        price_type
-  ,        active_flag
-  ,        start_date
-  ,        end_date
-  ,        amount
-  ,        created_by
-  ,        creation_date
-  ,        last_updated_by
-  ,        last_update_date
-  FROM 
-    (SELECT   i.item_id
-     ,        af.active_flag
-     ,        cl.common_lookup_id AS price_type
-     ,        cl.common_lookup_type AS price_desc
-     ,        CASE
-                WHEN  ...implement logic "B" FROM Lab #7... THEN ...result VALUE...
-                ELSE  ...result VALUE ...
-              END AS start_date
-     ,        CASE
-                WHEN  ...implement logic "C" FROM Lab #7... THEN ...result VALUE...
-              END AS end_date
-     ,        CASE
-                WHEN  ...implement logic "D" FROM Lab #7... THEN ...result VALUE...
-                ELSE  ...result VALUE ...
-            END AS amount
-     ,        ( ... subquery ... ) AS created_by
-     ,        ( ... truncated CURRENT DATE ...) AS creation_date
-     ,        ( ... subquery ... ) AS last_updated_by
-     ,        ( ... truncated CURRENT DATE ...) AS last_update_date
-     FROM     item i CROSS JOIN
-             (SELECT 'Y' AS active_flag FROM dual
-              UNION ALL
-              SELECT 'N' AS active_flag FROM dual) af CROSS JOIN
-             (SELECT '1' AS rental_days FROM dual
-              UNION ALL
-              SELECT '3' AS rental_days FROM dual
-              UNION ALL
-              SELECT '5' AS rental_days FROM dual) dr INNER JOIN
-              common_lookup cl ON dr.rental_days = SUBSTR(cl.common_lookup_type,1,1)
-     WHERE    cl.common_lookup_table = 'PRICE'
-     AND      cl.common_lookup_column = 'PRICE_TYPE'
-     AND NOT ( ...implement logic "A" FROM Lab #7...)));
+SELECT 
+         price_s1.nextval AS price_id
+,        i.item_id
+,        cl.common_lookup_id AS price_type
+,        af.active_flag
+,        CASE
+           WHEN  (TRUNC(SYSDATE) - i.release_date) <= 30 OR (TRUNC(SYSDATE) - i.release_date) > 30 AND af.active_flag = 'N'
+           THEN  i.release_date
+           ELSE  i.release_date + 31
+         END AS start_date
+,        CASE
+           WHEN  (TRUNC(SYSDATE) - i.release_date) > 30 AND af.active_flag = 'N' THEN i.release_date + 30
+         END AS end_date
+,        CASE
+           WHEN  (TRUNC(SYSDATE) - i.release_date) <= 30 THEN 
+            CASE 
+                WHEN dr.rental_days = 1 THEN 3
+                WHEN dr.rental_days = 3 THEN 10
+                WHEN dr.rental_days = 5 THEN 15
+            END 
+           WHEN  (TRUNC(SYSDATE) - i.release_date) > 30 AND af.active_flag = 'N' THEN 
+            CASE 
+                WHEN dr.rental_days = 1 THEN 3
+                WHEN dr.rental_days = 3 THEN 10
+                WHEN dr.rental_days = 5 THEN 15
+            END    
+           ELSE 
+            CASE 
+                WHEN dr.rental_days = 1 THEN 1
+                WHEN dr.rental_days = 3 THEN 3
+                WHEN dr.rental_days = 5 THEN 5
+            END 
+         END AS amount
+,        1 AS created_by
+,        SYSDATE AS creation_date
+,        1 AS last_updated_by
+,        SYSDATE AS last_update_date
+FROM     item i CROSS JOIN
+        (SELECT 'Y' AS active_flag FROM dual
+         UNION ALL
+         SELECT 'N' AS active_flag FROM dual) af CROSS JOIN
+        (SELECT '1' AS rental_days FROM dual
+         UNION ALL
+         SELECT '3' AS rental_days FROM dual
+         UNION ALL
+         SELECT '5' AS rental_days FROM dual) dr INNER JOIN
+         common_lookup cl ON dr.rental_days = SUBSTR(cl.common_lookup_type,1,1)
+WHERE    cl.common_lookup_table = 'PRICE'
+AND      cl.common_lookup_column = 'PRICE_TYPE'
+AND NOT ( af.active_flag = 'N' AND (TRUNC(SYSDATE) - 30) < i.release_date );
 
--- Query the result.
-COLUMN type   FORMAT A5   HEADING "Type"
-COLUMN 1-Day  FORMAT 9999 HEADING "1-Day"
-COLUMN 3-Day  FORMAT 9999 HEADING "3-Day"
-COLUMN 5_Day  FORMAT 9999 HEADING "5_Day"
-COLUMN total  FORMAT 9999 HEADING "Total"
+-- ----------------------------------------------------------------------
+--  Step #1 : Verify completion.
+-- ----------------------------------------------------------------------
 SELECT  'OLD Y' AS "Type"
 ,        COUNT(CASE WHEN amount = 1 THEN 1 END) AS "1-Day"
 ,        COUNT(CASE WHEN amount = 3 THEN 1 END) AS "3-Day"
@@ -133,7 +143,6 @@ FROM     price p , item i
 WHERE    active_flag = 'N' AND i.item_id = p.item_id
 AND     (TRUNC(SYSDATE) - TRUNC(i.release_date)) < 31
 AND      NOT (end_date IS NULL);
-
 -- ----------------------------------------------------------------------
 --  Step #2 : After inserting the data into the PRICE table, you should
 --            add the NOT NULL constraint to the PRICE_TYPE column of
@@ -143,8 +152,8 @@ AND      NOT (end_date IS NULL);
 --  Step #2 : Add a constraint to PRICE table.
 -- ----------------------------------------------------------------------
 
-
-
+ALTER TABLE price
+MODIFY (price_type NUMBER(22) CONSTRAINT nn_price_9 NOT NULL);
 
 
 -- ----------------------------------------------------------------------
@@ -161,17 +170,16 @@ FROM     user_tab_columns
 WHERE    TABLE_NAME = 'PRICE'
 AND      column_name = 'PRICE_TYPE';
 
--- ----------------------------------------------------------------------
---  Step #3 : After updating the data in the PRICE table with a valid
---            PRICE_TYPE column value, and then apply a NOT NULL
---            constraint.
--- ----------------------------------------------------------------------
-
-COLUMN co_date FORMAT A24 HEADING "Check Out Date"
-COLUMN today   FORMAT A24 HEADING "Today Date"
-SELECT TO_CHAR(r.check_out_date,'DD-MON-YYYY HH24:MI:DD') AS co_date
-,      TO_CHAR(TRUNC(sysdate),'DD-MON-YYYY HH24:MI:DD') AS today
-FROM   rental r;
+-- --------------------------------------------------------
+--  Step #3
+--  -------------------------------------------------------
+--  Update the RENTAL_ITEM_PRICE column with valid price
+--  values in the RENTAL_ITEM table.
+-- --------------------------------------------------------
+ 
+-- Insert step #3 statements here.
+ 
+-- --------------------------------------------------------
 
 -- Update the RENTAL_ITEM_PRICE column with valid values.
 -- ----------------------------------------------------------------------
@@ -194,16 +202,16 @@ SET      rental_item_price =
            AND      ri.rental_item_type = cl2.common_lookup_id
            AND      cl1.common_lookup_code = cl2.common_lookup_code
            AND      r.check_out_date
-                      BETWEEN p.start_date AND p.end_date);
+                      BETWEEN p.start_date AND NVL(p.end_date, TRUNC(SYSDATE+1)));
 
 -- ----------------------------------------------------------------------
 --  Verify #3 : Query the RENTAL_ITEM_PRICE values.
 -- ----------------------------------------------------------------------
 
--- Set to extended linesize value.
+-- Widen the display console.
 SET LINESIZE 110
-
--- Format column names.
+ 
+-- Set the column display values.
 COL customer_name          FORMAT A20  HEADING "Contact|--------|Customer Name"
 COL contact_id             FORMAT 9999 HEADING "Contact|--------|Contact|ID #"
 COL customer_id            FORMAT 9999 HEADING "Rental|--------|Customer|ID #"
@@ -234,7 +242,7 @@ SELECT   c.last_name||', '||c.first_name
 FROM     price p INNER JOIN common_lookup cl1
 ON       p.price_type = cl1.common_lookup_id
 AND      cl1.common_lookup_table = 'PRICE'
-AND      cl1.common_lookup_column = 'PRICE_TYPE' FULL JOIN rental_item ri
+AND      cl1.common_lookup_column = 'PRICE_TYPE' FULL JOIN rental_item ri 
 ON       p.item_id = ri.item_id INNER JOIN common_lookup cl2
 ON       ri.rental_item_type = cl2.common_lookup_id
 AND      cl2.common_lookup_table = 'RENTAL_ITEM'
@@ -245,43 +253,8 @@ WHERE    cl1.common_lookup_code = cl2.common_lookup_code
 AND      r.check_out_date
 BETWEEN  p.start_date AND NVL(p.end_date,TRUNC(SYSDATE) + 1)
 ORDER BY 2, 3;
-
-COL customer_name          FORMAT A20  HEADING "Contact|--------|Customer Name"
-COL r_rental_id            FORMAT 9999 HEADING "Rental|------|Rental|ID #"
-COL amount                 FORMAT 9999 HEADING "Price|------||Amount"
-COL price_type_code        FORMAT 9999 HEADING "Price|------|Type|Code"
-COL rental_item_type_code  FORMAT 9999 HEADING "Rental|Item|------|Type|Code"
-COL needle                 FORMAT A11  HEADING "Rental|--------|Check Out|Date"
-COL low_haystack           FORMAT A11  HEADING "Price|--------|Start|Date"
-COL high_haystack          FORMAT A11  HEADING "Price|--------|End|Date"
-SELECT   c.last_name||', '||c.first_name
-||       CASE
-           WHEN c.middle_name IS NOT NULL THEN ' '||c.middle_name
-         END AS customer_name
-,        ri.rental_id AS ri_rental_id
-,        p.amount
-,        TO_NUMBER(cl2.common_lookup_code) AS price_type_code
-,        TO_NUMBER(cl2.common_lookup_code) AS rental_item_type_code
-,        p.start_date AS low_haystack
-,        r.check_out_date AS needle
-,        NVL(p.end_date,TRUNC(SYSDATE) + 1) AS high_haystack
-FROM     price p INNER JOIN common_lookup cl1
-ON       p.price_type = cl1.common_lookup_id
-AND      cl1.common_lookup_table = 'PRICE'
-AND      cl1.common_lookup_column = 'PRICE_TYPE' FULL JOIN rental_item ri
-ON       p.item_id = ri.item_id INNER JOIN common_lookup cl2
-ON       ri.rental_item_type = cl2.common_lookup_id
-AND      cl2.common_lookup_table = 'RENTAL_ITEM'
-AND      cl2.common_lookup_column = 'RENTAL_ITEM_TYPE' RIGHT JOIN rental r
-ON       ri.rental_id = r.rental_id FULL JOIN contact c
-ON       r.customer_id = c.contact_id
-WHERE    cl1.common_lookup_code = cl2.common_lookup_code
-AND      p.active_flag = 'Y'
-AND NOT     r.check_out_date
-BETWEEN  p.start_date AND NVL(p.end_date,TRUNC(SYSDATE) + 1)
-ORDER BY 2, 3;
-
--- Reset to default linesize value.
+ 
+-- Reset the column display values to their default value.
 SET LINESIZE 80
 
 -- ----------------------------------------------------------------------
@@ -291,10 +264,8 @@ SET LINESIZE 80
 -- ----------------------------------------------------------------------
 --  Step #4 : Alter the RENTAL_ITEM table.
 -- ----------------------------------------------------------------------
-
-
-
-
+ALTER TABLE rental_item
+MODIFY (rental_item_price NUMBER CONSTRAINT nn_rental_item_8 NOT NULL);
 
 -- ----------------------------------------------------------------------
 --  Verify #4 : Add NOT NULL constraint on RENTAL_ITEM_PRICE column
@@ -312,3 +283,6 @@ WHERE    TABLE_NAME = 'RENTAL_ITEM'
 AND      column_name = 'RENTAL_ITEM_PRICE';
 
 SPOOL OFF
+
+-- Make all changes permanent.
+COMMIT;
