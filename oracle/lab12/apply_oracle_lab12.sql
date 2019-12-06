@@ -46,12 +46,19 @@ END;
 --  Step #1 : Create the CALENDAR table.
 -- --------------------------------------------------------------------------------
 
-
-
-
-
-
-
+CREATE TABLE calendar
+( calendar_id                  NUMBER(22)
+, calendar_name                VARCHAR2(10)     CONSTRAINT nn_calendar_1 NOT NULL
+, calendar_short_name          VARCHAR2(3)      CONSTRAINT nn_calendar_2 NOT NULL
+, start_date                   DATE             CONSTRAINT nn_calendar_3 NOT NULL
+, end_date                     DATE             CONSTRAINT nn_calendar_4 NOT NULL
+, created_by                   NUMBER(22)       CONSTRAINT nn_calendar_5 NOT NULL
+, creation_date                DATE             CONSTRAINT nn_calendar_6 NOT NULL
+, last_updated_by              NUMBER(22)       CONSTRAINT nn_calendar_7 NOT NULL
+, last_update_date             DATE             CONSTRAINT nn_calendar_8 NOT NULL
+, CONSTRAINT pk_calendar_1     PRIMARY KEY(calendar_id)
+, CONSTRAINT fk_calendar_1     FOREIGN KEY(created_by) REFERENCES system_user(system_user_id)
+, CONSTRAINT fk_calendar_2     FOREIGN KEY(last_updated_by) REFERENCES system_user(system_user_id));
 
 
 -- --------------------------------------------------------------------------------
@@ -59,9 +66,7 @@ END;
 -- --------------------------------------------------------------------------------
 
 
-
-
-
+CREATE SEQUENCE calendar_s1 START WITH 1;
 
 
 -- Display the table organization.
@@ -158,9 +163,9 @@ BEGIN
       , short_month(j)
       , add_months(start_date,(j-1)+(12*(i-1)))
       , add_months(end_date,(j-1)+(12*(i-1)))
-      , 1002
+      , 1
       , SYSDATE
-      , 1002
+      , 1
       , SYSDATE);
 
     END LOOP;
@@ -216,10 +221,10 @@ END;
 
 
 -- Select the uploaded records.
-SELECT COUNT(*) FROM transaction_reversal;
+-- SELECT COUNT(*) FROM transaction_reversal;
 
 -- Select the uploaded records.
-DELETE FROM transaction WHERE transaction_account = '222-222-222-222';
+-- DELETE FROM transaction WHERE transaction_account = '222-222-222-222';
 
 -- --------------------------------------------------------------------------------
 --  Step #3 : Insert records into the TRANSACTION_REVERSAL table.
@@ -237,129 +242,129 @@ DELETE FROM transaction WHERE transaction_account = '222-222-222-222';
 -- --------------------------------------------------------------------------------
 --  Step #3 : Verify insert of records into the TRANSACTION_REVERSAL table.
 -- --------------------------------------------------------------------------------
-COLUMN "Debit Transactions"  FORMAT A20
-COLUMN "Credit Transactions" FORMAT A20
-COLUMN "All Transactions"    FORMAT A20
-SELECT   LPAD(TO_CHAR(c1.transaction_count,'99,999'),19,' ') AS "Debit Transactions"
-,        LPAD(TO_CHAR(c2.transaction_count,'99,999'),19,' ') AS "Credit Transactions"
-,        LPAD(TO_CHAR(c3.transaction_count,'99,999'),19,' ') AS "All Transactions"
-FROM    (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '111-111-111-111') c1 CROSS JOIN
-        (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '222-222-222-222') c2 CROSS JOIN
-        (SELECT COUNT(*) AS transaction_count FROM transaction) c3;
+-- COLUMN "Debit Transactions"  FORMAT A20
+-- COLUMN "Credit Transactions" FORMAT A20
+-- COLUMN "All Transactions"    FORMAT A20
+-- SELECT   LPAD(TO_CHAR(c1.transaction_count,'99,999'),19,' ') AS "Debit Transactions"
+-- ,        LPAD(TO_CHAR(c2.transaction_count,'99,999'),19,' ') AS "Credit Transactions"
+-- ,        LPAD(TO_CHAR(c3.transaction_count,'99,999'),19,' ') AS "All Transactions"
+-- FROM    (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '111-111-111-111') c1 CROSS JOIN
+--         (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '222-222-222-222') c2 CROSS JOIN
+--         (SELECT COUNT(*) AS transaction_count FROM transaction) c3;
 
 -- --------------------------------------------------------------------------------
 --  Step #4 : Query data.
 -- --------------------------------------------------------------------------------
 -- SQL*Plus formatting instructions.
-COLUMN Transaction FORMAT A15
-COLUMN January   FORMAT A10
-COLUMN February  FORMAT A10
-COLUMN March     FORMAT A10
-COLUMN F1Q       FORMAT A10
-COLUMN April     FORMAT A10
-COLUMN May       FORMAT A10
-COLUMN June      FORMAT A10
-COLUMN F2Q       FORMAT A10
-COLUMN July      FORMAT A10
-COLUMN August    FORMAT A10
-COLUMN September FORMAT A10
-COLUMN F3Q       FORMAT A10
-COLUMN October   FORMAT A10
-COLUMN November  FORMAT A10
-COLUMN December  FORMAT A10
-COLUMN F4Q       FORMAT A10
-COLUMN YTD       FORMAT A12
-
-SET LINESIZE 210
+-- COLUMN Transaction FORMAT A15
+-- COLUMN January   FORMAT A10
+-- COLUMN February  FORMAT A10
+-- COLUMN March     FORMAT A10
+-- COLUMN F1Q       FORMAT A10
+-- COLUMN April     FORMAT A10
+-- COLUMN May       FORMAT A10
+-- COLUMN June      FORMAT A10
+-- COLUMN F2Q       FORMAT A10
+-- COLUMN July      FORMAT A10
+-- COLUMN August    FORMAT A10
+-- COLUMN September FORMAT A10
+-- COLUMN F3Q       FORMAT A10
+-- COLUMN October   FORMAT A10
+-- COLUMN November  FORMAT A10
+-- COLUMN December  FORMAT A10
+-- COLUMN F4Q       FORMAT A10
+-- COLUMN YTD       FORMAT A12
+-- 
+-- SET LINESIZE 210
 
 -- Reassign column values.
-SELECT   transaction_account AS "Transaction"
-,        january AS "Jan"
-,        february AS "Feb"
-,        march AS "Mar"
-,        f1q AS "F1Q"
-,        april AS "Apr"
-,        may AS "May"
-,        june AS "Jun"
-,        f2q AS "F2Q"
-,        july AS "Jul"
-,        august AS "Aug"
-,        september AS "Sep"
-,        f3q AS "F3Q"
-,        october AS "Oct"
-,        november AS "Nov"
-,        december AS "Dec"
-,        f4q AS "F4Q"
-,        ytd AS "YTD"
-FROM (
-SELECT   CASE
-           WHEN t.transaction_account = '111-111-111-111' THEN 'Debit'
-           WHEN t.transaction_account = '222-222-222-222' THEN 'Credit'
-         END AS "TRANSACTION_ACCOUNT"
-,        CASE
-           WHEN t.transaction_account = '111-111-111-111' THEN 1
-           WHEN t.transaction_account = '222-222-222-222' THEN 2
-         END AS "SORTKEY"
-,        LPAD(TO_CHAR
-        (SUM(CASE
-               WHEN EXTRACT(MONTH FROM transaction_date) = 1 AND
-                    EXTRACT(YEAR FROM transaction_date) = 2009 THEN
-                 CASE
-                   WHEN cl.common_lookup_type = 'DEBIT'
-                   THEN t.transaction_amount
-                   ELSE t.transaction_amount * -1
-                 END
-             END),'99,999.00'),10,' ') AS "JANUARY"
-...
-,        LPAD(TO_CHAR
-        (SUM(CASE
-               WHEN EXTRACT(YEAR FROM transaction_date) = 2009 THEN
-                 CASE
-                   WHEN cl.common_lookup_type = 'DEBIT'
-                   THEN t.transaction_amount
-                   ELSE t.transaction_amount * -1
-                 END
-             END),'99,999.00'),10,' ') AS "YTD"
-FROM     transaction t INNER JOIN common_lookup cl
-ON       t.transaction_type = cl.common_lookup_id
-WHERE    cl.common_lookup_table = 'TRANSACTION'
-AND      cl.common_lookup_column = 'TRANSACTION_TYPE'
-GROUP BY CASE
-           WHEN t.transaction_account = '111-111-111-111' THEN 'Debit'
-           WHEN t.transaction_account = '222-222-222-222' THEN 'Credit'
-         END
-,        CASE
-           WHEN t.transaction_account = '111-111-111-111' THEN 1
-           WHEN t.transaction_account = '222-222-222-222' THEN 2
-         END
-UNION ALL
-SELECT  'Total' AS "Account"
-,        3 AS "Sortkey"
-,        LPAD(TO_CHAR
-        (SUM(CASE
-               WHEN EXTRACT(MONTH FROM transaction_date) = 1 AND
-                    EXTRACT(YEAR FROM transaction_date) = 2009 THEN
-                 CASE
-                   WHEN cl.common_lookup_type = 'DEBIT'
-                   THEN t.transaction_amount
-                   ELSE t.transaction_amount * -1
-                 END
-             END),'99,999.00'),10,' ') AS "JANUARY"
-...
-,        LPAD(TO_CHAR
-        (SUM(CASE
-               WHEN EXTRACT(YEAR FROM transaction_date) = 2009 THEN
-                 CASE
-                   WHEN cl.common_lookup_type = 'DEBIT'
-                   THEN t.transaction_amount
-                   ELSE t.transaction_amount * -1
-                 END
-             END),'99,999.00'),10,' ') AS "YTD"
-FROM     transaction t INNER JOIN common_lookup cl
-ON       t.transaction_type = cl.common_lookup_id
-WHERE    cl.common_lookup_table = 'TRANSACTION'
-AND      cl.common_lookup_column = 'TRANSACTION_TYPE'
-GROUP BY 'Total'
-ORDER BY 2);
+-- SELECT   transaction_account AS "Transaction"
+-- ,        january AS "Jan"
+-- ,        february AS "Feb"
+-- ,        march AS "Mar"
+-- ,        f1q AS "F1Q"
+-- ,        april AS "Apr"
+-- ,        may AS "May"
+-- ,        june AS "Jun"
+-- ,        f2q AS "F2Q"
+-- ,        july AS "Jul"
+-- ,        august AS "Aug"
+-- ,        september AS "Sep"
+-- ,        f3q AS "F3Q"
+-- ,        october AS "Oct"
+-- ,        november AS "Nov"
+-- ,        december AS "Dec"
+-- ,        f4q AS "F4Q"
+-- ,        ytd AS "YTD"
+-- FROM (
+-- SELECT   CASE
+--            WHEN t.transaction_account = '111-111-111-111' THEN 'Debit'
+--            WHEN t.transaction_account = '222-222-222-222' THEN 'Credit'
+--          END AS "TRANSACTION_ACCOUNT"
+-- ,        CASE
+--            WHEN t.transaction_account = '111-111-111-111' THEN 1
+--            WHEN t.transaction_account = '222-222-222-222' THEN 2
+--          END AS "SORTKEY"
+-- ,        LPAD(TO_CHAR
+--         (SUM(CASE
+--                WHEN EXTRACT(MONTH FROM transaction_date) = 1 AND
+--                     EXTRACT(YEAR FROM transaction_date) = 2009 THEN
+--                  CASE
+--                    WHEN cl.common_lookup_type = 'DEBIT'
+--                    THEN t.transaction_amount
+--                    ELSE t.transaction_amount * -1
+--                  END
+--              END),'99,999.00'),10,' ') AS "JANUARY"
+-- ...
+-- ,        LPAD(TO_CHAR
+--         (SUM(CASE
+--                WHEN EXTRACT(YEAR FROM transaction_date) = 2009 THEN
+--                  CASE
+--                    WHEN cl.common_lookup_type = 'DEBIT'
+--                    THEN t.transaction_amount
+--                    ELSE t.transaction_amount * -1
+--                  END
+--              END),'99,999.00'),10,' ') AS "YTD"
+-- FROM     transaction t INNER JOIN common_lookup cl
+-- ON       t.transaction_type = cl.common_lookup_id
+-- WHERE    cl.common_lookup_table = 'TRANSACTION'
+-- AND      cl.common_lookup_column = 'TRANSACTION_TYPE'
+-- GROUP BY CASE
+--            WHEN t.transaction_account = '111-111-111-111' THEN 'Debit'
+--            WHEN t.transaction_account = '222-222-222-222' THEN 'Credit'
+--          END
+-- ,        CASE
+--            WHEN t.transaction_account = '111-111-111-111' THEN 1
+--            WHEN t.transaction_account = '222-222-222-222' THEN 2
+--          END
+-- UNION ALL
+-- SELECT  'Total' AS "Account"
+-- ,        3 AS "Sortkey"
+-- ,        LPAD(TO_CHAR
+--         (SUM(CASE
+--                WHEN EXTRACT(MONTH FROM transaction_date) = 1 AND
+--                     EXTRACT(YEAR FROM transaction_date) = 2009 THEN
+--                  CASE
+--                    WHEN cl.common_lookup_type = 'DEBIT'
+--                    THEN t.transaction_amount
+--                    ELSE t.transaction_amount * -1
+--                  END
+--              END),'99,999.00'),10,' ') AS "JANUARY"
+-- ...
+-- ,        LPAD(TO_CHAR
+--         (SUM(CASE
+--                WHEN EXTRACT(YEAR FROM transaction_date) = 2009 THEN
+--                  CASE
+--                    WHEN cl.common_lookup_type = 'DEBIT'
+--                    THEN t.transaction_amount
+--                    ELSE t.transaction_amount * -1
+--                  END
+--              END),'99,999.00'),10,' ') AS "YTD"
+-- FROM     transaction t INNER JOIN common_lookup cl
+-- ON       t.transaction_type = cl.common_lookup_id
+-- WHERE    cl.common_lookup_table = 'TRANSACTION'
+-- AND      cl.common_lookup_column = 'TRANSACTION_TYPE'
+-- GROUP BY 'Total'
+-- ORDER BY 2);
 
 SPOOL OFF

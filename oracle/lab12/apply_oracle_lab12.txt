@@ -1,0 +1,421 @@
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #1 : Create CALENDAR table.
+SQL> -- --------------------------------------------------------------------------------
+SQL> -- Conditionally drop table.
+SQL> BEGIN
+  2    FOR i IN (SELECT table_name
+  3  		 FROM	user_tables
+  4  		 WHERE	table_name = 'CALENDAR') LOOP
+  5  	 EXECUTE IMMEDIATE 'DROP TABLE '||i.table_name||' CASCADE CONSTRAINTS';
+  6    END LOOP;
+  7    FOR i IN (SELECT sequence_name
+  8  		 FROM	user_sequences
+  9  		 WHERE	sequence_name = 'CALENDAR_S1') LOOP
+ 10  	 EXECUTE IMMEDIATE 'DROP SEQUENCE '||i.sequence_name;
+ 11    END LOOP;
+ 12  END;
+ 13  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #1 : Create the CALENDAR table.
+SQL> -- --------------------------------------------------------------------------------
+SQL> 
+SQL> CREATE TABLE calendar
+  2  ( calendar_id		    NUMBER(22)
+  3  , calendar_name		    VARCHAR2(10)     CONSTRAINT nn_calendar_1 NOT NULL
+  4  , calendar_short_name	    VARCHAR2(3)      CONSTRAINT nn_calendar_2 NOT NULL
+  5  , start_date		    DATE	     CONSTRAINT nn_calendar_3 NOT NULL
+  6  , end_date 		    DATE	     CONSTRAINT nn_calendar_4 NOT NULL
+  7  , created_by		    NUMBER(22)	     CONSTRAINT nn_calendar_5 NOT NULL
+  8  , creation_date		    DATE	     CONSTRAINT nn_calendar_6 NOT NULL
+  9  , last_updated_by		    NUMBER(22)	     CONSTRAINT nn_calendar_7 NOT NULL
+ 10  , last_update_date 	    DATE	     CONSTRAINT nn_calendar_8 NOT NULL
+ 11  , CONSTRAINT pk_calendar_1     PRIMARY KEY(calendar_id)
+ 12  , CONSTRAINT fk_calendar_1     FOREIGN KEY(created_by) REFERENCES system_user(system_user_id)
+ 13  , CONSTRAINT fk_calendar_2     FOREIGN KEY(last_updated_by) REFERENCES system_user(system_user_id));
+
+Table created.
+
+SQL> 
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #1 : Create the CALENDAR sequence.
+SQL> -- --------------------------------------------------------------------------------
+SQL> 
+SQL> 
+SQL> CREATE SEQUENCE calendar_s1 START WITH 1;
+
+Sequence created.
+
+SQL> 
+SQL> 
+SQL> -- Display the table organization.
+SQL> SET NULL ''
+SQL> COLUMN table_name	 FORMAT A16
+SQL> COLUMN column_id	 FORMAT 9999
+SQL> COLUMN column_name  FORMAT A22
+SQL> COLUMN data_type	 FORMAT A12
+SQL> SELECT   table_name
+  2  ,	      column_id
+  3  ,	      column_name
+  4  ,	      CASE
+  5  		WHEN nullable = 'N' THEN 'NOT NULL'
+  6  		ELSE ''
+  7  	      END AS nullable
+  8  ,	      CASE
+  9  		WHEN data_type IN ('CHAR','VARCHAR2','NUMBER') THEN
+ 10  		  data_type||'('||data_length||')'
+ 11  		ELSE
+ 12  		  data_type
+ 13  	      END AS data_type
+ 14  FROM     user_tab_columns
+ 15  WHERE    table_name = 'CALENDAR'
+ 16  ORDER BY 2;
+
+Table Name       Column ID Column Name            Nullable Data Type                                                                                                                                    
+---------------- --------- ---------------------- -------- ------------                                                                                                                                 
+CALENDAR                 1 CALENDAR_ID            NOT NULL NUMBER(22)                                                                                                                                   
+CALENDAR                 2 CALENDAR_NAME          NOT NULL VARCHAR2(10)                                                                                                                                 
+CALENDAR                 3 CALENDAR_SHORT_NAME    NOT NULL VARCHAR2(3)                                                                                                                                  
+CALENDAR                 4 START_DATE             NOT NULL DATE                                                                                                                                         
+CALENDAR                 5 END_DATE               NOT NULL DATE                                                                                                                                         
+CALENDAR                 6 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                   
+CALENDAR                 7 CREATION_DATE          NOT NULL DATE                                                                                                                                         
+CALENDAR                 8 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                   
+CALENDAR                 9 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                         
+
+9 rows selected.
+
+SQL> 
+SQL> -- Display non-unique constraints.
+SQL> COLUMN constraint_name   FORMAT A22  HEADING "Constraint Name"
+SQL> COLUMN search_condition  FORMAT A36  HEADING "Search Condition"
+SQL> COLUMN constraint_type   FORMAT A1   HEADING "C|T"
+SQL> SELECT   uc.constraint_name
+  2  ,	      uc.search_condition
+  3  ,	      uc.constraint_type
+  4  FROM     user_constraints uc INNER JOIN user_cons_columns ucc
+  5  ON       uc.table_name = ucc.table_name
+  6  AND      uc.constraint_name = ucc.constraint_name
+  7  WHERE    uc.table_name = UPPER('calendar')
+  8  AND      uc.constraint_type IN (UPPER('c'),UPPER('p'))
+  9  ORDER BY uc.constraint_type DESC
+ 10  ,	      uc.constraint_name;
+
+                                                            C                                                                                                                                           
+Constraint Name        Search Condition                     T                                                                                                                                           
+---------------------- ------------------------------------ -                                                                                                                                           
+PK_CALENDAR_1                                               P                                                                                                                                           
+NN_CALENDAR_1          "CALENDAR_NAME" IS NOT NULL          C                                                                                                                                           
+NN_CALENDAR_2          "CALENDAR_SHORT_NAME" IS NOT NULL    C                                                                                                                                           
+NN_CALENDAR_3          "START_DATE" IS NOT NULL             C                                                                                                                                           
+NN_CALENDAR_4          "END_DATE" IS NOT NULL               C                                                                                                                                           
+NN_CALENDAR_5          "CREATED_BY" IS NOT NULL             C                                                                                                                                           
+NN_CALENDAR_6          "CREATION_DATE" IS NOT NULL          C                                                                                                                                           
+NN_CALENDAR_7          "LAST_UPDATED_BY" IS NOT NULL        C                                                                                                                                           
+NN_CALENDAR_8          "LAST_UPDATE_DATE" IS NOT NULL       C                                                                                                                                           
+
+9 rows selected.
+
+SQL> 
+SQL> -- Display foreign key constraints.
+SQL> COL constraint_source FORMAT A38 HEADING "Constraint Name:| Table.Column"
+SQL> COL references_column FORMAT A40 HEADING "References:| Table.Column"
+SQL> SELECT   uc.constraint_name||CHR(10)
+  2  ||      '('||ucc1.table_name||'.'||ucc1.column_name||')' constraint_source
+  3  ,	     'REFERENCES'||CHR(10)
+  4  ||      '('||ucc2.table_name||'.'||ucc2.column_name||')' references_column
+  5  FROM     user_constraints uc
+  6  ,	      user_cons_columns ucc1
+  7  ,	      user_cons_columns ucc2
+  8  WHERE    uc.constraint_name = ucc1.constraint_name
+  9  AND      uc.r_constraint_name = ucc2.constraint_name
+ 10  AND      ucc1.position = ucc2.position -- Correction for multiple column primary keys.
+ 11  AND      uc.constraint_type = 'R'
+ 12  AND      ucc1.table_name = 'CALENDAR'
+ 13  ORDER BY ucc1.table_name
+ 14  ,	      uc.constraint_name;
+
+Constraint Name:                       References:                                                                                                                                                      
+ Table.Column                           Table.Column                                                                                                                                                    
+-------------------------------------- ----------------------------------------                                                                                                                         
+FK_CALENDAR_1                          REFERENCES                                                                                                                                                       
+(CALENDAR.CREATED_BY)                  (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
+                                                                                                                                                                                                        
+FK_CALENDAR_2                          REFERENCES                                                                                                                                                       
+(CALENDAR.LAST_UPDATED_BY)             (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
+                                                                                                                                                                                                        
+
+2 rows selected.
+
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #2 : Seed CALENDAR table.
+SQL> -- --------------------------------------------------------------------------------
+SQL> 
+SQL> -- Seed the table with 10 years of data.
+SQL> DECLARE
+  2    -- Create local collection data types.
+  3    TYPE smonth IS TABLE OF VARCHAR2(3);
+  4    TYPE lmonth IS TABLE OF VARCHAR2(9);
+  5  
+  6    -- Declare month arrays.
+  7    short_month SMONTH := smonth('JAN','FEB','MAR','APR','MAY','JUN'
+  8  				   ,'JUL','AUG','SEP','OCT','NOV','DEC');
+  9    long_month  LMONTH := lmonth('January','February','March','April','May','June'
+ 10  				   ,'July','August','September','October','November','December');
+ 11  
+ 12    -- Declare base dates.
+ 13    start_date DATE := '01-JAN-09';
+ 14    end_date   DATE := '31-JAN-09';
+ 15  
+ 16    -- Declare years.
+ 17    month_id   NUMBER;
+ 18    years	  NUMBER := 1;
+ 19  
+ 20  BEGIN
+ 21  
+ 22    -- Loop through years and months.
+ 23    FOR i IN 1..years LOOP
+ 24  	 FOR j IN 1..short_month.COUNT LOOP
+ 25  	   -- Assign number from sequence.
+ 26  	   SELECT calendar_s1.nextval INTO month_id FROM dual;
+ 27  
+ 28  	   INSERT INTO calendar VALUES
+ 29  	   ( month_id
+ 30  	   , long_month(j)
+ 31  	   , short_month(j)
+ 32  	   , add_months(start_date,(j-1)+(12*(i-1)))
+ 33  	   , add_months(end_date,(j-1)+(12*(i-1)))
+ 34  	   , 1
+ 35  	   , SYSDATE
+ 36  	   , 1
+ 37  	   , SYSDATE);
+ 38  
+ 39  	 END LOOP;
+ 40    END LOOP;
+ 41  
+ 42  END;
+ 43  /
+
+PL/SQL procedure successfully completed.
+
+SQL> 
+SQL> -- Set output page break interval.
+SQL> SET PAGESIZE 49999
+SQL> 
+SQL> -- Query the data insert.
+SQL> COL calendar_name	      FORMAT A10  HEADING "Calendar|Name"
+SQL> COL calendar_short_name  FORMAT A8  HEADING "Calendar|Short|Name"
+SQL> COL start_date	      FORMAT A9   HEADING "Start|Date"
+SQL> COL end_date	      FORMAT A9   HEADING "End|Date"
+SQL> SELECT   calendar_name
+  2  ,	      calendar_short_name
+  3  ,	      start_date
+  4  ,	      end_date
+  5  FROM     calendar;
+
+           Calendar                                                                                                                                                                                     
+Calendar   Short    Start     End                                                                                                                                                                       
+Name       Name     Date      Date                                                                                                                                                                      
+---------- -------- --------- ---------                                                                                                                                                                 
+January    JAN      01-JAN-09 31-JAN-09                                                                                                                                                                 
+February   FEB      01-FEB-09 28-FEB-09                                                                                                                                                                 
+March      MAR      01-MAR-09 31-MAR-09                                                                                                                                                                 
+April      APR      01-APR-09 30-APR-09                                                                                                                                                                 
+May        MAY      01-MAY-09 31-MAY-09                                                                                                                                                                 
+June       JUN      01-JUN-09 30-JUN-09                                                                                                                                                                 
+July       JUL      01-JUL-09 31-JUL-09                                                                                                                                                                 
+August     AUG      01-AUG-09 31-AUG-09                                                                                                                                                                 
+September  SEP      01-SEP-09 30-SEP-09                                                                                                                                                                 
+October    OCT      01-OCT-09 31-OCT-09                                                                                                                                                                 
+November   NOV      01-NOV-09 30-NOV-09                                                                                                                                                                 
+December   DEC      01-DEC-09 31-DEC-09                                                                                                                                                                 
+
+12 rows selected.
+
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #3 : Upload and transform data.
+SQL> -- --------------------------------------------------------------------------------
+SQL> 
+SQL> -- Conditionally drop table.
+SQL> -- SELECT 'Conditionally drop TRANSACTION_REVERSAL table.' AS "Statement" FROM dual;
+SQL> -- BEGIN
+SQL> --   FOR i IN (SELECT table_name
+SQL> -- 	    FROM   user_tables
+SQL> -- 	    WHERE  table_name = 'TRANSACTION_REVERSAL') LOOP
+SQL> --     EXECUTE IMMEDIATE 'DROP TABLE '||i.table_name||' CASCADE CONSTRAINTS';
+SQL> --   END LOOP;
+SQL> -- END;
+SQL> -- /
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #3 : Upload and transform data.
+SQL> -- --------------------------------------------------------------------------------
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #3 : Create the TRANSACTION_REVERSAL table.
+SQL> -- --------------------------------------------------------------------------------
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- Select the uploaded records.
+SQL> -- SELECT COUNT(*) FROM transaction_reversal;
+SQL> 
+SQL> -- Select the uploaded records.
+SQL> -- DELETE FROM transaction WHERE transaction_account = '222-222-222-222';
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #3 : Insert records into the TRANSACTION_REVERSAL table.
+SQL> -- --------------------------------------------------------------------------------
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #3 : Verify insert of records into the TRANSACTION_REVERSAL table.
+SQL> -- --------------------------------------------------------------------------------
+SQL> -- COLUMN "Debit Transactions"  FORMAT A20
+SQL> -- COLUMN "Credit Transactions" FORMAT A20
+SQL> -- COLUMN "All Transactions"    FORMAT A20
+SQL> -- SELECT	 LPAD(TO_CHAR(c1.transaction_count,'99,999'),19,' ') AS "Debit Transactions"
+SQL> -- ,	 LPAD(TO_CHAR(c2.transaction_count,'99,999'),19,' ') AS "Credit Transactions"
+SQL> -- ,	 LPAD(TO_CHAR(c3.transaction_count,'99,999'),19,' ') AS "All Transactions"
+SQL> -- FROM	(SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '111-111-111-111') c1 CROSS JOIN
+SQL> -- 	(SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '222-222-222-222') c2 CROSS JOIN
+SQL> -- 	(SELECT COUNT(*) AS transaction_count FROM transaction) c3;
+SQL> 
+SQL> -- --------------------------------------------------------------------------------
+SQL> --  Step #4 : Query data.
+SQL> -- --------------------------------------------------------------------------------
+SQL> -- SQL*Plus formatting instructions.
+SQL> -- COLUMN Transaction FORMAT A15
+SQL> -- COLUMN January	 FORMAT A10
+SQL> -- COLUMN February  FORMAT A10
+SQL> -- COLUMN March	 FORMAT A10
+SQL> -- COLUMN F1Q	 FORMAT A10
+SQL> -- COLUMN April	 FORMAT A10
+SQL> -- COLUMN May	 FORMAT A10
+SQL> -- COLUMN June	 FORMAT A10
+SQL> -- COLUMN F2Q	 FORMAT A10
+SQL> -- COLUMN July	 FORMAT A10
+SQL> -- COLUMN August	 FORMAT A10
+SQL> -- COLUMN September FORMAT A10
+SQL> -- COLUMN F3Q	 FORMAT A10
+SQL> -- COLUMN October	 FORMAT A10
+SQL> -- COLUMN November  FORMAT A10
+SQL> -- COLUMN December  FORMAT A10
+SQL> -- COLUMN F4Q	 FORMAT A10
+SQL> -- COLUMN YTD	 FORMAT A12
+SQL> --
+SQL> -- SET LINESIZE 210
+SQL> 
+SQL> -- Reassign column values.
+SQL> -- SELECT	 transaction_account AS "Transaction"
+SQL> -- ,	 january AS "Jan"
+SQL> -- ,	 february AS "Feb"
+SQL> -- ,	 march AS "Mar"
+SQL> -- ,	 f1q AS "F1Q"
+SQL> -- ,	 april AS "Apr"
+SQL> -- ,	 may AS "May"
+SQL> -- ,	 june AS "Jun"
+SQL> -- ,	 f2q AS "F2Q"
+SQL> -- ,	 july AS "Jul"
+SQL> -- ,	 august AS "Aug"
+SQL> -- ,	 september AS "Sep"
+SQL> -- ,	 f3q AS "F3Q"
+SQL> -- ,	 october AS "Oct"
+SQL> -- ,	 november AS "Nov"
+SQL> -- ,	 december AS "Dec"
+SQL> -- ,	 f4q AS "F4Q"
+SQL> -- ,	 ytd AS "YTD"
+SQL> -- FROM (
+SQL> -- SELECT	 CASE
+SQL> -- 	   WHEN t.transaction_account = '111-111-111-111' THEN 'Debit'
+SQL> -- 	   WHEN t.transaction_account = '222-222-222-222' THEN 'Credit'
+SQL> -- 	 END AS "TRANSACTION_ACCOUNT"
+SQL> -- ,	 CASE
+SQL> -- 	   WHEN t.transaction_account = '111-111-111-111' THEN 1
+SQL> -- 	   WHEN t.transaction_account = '222-222-222-222' THEN 2
+SQL> -- 	 END AS "SORTKEY"
+SQL> -- ,	 LPAD(TO_CHAR
+SQL> -- 	(SUM(CASE
+SQL> -- 	       WHEN EXTRACT(MONTH FROM transaction_date) = 1 AND
+SQL> -- 		    EXTRACT(YEAR FROM transaction_date) = 2009 THEN
+SQL> -- 		 CASE
+SQL> -- 		   WHEN cl.common_lookup_type = 'DEBIT'
+SQL> -- 		   THEN t.transaction_amount
+SQL> -- 		   ELSE t.transaction_amount * -1
+SQL> -- 		 END
+SQL> -- 	     END),'99,999.00'),10,' ') AS "JANUARY"
+SQL> -- ...
+SQL> -- ,	 LPAD(TO_CHAR
+SQL> -- 	(SUM(CASE
+SQL> -- 	       WHEN EXTRACT(YEAR FROM transaction_date) = 2009 THEN
+SQL> -- 		 CASE
+SQL> -- 		   WHEN cl.common_lookup_type = 'DEBIT'
+SQL> -- 		   THEN t.transaction_amount
+SQL> -- 		   ELSE t.transaction_amount * -1
+SQL> -- 		 END
+SQL> -- 	     END),'99,999.00'),10,' ') AS "YTD"
+SQL> -- FROM	 transaction t INNER JOIN common_lookup cl
+SQL> -- ON	 t.transaction_type = cl.common_lookup_id
+SQL> -- WHERE	 cl.common_lookup_table = 'TRANSACTION'
+SQL> -- AND	 cl.common_lookup_column = 'TRANSACTION_TYPE'
+SQL> -- GROUP BY CASE
+SQL> -- 	   WHEN t.transaction_account = '111-111-111-111' THEN 'Debit'
+SQL> -- 	   WHEN t.transaction_account = '222-222-222-222' THEN 'Credit'
+SQL> -- 	 END
+SQL> -- ,	 CASE
+SQL> -- 	   WHEN t.transaction_account = '111-111-111-111' THEN 1
+SQL> -- 	   WHEN t.transaction_account = '222-222-222-222' THEN 2
+SQL> -- 	 END
+SQL> -- UNION ALL
+SQL> -- SELECT	'Total' AS "Account"
+SQL> -- ,	 3 AS "Sortkey"
+SQL> -- ,	 LPAD(TO_CHAR
+SQL> -- 	(SUM(CASE
+SQL> -- 	       WHEN EXTRACT(MONTH FROM transaction_date) = 1 AND
+SQL> -- 		    EXTRACT(YEAR FROM transaction_date) = 2009 THEN
+SQL> -- 		 CASE
+SQL> -- 		   WHEN cl.common_lookup_type = 'DEBIT'
+SQL> -- 		   THEN t.transaction_amount
+SQL> -- 		   ELSE t.transaction_amount * -1
+SQL> -- 		 END
+SQL> -- 	     END),'99,999.00'),10,' ') AS "JANUARY"
+SQL> -- ...
+SQL> -- ,	 LPAD(TO_CHAR
+SQL> -- 	(SUM(CASE
+SQL> -- 	       WHEN EXTRACT(YEAR FROM transaction_date) = 2009 THEN
+SQL> -- 		 CASE
+SQL> -- 		   WHEN cl.common_lookup_type = 'DEBIT'
+SQL> -- 		   THEN t.transaction_amount
+SQL> -- 		   ELSE t.transaction_amount * -1
+SQL> -- 		 END
+SQL> -- 	     END),'99,999.00'),10,' ') AS "YTD"
+SQL> -- FROM	 transaction t INNER JOIN common_lookup cl
+SQL> -- ON	 t.transaction_type = cl.common_lookup_id
+SQL> -- WHERE	 cl.common_lookup_table = 'TRANSACTION'
+SQL> -- AND	 cl.common_lookup_column = 'TRANSACTION_TYPE'
+SQL> -- GROUP BY 'Total'
+SQL> -- ORDER BY 2);
+SQL> 
+SQL> SPOOL OFF
