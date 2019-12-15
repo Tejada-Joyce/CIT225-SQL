@@ -434,19 +434,19 @@ SQL> SELECT   m.member_id
  13  	      item i ON ri.item_id = i.item_id
  14  ORDER BY r.rental_id;
 
-                                              Rent                                                                                                                                                      
-Member Account    Name                  Rent  Item                                                                                                                                                      
-  ID # Number     (Last, First MI)      ID #  ID # Item Title                                                                                                                                           
------- ---------- -------------------- ----- ----- --------------------------                                                                                                                           
-  1002 B293-71446 Vizquel, Oscar        1001  1001 Star Wars I                                                                                                                                          
-  1002 B293-71446 Vizquel, Oscar        1001  1002 Star Wars II                                                                                                                                         
-  1002 B293-71446 Vizquel, Oscar        1001  1003 Star Wars III                                                                                                                                        
-  1002 B293-71446 Vizquel, Doreen       1002  1005 Camelot                                                                                                                                              
-  1002 B293-71446 Vizquel, Doreen       1002  1004 I Remember Mama                                                                                                                                      
-  1003 B293-71447 Sweeney, Meaghan      1003  1006 Hook                                                                                                                                                 
-  1003 B293-71447 Sweeney, Ian M        1004  1007 Cars                                                                                                                                                 
-  1001 B293-71445 Winn, Brian           1005  1009 The Hunt for Red October                                                                                                                             
-  1001 B293-71445 Winn, Brian           1005  1008 RoboCop                                                                                                                                              
+                                              Rent                              
+Member Account    Name                  Rent  Item                              
+  ID # Number     (Last, First MI)      ID #  ID # Item Title                   
+------ ---------- -------------------- ----- ----- --------------------------   
+  1002 B293-71446 Vizquel, Oscar        1001  1001 Star Wars I                  
+  1002 B293-71446 Vizquel, Oscar        1001  1002 Star Wars II                 
+  1002 B293-71446 Vizquel, Oscar        1001  1003 Star Wars III                
+  1002 B293-71446 Vizquel, Doreen       1002  1005 Camelot                      
+  1002 B293-71446 Vizquel, Doreen       1002  1004 I Remember Mama              
+  1003 B293-71447 Sweeney, Meaghan      1003  1006 Hook                         
+  1003 B293-71447 Sweeney, Ian M        1004  1007 Cars                         
+  1001 B293-71445 Winn, Brian           1005  1009 The Hunt for Red October     
+  1001 B293-71445 Winn, Brian           1005  1008 RoboCop                      
 
 9 rows selected.
 

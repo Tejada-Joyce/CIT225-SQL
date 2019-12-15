@@ -42,18 +42,18 @@ SQL> SELECT   a.table_name_base
  39  		WHEN table_name_base LIKE 'RENTAL_ITEM%' THEN 9
  40  	      END;
 
-Base Tables                    Base Sequences                                                                                                                                                           
------------------------------- ------------------------------                                                                                                                                           
-SYSTEM_USER                    SYSTEM_USER_S1                                                                                                                                                           
-COMMON_LOOKUP                  COMMON_LOOKUP_S1                                                                                                                                                         
-MEMBER                         MEMBER_S1                                                                                                                                                                
-CONTACT                        CONTACT_S1                                                                                                                                                               
-ADDRESS                        ADDRESS_S1                                                                                                                                                               
-STREET_ADDRESS                 STREET_ADDRESS_S1                                                                                                                                                        
-TELEPHONE                      TELEPHONE_S1                                                                                                                                                             
-ITEM                           ITEM_S1                                                                                                                                                                  
-RENTAL                         RENTAL_S1                                                                                                                                                                
-RENTAL_ITEM                    RENTAL_ITEM_S1                                                                                                                                                           
+Base Tables                    Base Sequences                                   
+------------------------------ ------------------------------                   
+SYSTEM_USER                    SYSTEM_USER_S1                                   
+COMMON_LOOKUP                  COMMON_LOOKUP_S1                                 
+MEMBER                         MEMBER_S1                                        
+CONTACT                        CONTACT_S1                                       
+ADDRESS                        ADDRESS_S1                                       
+STREET_ADDRESS                 STREET_ADDRESS_S1                                
+TELEPHONE                      TELEPHONE_S1                                     
+ITEM                           ITEM_S1                                          
+RENTAL                         RENTAL_S1                                        
+RENTAL_ITEM                    RENTAL_ITEM_S1                                   
 
 10 rows selected.
 

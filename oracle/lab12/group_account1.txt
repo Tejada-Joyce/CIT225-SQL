@@ -313,11 +313,11 @@ SQL> SELECT   m.account_number
  12  	      telephone t ON c.contact_id = t.contact_id AND a.address_id = t.address_id
  13  WHERE    c.last_name = 'Winn';
 
-Account    Name                                                                                                                                                                                         
-Number     (Last, First MI) City         State      Telephone                                                                                                                                           
----------- ---------------- ------------ ---------- ------------------                                                                                                                                  
-B293-71445 Winn, Randi      San Jose     CA         001-(408) 111-1111                                                                                                                                  
-B293-71445 Winn, Brian      San Jose     CA         001-(408) 111-1111                                                                                                                                  
+Account    Name                                                                 
+Number     (Last, First MI) City         State      Telephone                   
+---------- ---------------- ------------ ---------- ------------------          
+B293-71445 Winn, Randi      San Jose     CA         001-(408) 111-1111          
+B293-71445 Winn, Brian      San Jose     CA         001-(408) 111-1111          
 
 2 rows selected.
 

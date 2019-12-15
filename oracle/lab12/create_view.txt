@@ -20,17 +20,17 @@ SQL> SELECT   m.member_id
  10  ,	      cl.common_lookup_type
  11  ORDER BY m.member_id;
 
-Member Member Common                                                                                                                                                                                    
-  ID #      # Lookup Type                                                                                                                                                                               
------- ------ ------------                                                                                                                                                                              
-  1001      2 GROUP                                                                                                                                                                                     
-  1002      2 GROUP                                                                                                                                                                                     
-  1003      3 GROUP                                                                                                                                                                                     
-  1004      1 INDIVIDUAL                                                                                                                                                                                
-  1005      1 INDIVIDUAL                                                                                                                                                                                
-  1006      1 INDIVIDUAL                                                                                                                                                                                
-  1007      1 INDIVIDUAL                                                                                                                                                                                
-  1008      1 INDIVIDUAL                                                                                                                                                                                
+Member Member Common                                                            
+  ID #      # Lookup Type                                                       
+------ ------ ------------                                                      
+  1001      2 GROUP                                                             
+  1002      2 GROUP                                                             
+  1003      3 GROUP                                                             
+  1004      1 INDIVIDUAL                                                        
+  1005      1 INDIVIDUAL                                                        
+  1006      1 INDIVIDUAL                                                        
+  1007      1 INDIVIDUAL                                                        
+  1008      1 INDIVIDUAL                                                        
 
 8 rows selected.
 
@@ -78,15 +78,15 @@ SQL> SELECT   cr.full_name
   4  ,	      cr.return_date
   5  FROM     current_rental cr;
 
-Name                                                    Check Out   Return                                                                                                                              
-(Last, First MI)         TITLE                          Date        Date                                                                                                                                
------------------------- ------------------------------ ----------- -----------                                                                                                                         
-Winn, Brian              RoboCop                        02-DEC-19   07-DEC-19                                                                                                                           
-Winn, Brian              The Hunt for Red October       02-DEC-19   07-DEC-19                                                                                                                           
-Vizquel, Oscar           Star Wars I                    02-DEC-19   07-DEC-19                                                                                                                           
-Vizquel, Oscar           Star Wars II                   02-DEC-19   07-DEC-19                                                                                                                           
-Vizquel, Oscar           Star Wars III                  02-DEC-19   07-DEC-19                                                                                                                           
-Sweeney, Ian M           Cars                           02-DEC-19   07-DEC-19                                                                                                                           
+Name                                                                            
+(Last, First MI)         TITLE                          CHECK_OUT_D RETURN_DATE 
+------------------------ ------------------------------ ----------- ----------- 
+Winn, Brian              RoboCop                        14-DEC-19   19-DEC-19   
+Winn, Brian              The Hunt for Red October       14-DEC-19   19-DEC-19   
+Vizquel, Oscar           Star Wars I                    14-DEC-19   19-DEC-19   
+Vizquel, Oscar           Star Wars II                   14-DEC-19   19-DEC-19   
+Vizquel, Oscar           Star Wars III                  14-DEC-19   19-DEC-19   
+Sweeney, Ian M           Cars                           14-DEC-19   19-DEC-19   
 
 6 rows selected.
 

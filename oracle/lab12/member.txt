@@ -22,9 +22,9 @@ SQL>
 SQL> --  Verify table name.
 SQL> SELECT :table_name FROM dual;
 
-:TABLE_NAME                                                                                                                                                                                             
---------------------------------                                                                                                                                                                        
-MEMBER                                                                                                                                                                                                  
+:TABLE_NAME                                                                     
+--------------------------------                                                
+MEMBER                                                                          
 
 1 row selected.
 
@@ -96,18 +96,18 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-                           Column                                                                                                                                                                       
-Table Name       Column ID Name                   Nullable Data Type                                                                                                                                    
----------------- --------- ---------------------- -------- ------------                                                                                                                                 
-MEMBER                   1 MEMBER_ID              NOT NULL NUMBER(22)                                                                                                                                   
-MEMBER                   2 MEMBER_TYPE                     NUMBER(22)                                                                                                                                   
-MEMBER                   3 ACCOUNT_NUMBER         NOT NULL VARCHAR2(10)                                                                                                                                 
-MEMBER                   4 CREDIT_CARD_NUMBER     NOT NULL VARCHAR2(19)                                                                                                                                 
-MEMBER                   5 CREDIT_CARD_TYPE       NOT NULL NUMBER(22)                                                                                                                                   
-MEMBER                   6 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                   
-MEMBER                   7 CREATION_DATE          NOT NULL DATE                                                                                                                                         
-MEMBER                   8 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                   
-MEMBER                   9 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                         
+                           Column                                               
+TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+---------------- --------- ---------------------- -------- ------------         
+MEMBER                   1 MEMBER_ID              NOT NULL NUMBER(22)           
+MEMBER                   2 MEMBER_TYPE                     NUMBER(22)           
+MEMBER                   3 ACCOUNT_NUMBER         NOT NULL VARCHAR2(10)         
+MEMBER                   4 CREDIT_CARD_NUMBER     NOT NULL VARCHAR2(19)         
+MEMBER                   5 CREDIT_CARD_TYPE       NOT NULL NUMBER(22)           
+MEMBER                   6 CREATED_BY             NOT NULL NUMBER(22)           
+MEMBER                   7 CREATION_DATE          NOT NULL DATE                 
+MEMBER                   8 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+MEMBER                   9 LAST_UPDATE_DATE       NOT NULL DATE                 
 
 9 rows selected.
 
@@ -127,17 +127,16 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-                                                            C                                                                                                                                           
-Constraint Name        Search Condition                     T                                                                                                                                           
----------------------- ------------------------------------ -                                                                                                                                           
-PK_MEMBER_1                                                 P                                                                                                                                           
-NN_MEMBER_2            "ACCOUNT_NUMBER" IS NOT NULL         C                                                                                                                                           
-NN_MEMBER_3            "CREDIT_CARD_NUMBER" IS NOT NULL     C                                                                                                                                           
-NN_MEMBER_4            "CREDIT_CARD_TYPE" IS NOT NULL       C                                                                                                                                           
-NN_MEMBER_5            "CREATED_BY" IS NOT NULL             C                                                                                                                                           
-NN_MEMBER_6            "CREATION_DATE" IS NOT NULL          C                                                                                                                                           
-NN_MEMBER_7            "LAST_UPDATED_BY" IS NOT NULL        C                                                                                                                                           
-NN_MEMBER_8            "LAST_UPDATE_DATE" IS NOT NULL       C                                                                                                                                           
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+---------------------- ------------------------------------ -                   
+PK_MEMBER_1                                                 P                   
+NN_MEMBER_2            "ACCOUNT_NUMBER" IS NOT NULL         C                   
+NN_MEMBER_3            "CREDIT_CARD_NUMBER" IS NOT NULL     C                   
+NN_MEMBER_4            "CREDIT_CARD_TYPE" IS NOT NULL       C                   
+NN_MEMBER_5            "CREATED_BY" IS NOT NULL             C                   
+NN_MEMBER_6            "CREATION_DATE" IS NOT NULL          C                   
+NN_MEMBER_7            "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_MEMBER_8            "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
 8 rows selected.
 
@@ -160,21 +159,21 @@ SQL> SELECT   uc.constraint_name||CHR(10)
  13  ORDER BY ucc1.table_name
  14  ,	      uc.constraint_name;
 
-Constraint Name:                       References:                                                                                                                                                      
- Table.Column                           Table.Column                                                                                                                                                    
--------------------------------------- ----------------------------------------                                                                                                                         
-FK_MEMBER_1                            REFERENCES                                                                                                                                                       
-(MEMBER.MEMBER_TYPE)                   (COMMON_LOOKUP.COMMON_LOOKUP_ID)                                                                                                                                 
-                                                                                                                                                                                                        
-FK_MEMBER_2                            REFERENCES                                                                                                                                                       
-(MEMBER.CREDIT_CARD_TYPE)              (COMMON_LOOKUP.COMMON_LOOKUP_ID)                                                                                                                                 
-                                                                                                                                                                                                        
-FK_MEMBER_3                            REFERENCES                                                                                                                                                       
-(MEMBER.CREATED_BY)                    (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
-FK_MEMBER_4                            REFERENCES                                                                                                                                                       
-(MEMBER.LAST_UPDATED_BY)               (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
+Constraint Name:                       References:                              
+ Table.Column                           Table.Column                            
+-------------------------------------- ---------------------------------------- 
+FK_MEMBER_1                            REFERENCES                               
+(MEMBER.MEMBER_TYPE)                   (COMMON_LOOKUP.COMMON_LOOKUP_ID)         
+                                                                                
+FK_MEMBER_2                            REFERENCES                               
+(MEMBER.CREDIT_CARD_TYPE)              (COMMON_LOOKUP.COMMON_LOOKUP_ID)         
+                                                                                
+FK_MEMBER_3                            REFERENCES                               
+(MEMBER.CREATED_BY)                    (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
+FK_MEMBER_4                            REFERENCES                               
+(MEMBER.LAST_UPDATED_BY)               (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
 
 4 rows selected.
 
@@ -201,10 +200,10 @@ SQL> SELECT   ui.index_name
  10  ORDER BY ui.index_name
  11  ,	      uic.column_position;
 
-                       Column Column                                                                                                                                                                    
-Index Name           Position Name                                                                                                                                                                      
--------------------- -------- ----------------------                                                                                                                                                    
-MEMBER_N1                   1 CREDIT_CARD_TYPE                                                                                                                                                          
+                       Column Column                                            
+Index Name           Position Name                                              
+-------------------- -------- ----------------------                            
+MEMBER_N1                   1 CREDIT_CARD_TYPE                                  
 
 1 row selected.
 
@@ -220,9 +219,9 @@ SQL> SELECT   sequence_name
   2  FROM     user_sequences
   3  WHERE    sequence_name = :table_name||'_S1';
 
-Sequence Name                                                                                                                                                                                           
---------------------                                                                                                                                                                                    
-MEMBER_S1                                                                                                                                                                                               
+Sequence Name                                                                   
+--------------------                                                            
+MEMBER_S1                                                                       
 
 1 row selected.
 

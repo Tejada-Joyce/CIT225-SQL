@@ -159,14 +159,14 @@ SQL> SELECT   m.account_number
  15  			       WHERE  common_lookup_context = 'MEMBER'
  16  			       AND    common_lookup_type = 'INDIVIDUAL');
 
-Account    Name                                                                                                                                                                                         
-Number     (Last, First MI)     City         State      Telephone                                                                                                                                       
----------- -------------------- ------------ ---------- ------------------                                                                                                                              
-R11-514-34 Clinton, Goeffrey W  Provo        Utah       001-(801) 423-1234                                                                                                                              
-R11-514-35 Moss, Wendy          Provo        Utah       001-(801) 423-1235                                                                                                                              
-R11-514-36 Gretelz, Simon J     Provo        Utah       001-(801) 423-1236                                                                                                                              
-R11-514-37 Royal, Elizabeth J   Provo        Utah       001-(801) 423-1237                                                                                                                              
-R11-514-38 Smith, Brian N       Spanish Fork Utah       001-(801) 423-1238                                                                                                                              
+Account    Name                                                                 
+Number     (Last, First MI)     City         State      Telephone               
+---------- -------------------- ------------ ---------- ------------------      
+R11-514-34 Clinton, Goeffrey W  Provo        Utah       001-(801) 423-1234      
+R11-514-35 Moss, Wendy          Provo        Utah       001-(801) 423-1235      
+R11-514-36 Gretelz, Simon J     Provo        Utah       001-(801) 423-1236      
+R11-514-37 Royal, Elizabeth J   Provo        Utah       001-(801) 423-1237      
+R11-514-38 Smith, Brian N       Spanish Fork Utah       001-(801) 423-1238      
 
 5 rows selected.
 

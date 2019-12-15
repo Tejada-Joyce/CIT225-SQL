@@ -46,18 +46,18 @@ SQL> SELECT   m.member_id
  12  ,	      cl.common_lookup_type
  13  ORDER BY m.member_id;
 
-                 MEMBER  MEMBER COMMON                                                                                                                                                                  
- MEMBER  MEMBER    TYPE  LOOKUP LOOKUP                                                                                                                                                                  
-     ID   QTY #    ID #    ID # TYPE                                                                                                                                                                    
-------- ------- ------- ------- ------------                                                                                                                                                            
-   1001       2    1004    1004 GROUP                                                                                                                                                                   
-   1002       2    1004    1004 GROUP                                                                                                                                                                   
-   1003       3    1004    1004 GROUP                                                                                                                                                                   
-   1004       1    1003    1003 INDIVIDUAL                                                                                                                                                              
-   1005       1    1003    1003 INDIVIDUAL                                                                                                                                                              
-   1006       1    1003    1003 INDIVIDUAL                                                                                                                                                              
-   1007       1    1003    1003 INDIVIDUAL                                                                                                                                                              
-   1008       1    1003    1003 INDIVIDUAL                                                                                                                                                              
+                 MEMBER  MEMBER COMMON                                          
+ MEMBER  MEMBER    TYPE  LOOKUP LOOKUP                                          
+     ID   QTY #    ID #    ID # TYPE                                            
+------- ------- ------- ------- ------------                                    
+   1001       2    1004    1004 GROUP                                           
+   1002       2    1004    1004 GROUP                                           
+   1003       3    1004    1004 GROUP                                           
+   1004       1    1003    1003 INDIVIDUAL                                      
+   1005       1    1003    1003 INDIVIDUAL                                      
+   1006       1    1003    1003 INDIVIDUAL                                      
+   1007       1    1003    1003 INDIVIDUAL                                      
+   1008       1    1003    1003 INDIVIDUAL                                      
 
 8 rows selected.
 

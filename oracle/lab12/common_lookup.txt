@@ -22,9 +22,9 @@ SQL>
 SQL> --  Verify table name.
 SQL> SELECT :table_name FROM dual;
 
-:TABLE_NAME                                                                                                                                                                                             
---------------------------------                                                                                                                                                                        
-COMMON_LOOKUP                                                                                                                                                                                           
+:TABLE_NAME                                                                     
+--------------------------------                                                
+COMMON_LOOKUP                                                                   
 
 1 row selected.
 
@@ -93,16 +93,16 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-Table Name       Column ID Column Name            Nullable Data Type                                                                                                                                    
----------------- --------- ---------------------- -------- ------------                                                                                                                                 
-COMMON_LOOKUP            1 COMMON_LOOKUP_ID       NOT NULL NUMBER(22)                                                                                                                                   
-COMMON_LOOKUP            2 COMMON_LOOKUP_CONTEXT  NOT NULL VARCHAR2(30)                                                                                                                                 
-COMMON_LOOKUP            3 COMMON_LOOKUP_TYPE     NOT NULL VARCHAR2(30)                                                                                                                                 
-COMMON_LOOKUP            4 COMMON_LOOKUP_MEANING  NOT NULL VARCHAR2(30)                                                                                                                                 
-COMMON_LOOKUP            5 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                   
-COMMON_LOOKUP            6 CREATION_DATE          NOT NULL DATE                                                                                                                                         
-COMMON_LOOKUP            7 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                   
-COMMON_LOOKUP            8 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                         
+TABLE_NAME       COLUMN_ID COLUMN_NAME            NULLABLE DATA_TYPE            
+---------------- --------- ---------------------- -------- ------------         
+COMMON_LOOKUP            1 COMMON_LOOKUP_ID       NOT NULL NUMBER(22)           
+COMMON_LOOKUP            2 COMMON_LOOKUP_CONTEXT  NOT NULL VARCHAR2(30)         
+COMMON_LOOKUP            3 COMMON_LOOKUP_TYPE     NOT NULL VARCHAR2(30)         
+COMMON_LOOKUP            4 COMMON_LOOKUP_MEANING  NOT NULL VARCHAR2(30)         
+COMMON_LOOKUP            5 CREATED_BY             NOT NULL NUMBER(22)           
+COMMON_LOOKUP            6 CREATION_DATE          NOT NULL DATE                 
+COMMON_LOOKUP            7 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+COMMON_LOOKUP            8 LAST_UPDATE_DATE       NOT NULL DATE                 
 
 8 rows selected.
 
@@ -122,17 +122,16 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-                                                            C                                                                                                                                           
-Constraint Name        Search Condition                     T                                                                                                                                           
----------------------- ------------------------------------ -                                                                                                                                           
-PK_CLOOKUP_1                                                P                                                                                                                                           
-NN_CLOOKUP_1           "COMMON_LOOKUP_CONTEXT" IS NOT NULL  C                                                                                                                                           
-NN_CLOOKUP_2           "COMMON_LOOKUP_TYPE" IS NOT NULL     C                                                                                                                                           
-NN_CLOOKUP_3           "COMMON_LOOKUP_MEANING" IS NOT NULL  C                                                                                                                                           
-NN_CLOOKUP_4           "CREATED_BY" IS NOT NULL             C                                                                                                                                           
-NN_CLOOKUP_5           "CREATION_DATE" IS NOT NULL          C                                                                                                                                           
-NN_CLOOKUP_6           "LAST_UPDATED_BY" IS NOT NULL        C                                                                                                                                           
-NN_CLOOKUP_7           "LAST_UPDATE_DATE" IS NOT NULL       C                                                                                                                                           
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+---------------------- ------------------------------------ -                   
+PK_CLOOKUP_1                                                P                   
+NN_CLOOKUP_1           "COMMON_LOOKUP_CONTEXT" IS NOT NULL  C                   
+NN_CLOOKUP_2           "COMMON_LOOKUP_TYPE" IS NOT NULL     C                   
+NN_CLOOKUP_3           "COMMON_LOOKUP_MEANING" IS NOT NULL  C                   
+NN_CLOOKUP_4           "CREATED_BY" IS NOT NULL             C                   
+NN_CLOOKUP_5           "CREATION_DATE" IS NOT NULL          C                   
+NN_CLOOKUP_6           "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_CLOOKUP_7           "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
 8 rows selected.
 
@@ -155,15 +154,15 @@ SQL> SELECT   uc.constraint_name||CHR(10)
  13  ORDER BY ucc1.table_name
  14  ,	      uc.constraint_name;
 
-Constraint Name:                       References:                                                                                                                                                      
- Table.Column                           Table.Column                                                                                                                                                    
--------------------------------------- ----------------------------------------                                                                                                                         
-FK_CLOOKUP_1                           REFERENCES                                                                                                                                                       
-(COMMON_LOOKUP.CREATED_BY)             (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
-FK_CLOOKUP_2                           REFERENCES                                                                                                                                                       
-(COMMON_LOOKUP.LAST_UPDATED_BY)        (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
+Constraint Name:                       References:                              
+ Table.Column                           Table.Column                            
+-------------------------------------- ---------------------------------------- 
+FK_CLOOKUP_1                           REFERENCES                               
+(COMMON_LOOKUP.CREATED_BY)             (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
+FK_CLOOKUP_2                           REFERENCES                               
+(COMMON_LOOKUP.LAST_UPDATED_BY)        (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
 
 2 rows selected.
 
@@ -196,13 +195,13 @@ SQL> SELECT   ui.index_name
   8  ORDER BY ui.index_name
   9  ,	      uic.column_position;
 
-                       Column Column                                                                                                                                                                    
-Index Name           Position Name                                                                                                                                                                      
--------------------- -------- ----------------------                                                                                                                                                    
-COMMON_LOOKUP_N1            1 COMMON_LOOKUP_CONTEXT                                                                                                                                                     
-COMMON_LOOKUP_U2            1 COMMON_LOOKUP_CONTEXT                                                                                                                                                     
-COMMON_LOOKUP_U2            2 COMMON_LOOKUP_TYPE                                                                                                                                                        
-PK_CLOOKUP_1                1 COMMON_LOOKUP_ID                                                                                                                                                          
+                       Column Column                                            
+Index Name           Position Name                                              
+-------------------- -------- ----------------------                            
+COMMON_LOOKUP_N1            1 COMMON_LOOKUP_CONTEXT                             
+COMMON_LOOKUP_U2            1 COMMON_LOOKUP_CONTEXT                             
+COMMON_LOOKUP_U2            2 COMMON_LOOKUP_TYPE                                
+PK_CLOOKUP_1                1 COMMON_LOOKUP_ID                                  
 
 4 rows selected.
 
@@ -240,15 +239,15 @@ SQL> SELECT   uc.constraint_name||CHR(10)
  13  ORDER BY ucc1.table_name
  14  ,	      uc.constraint_name;
 
-Constraint Name:                       References:                                                                                                                                                      
- Table.Column                           Table.Column                                                                                                                                                    
--------------------------------------- ----------------------------------------                                                                                                                         
-FK_CLOOKUP_1                           REFERENCES                                                                                                                                                       
-(COMMON_LOOKUP.CREATED_BY)             (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
-FK_CLOOKUP_2                           REFERENCES                                                                                                                                                       
-(COMMON_LOOKUP.LAST_UPDATED_BY)        (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
+Constraint Name:                       References:                              
+ Table.Column                           Table.Column                            
+-------------------------------------- ---------------------------------------- 
+FK_CLOOKUP_1                           REFERENCES                               
+(COMMON_LOOKUP.CREATED_BY)             (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
+FK_CLOOKUP_2                           REFERENCES                               
+(COMMON_LOOKUP.LAST_UPDATED_BY)        (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
 
 2 rows selected.
 
@@ -265,9 +264,9 @@ SQL> SELECT   sequence_name
   2  FROM     user_sequences
   3  WHERE    sequence_name = :table_name||'_S1';
 
-Sequence Name                                                                                                                                                                                           
---------------------                                                                                                                                                                                    
-COMMON_LOOKUP_S1                                                                                                                                                                                        
+Sequence Name                                                                   
+--------------------                                                            
+COMMON_LOOKUP_S1                                                                
 
 1 row selected.
 

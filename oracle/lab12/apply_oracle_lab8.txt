@@ -122,12 +122,12 @@ SQL> SELECT  'OLD Y' AS "Type"
  38  AND     (TRUNC(SYSDATE) - TRUNC(i.release_date)) < 31
  39  AND      NOT (end_date IS NULL);
 
-Type       1-Day      3-Day      5-Day      TOTAL                                                                                                                                                       
------ ---------- ---------- ---------- ----------                                                                                                                                                       
-OLD Y         21         21         21         63                                                                                                                                                       
-OLD N         21         21         21         63                                                                                                                                                       
-NEW Y          3          3          3          9                                                                                                                                                       
-NEW N          0          0          0          0                                                                                                                                                       
+Type       1-Day      3-Day      5-Day      TOTAL                               
+----- ---------- ---------- ---------- ----------                               
+OLD Y         21         21         21         63                               
+OLD N         21         21         21         63                               
+NEW Y          3          3          3          9                               
+NEW N          0          0          0          0                               
 
 4 rows selected.
 
@@ -161,9 +161,9 @@ SQL> SELECT   TABLE_NAME
   8  WHERE    TABLE_NAME = 'PRICE'
   9  AND      column_name = 'PRICE_TYPE';
 
-TABLE NAME   COLUMN NAME        CONSTRAINT                                                                                                                                                              
------------- ------------------ ----------                                                                                                                                                              
-PRICE        PRICE_TYPE         NOT NULL                                                                                                                                                                
+TABLE NAME   COLUMN NAME        CONSTRAINT                                      
+------------ ------------------ ----------                                      
+PRICE        PRICE_TYPE         NOT NULL                                        
 
 1 row selected.
 

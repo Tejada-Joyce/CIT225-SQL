@@ -210,47 +210,88 @@ END;
 -- --------------------------------------------------------------------------------
 --  Step #3 : Create the TRANSACTION_REVERSAL table.
 -- --------------------------------------------------------------------------------
+CREATE TABLE transaction_reversal
+( transaction_id            NUMBER(22)
+,   transaction_account     VARCHAR2(15)
+,   transaction_type        NUMBER(22)
+,   transaction_date        DATE
+,   transaction_amount      NUMBER(22)
+,   rental_id               NUMBER(22)
+,   payment_method_type     NUMBER(22)
+,   payment_account_number  VARCHAR2(19)
+,   created_by              NUMBER(22)
+,   creation_date           DATE
+,   last_updated_by         NUMBER(22)
+,   last_update_date        DATE)
+  ORGANIZATION EXTERNAL
+  ( TYPE oracle_loader
+    DEFAULT DIRECTORY upload
+    ACCESS PARAMETERS
+    ( RECORDS DELIMITED BY NEWLINE CHARACTERSET US7ASCII
+      BADFILE       'UPLOAD' : 'transaction_upload2.bad'
+      DISCARDFILE   'UPLOAD' : 'transaction_upload2.dis'
+      LOGFILE       'UPLOAD' : 'transaction_upload2.log'
+      FIELDS TERMINATED BY ','
+      OPTIONALLY ENCLOSED BY "'"
+      MISSING FIELD VALUES ARE NULL )
+      LOCATION ('transaction_upload2.csv'))
+REJECT LIMIT UNLIMITED;
 
 
-
-
-
-
-
+-- Set environment variables.
+SET LONG 200000
+ 
+-- Set a local variable of a character large object (CLOB).
+VARIABLE ddl_text CLOB
+ 
+-- Get the internal DDL command for the external TRANSACTION_REVERSAL table from the data dictionary.
+SELECT dbms_metadata.get_ddl('TABLE','TRANSACTION_REVERSAL') FROM dual;
 
 
 
 -- Select the uploaded records.
--- SELECT COUNT(*) FROM transaction_reversal;
+SELECT COUNT(*) FROM transaction_reversal;
 
 -- Select the uploaded records.
 -- DELETE FROM transaction WHERE transaction_account = '222-222-222-222';
 
 -- --------------------------------------------------------------------------------
---  Step #3 : Insert records into the TRANSACTION_REVERSAL table.
+--  Step #3(b) : Insert records into the TRANSACTION_REVERSAL table.
 -- --------------------------------------------------------------------------------
 
-
-
-
-
-
-
-
+-- Move the data from TRANSACTION_REVERSAL to TRANSACTION.
+INSERT INTO transaction
+(SELECT transaction_s1.nextval
+,   transaction_account
+,   transaction_type
+,   transaction_date
+,   transaction_amount
+,   rental_id
+,   payment_method_type
+,   payment_account_number
+,   created_by
+,   creation_date
+,   last_updated_by
+,   last_update_date
+ FROM    transaction_reversal);
 
 
 -- --------------------------------------------------------------------------------
---  Step #3 : Verify insert of records into the TRANSACTION_REVERSAL table.
+--  Step #3(c) : Verify insert of records into the TRANSACTION_REVERSAL table.
 -- --------------------------------------------------------------------------------
--- COLUMN "Debit Transactions"  FORMAT A20
--- COLUMN "Credit Transactions" FORMAT A20
--- COLUMN "All Transactions"    FORMAT A20
--- SELECT   LPAD(TO_CHAR(c1.transaction_count,'99,999'),19,' ') AS "Debit Transactions"
--- ,        LPAD(TO_CHAR(c2.transaction_count,'99,999'),19,' ') AS "Credit Transactions"
--- ,        LPAD(TO_CHAR(c3.transaction_count,'99,999'),19,' ') AS "All Transactions"
--- FROM    (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '111-111-111-111') c1 CROSS JOIN
---         (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '222-222-222-222') c2 CROSS JOIN
---         (SELECT COUNT(*) AS transaction_count FROM transaction) c3;
+COLUMN "Debit Transactions"  FORMAT A20
+COLUMN "Credit Transactions" FORMAT A20
+COLUMN "All Transactions"    FORMAT A20
+ 
+-- Check current contents of the model.
+SELECT 'SELECT record counts' AS "Statement" FROM dual;
+SELECT   LPAD(TO_CHAR(c1.transaction_count,'99,999'),19,' ') AS "Debit Transactions"
+,        LPAD(TO_CHAR(c2.transaction_count,'99,999'),19,' ') AS "Credit Transactions"
+,        LPAD(TO_CHAR(c3.transaction_count,'99,999'),19,' ') AS "All Transactions"
+FROM    (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '111-111-111-111') c1 CROSS JOIN
+        (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '222-222-222-222') c2 CROSS JOIN
+        (SELECT COUNT(*) AS transaction_count FROM transaction) c3;
+
 
 -- --------------------------------------------------------------------------------
 --  Step #4 : Query data.

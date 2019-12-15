@@ -669,31 +669,31 @@ SQL> SELECT   i.item_id
   4  ,	      i.item_release_date
   5  FROM     item i INNER JOIN common_lookup cl ON i.item_type = cl.common_lookup_id;
 
-                                                          Item                                                                                                                                          
- Item                                                     Release                                                                                                                                       
- ID # Item Description     Item Title                     Date                                                                                                                                          
------ -------------------- ------------------------------ -----------                                                                                                                                   
- 1001 DVD: Wide Screen     The Hunt for Red October       02-MAR-90                                                                                                                                     
- 1002 DVD: Wide Screen     Star Wars I                    04-MAY-99                                                                                                                                     
- 1003 DVD: Full Screen     Star Wars II                   16-MAY-02                                                                                                                                     
- 1004 DVD: Wide Screen     Star Wars II                   16-MAY-02                                                                                                                                     
- 1005 DVD: Wide Screen     Star Wars III                  19-MAY-05                                                                                                                                     
- 1006 DVD: Wide Screen     The Chronicles of Narnia       16-MAY-02                                                                                                                                     
- 1007 XBOX                 RoboCop                        24-JUL-03                                                                                                                                     
- 1008 XBOX                 Pirates of the Caribbean       30-JUN-03                                                                                                                                     
- 1009 XBOX                 The Chronicles of Narnia       30-JUN-03                                                                                                                                     
- 1010 Nintendo Gamecube    MarioKart                      17-NOV-03                                                                                                                                     
- 1011 Playstation2         Splinter Cell                  08-APR-03                                                                                                                                     
- 1012 Playstation2         Need for Speed                 15-NOV-04                                                                                                                                     
- 1013 XBOX                 The DaVinci Code               19-MAY-06                                                                                                                                     
- 1014 XBOX                 Cars                           28-APR-06                                                                                                                                     
- 1015 Blu-ray              Beau Geste                     01-MAR-92                                                                                                                                     
- 1016 Blu-ray              I Remember Mama                05-JAN-98                                                                                                                                     
- 1017 Blu-ray              Tora! Tora! Tora!              02-NOV-99                                                                                                                                     
- 1018 Blu-ray              A Man for All Seasons          28-JUN-94                                                                                                                                     
- 1019 Blu-ray              Hook                           11-DEC-91                                                                                                                                     
- 1020 Blu-ray              Around the World in 80 Days    04-DEC-92                                                                                                                                     
- 1021 Blu-ray              Camelot                        15-MAY-98                                                                                                                                     
+                                                          Item                  
+ Item                                                     Release               
+ ID # Item Description     Item Title                     Date                  
+----- -------------------- ------------------------------ -----------           
+ 1001 DVD: Wide Screen     The Hunt for Red October       02-MAR-90             
+ 1002 DVD: Wide Screen     Star Wars I                    04-MAY-99             
+ 1003 DVD: Full Screen     Star Wars II                   16-MAY-02             
+ 1004 DVD: Wide Screen     Star Wars II                   16-MAY-02             
+ 1005 DVD: Wide Screen     Star Wars III                  19-MAY-05             
+ 1006 DVD: Wide Screen     The Chronicles of Narnia       16-MAY-02             
+ 1007 XBOX                 RoboCop                        24-JUL-03             
+ 1008 XBOX                 Pirates of the Caribbean       30-JUN-03             
+ 1009 XBOX                 The Chronicles of Narnia       30-JUN-03             
+ 1010 Nintendo Gamecube    MarioKart                      17-NOV-03             
+ 1011 Playstation2         Splinter Cell                  08-APR-03             
+ 1012 Playstation2         Need for Speed                 15-NOV-04             
+ 1013 XBOX                 The DaVinci Code               19-MAY-06             
+ 1014 XBOX                 Cars                           28-APR-06             
+ 1015 Blu-ray              Beau Geste                     01-MAR-92             
+ 1016 Blu-ray              I Remember Mama                05-JAN-98             
+ 1017 Blu-ray              Tora! Tora! Tora!              02-NOV-99             
+ 1018 Blu-ray              A Man for All Seasons          28-JUN-94             
+ 1019 Blu-ray              Hook                           11-DEC-91             
+ 1020 Blu-ray              Around the World in 80 Days    04-DEC-92             
+ 1021 Blu-ray              Camelot                        15-MAY-98             
 
 21 rows selected.
 

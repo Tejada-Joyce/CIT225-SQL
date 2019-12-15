@@ -22,9 +22,9 @@ SQL>
 SQL> --  Verify table name.
 SQL> SELECT :table_name FROM dual;
 
-:TABLE_NAME                                                                                                                                                                                             
---------------------------------                                                                                                                                                                        
-TELEPHONE                                                                                                                                                                                               
+:TABLE_NAME                                                                     
+--------------------------------                                                
+TELEPHONE                                                                       
 
 1 row selected.
 
@@ -98,20 +98,20 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-                           Column                                                                                                                                                                       
-Table Name       Column ID Name                   Nullable Data Type                                                                                                                                    
----------------- --------- ---------------------- -------- ------------                                                                                                                                 
-TELEPHONE                1 TELEPHONE_ID           NOT NULL NUMBER(22)                                                                                                                                   
-TELEPHONE                2 CONTACT_ID             NOT NULL NUMBER(22)                                                                                                                                   
-TELEPHONE                3 ADDRESS_ID                      NUMBER(22)                                                                                                                                   
-TELEPHONE                4 TELEPHONE_TYPE         NOT NULL NUMBER(22)                                                                                                                                   
-TELEPHONE                5 COUNTRY_CODE           NOT NULL VARCHAR2(3)                                                                                                                                  
-TELEPHONE                6 AREA_CODE              NOT NULL VARCHAR2(6)                                                                                                                                  
-TELEPHONE                7 TELEPHONE_NUMBER       NOT NULL VARCHAR2(10)                                                                                                                                 
-TELEPHONE                8 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                   
-TELEPHONE                9 CREATION_DATE          NOT NULL DATE                                                                                                                                         
-TELEPHONE               10 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                   
-TELEPHONE               11 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                         
+                           Column                                               
+TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+---------------- --------- ---------------------- -------- ------------         
+TELEPHONE                1 TELEPHONE_ID           NOT NULL NUMBER(22)           
+TELEPHONE                2 CONTACT_ID             NOT NULL NUMBER(22)           
+TELEPHONE                3 ADDRESS_ID                      NUMBER(22)           
+TELEPHONE                4 TELEPHONE_TYPE         NOT NULL NUMBER(22)           
+TELEPHONE                5 COUNTRY_CODE           NOT NULL VARCHAR2(3)          
+TELEPHONE                6 AREA_CODE              NOT NULL VARCHAR2(6)          
+TELEPHONE                7 TELEPHONE_NUMBER       NOT NULL VARCHAR2(10)         
+TELEPHONE                8 CREATED_BY             NOT NULL NUMBER(22)           
+TELEPHONE                9 CREATION_DATE          NOT NULL DATE                 
+TELEPHONE               10 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+TELEPHONE               11 LAST_UPDATE_DATE       NOT NULL DATE                 
 
 11 rows selected.
 
@@ -131,19 +131,18 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-                                                            C                                                                                                                                           
-Constraint Name        Search Condition                     T                                                                                                                                           
----------------------- ------------------------------------ -                                                                                                                                           
-PK_TELEPHONE_1                                              P                                                                                                                                           
-NN_TELEPHONE_1         "CONTACT_ID" IS NOT NULL             C                                                                                                                                           
-NN_TELEPHONE_2         "TELEPHONE_TYPE" IS NOT NULL         C                                                                                                                                           
-NN_TELEPHONE_3         "COUNTRY_CODE" IS NOT NULL           C                                                                                                                                           
-NN_TELEPHONE_4         "AREA_CODE" IS NOT NULL              C                                                                                                                                           
-NN_TELEPHONE_5         "TELEPHONE_NUMBER" IS NOT NULL       C                                                                                                                                           
-NN_TELEPHONE_6         "CREATED_BY" IS NOT NULL             C                                                                                                                                           
-NN_TELEPHONE_7         "CREATION_DATE" IS NOT NULL          C                                                                                                                                           
-NN_TELEPHONE_8         "LAST_UPDATED_BY" IS NOT NULL        C                                                                                                                                           
-NN_TELEPHONE_9         "LAST_UPDATE_DATE" IS NOT NULL       C                                                                                                                                           
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+---------------------- ------------------------------------ -                   
+PK_TELEPHONE_1                                              P                   
+NN_TELEPHONE_1         "CONTACT_ID" IS NOT NULL             C                   
+NN_TELEPHONE_2         "TELEPHONE_TYPE" IS NOT NULL         C                   
+NN_TELEPHONE_3         "COUNTRY_CODE" IS NOT NULL           C                   
+NN_TELEPHONE_4         "AREA_CODE" IS NOT NULL              C                   
+NN_TELEPHONE_5         "TELEPHONE_NUMBER" IS NOT NULL       C                   
+NN_TELEPHONE_6         "CREATED_BY" IS NOT NULL             C                   
+NN_TELEPHONE_7         "CREATION_DATE" IS NOT NULL          C                   
+NN_TELEPHONE_8         "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_TELEPHONE_9         "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
 10 rows selected.
 
@@ -166,21 +165,21 @@ SQL> SELECT   uc.constraint_name||CHR(10)
  13  ORDER BY ucc1.table_name
  14  ,	      uc.constraint_name;
 
-Constraint Name:                       References:                                                                                                                                                      
- Table.Column                           Table.Column                                                                                                                                                    
--------------------------------------- ----------------------------------------                                                                                                                         
-FK_TELEPHONE_1                         REFERENCES                                                                                                                                                       
-(TELEPHONE.CONTACT_ID)                 (CONTACT.CONTACT_ID)                                                                                                                                             
-                                                                                                                                                                                                        
-FK_TELEPHONE_2                         REFERENCES                                                                                                                                                       
-(TELEPHONE.TELEPHONE_TYPE)             (COMMON_LOOKUP.COMMON_LOOKUP_ID)                                                                                                                                 
-                                                                                                                                                                                                        
-FK_TELEPHONE_3                         REFERENCES                                                                                                                                                       
-(TELEPHONE.CREATED_BY)                 (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
-FK_TELEPHONE_4                         REFERENCES                                                                                                                                                       
-(TELEPHONE.LAST_UPDATED_BY)            (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
+Constraint Name:                       References:                              
+ Table.Column                           Table.Column                            
+-------------------------------------- ---------------------------------------- 
+FK_TELEPHONE_1                         REFERENCES                               
+(TELEPHONE.CONTACT_ID)                 (CONTACT.CONTACT_ID)                     
+                                                                                
+FK_TELEPHONE_2                         REFERENCES                               
+(TELEPHONE.TELEPHONE_TYPE)             (COMMON_LOOKUP.COMMON_LOOKUP_ID)         
+                                                                                
+FK_TELEPHONE_3                         REFERENCES                               
+(TELEPHONE.CREATED_BY)                 (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
+FK_TELEPHONE_4                         REFERENCES                               
+(TELEPHONE.LAST_UPDATED_BY)            (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
 
 4 rows selected.
 
@@ -215,13 +214,13 @@ SQL> SELECT   ui.index_name
  10  ORDER BY ui.index_name
  11  ,	      uic.column_position;
 
-                       Column Column                                                                                                                                                                    
-Index Name           Position Name                                                                                                                                                                      
--------------------- -------- ----------------------                                                                                                                                                    
-TELEPHONE_N1                1 CONTACT_ID                                                                                                                                                                
-TELEPHONE_N1                2 ADDRESS_ID                                                                                                                                                                
-TELEPHONE_N2                1 ADDRESS_ID                                                                                                                                                                
-TELEPHONE_N3                1 TELEPHONE_TYPE                                                                                                                                                            
+                       Column Column                                            
+Index Name           Position Name                                              
+-------------------- -------- ----------------------                            
+TELEPHONE_N1                1 CONTACT_ID                                        
+TELEPHONE_N1                2 ADDRESS_ID                                        
+TELEPHONE_N2                1 ADDRESS_ID                                        
+TELEPHONE_N3                1 TELEPHONE_TYPE                                    
 
 4 rows selected.
 
@@ -238,9 +237,9 @@ SQL> SELECT   sequence_name
   2  FROM     user_sequences
   3  WHERE    sequence_name = :table_name||'_S1';
 
-Sequence Name                                                                                                                                                                                           
---------------------                                                                                                                                                                                    
-TELEPHONE_S1                                                                                                                                                                                            
+Sequence Name                                                                   
+--------------------                                                            
+TELEPHONE_S1                                                                    
 
 1 row selected.
 

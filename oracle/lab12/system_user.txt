@@ -22,9 +22,9 @@ SQL>
 SQL> --  Verify table name.
 SQL> SELECT :table_name FROM dual;
 
-:TABLE_NAME                                                                                                                                                                                             
---------------------------------                                                                                                                                                                        
-SYSTEM_USER                                                                                                                                                                                             
+:TABLE_NAME                                                                     
+--------------------------------                                                
+SYSTEM_USER                                                                     
 
 1 row selected.
 
@@ -96,19 +96,19 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-Table Name       Column ID Column Name            Nullable Data Type                                                                                                                                    
----------------- --------- ---------------------- -------- ------------                                                                                                                                 
-SYSTEM_USER              1 SYSTEM_USER_ID         NOT NULL NUMBER(22)                                                                                                                                   
-SYSTEM_USER              2 SYSTEM_USER_NAME       NOT NULL VARCHAR2(20)                                                                                                                                 
-SYSTEM_USER              3 SYSTEM_USER_GROUP_ID   NOT NULL NUMBER(22)                                                                                                                                   
-SYSTEM_USER              4 SYSTEM_USER_TYPE       NOT NULL NUMBER(22)                                                                                                                                   
-SYSTEM_USER              5 FIRST_NAME                      VARCHAR2(20)                                                                                                                                 
-SYSTEM_USER              6 MIDDLE_NAME                     VARCHAR2(20)                                                                                                                                 
-SYSTEM_USER              7 LAST_NAME                       VARCHAR2(20)                                                                                                                                 
-SYSTEM_USER              8 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                   
-SYSTEM_USER              9 CREATION_DATE          NOT NULL DATE                                                                                                                                         
-SYSTEM_USER             10 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                   
-SYSTEM_USER             11 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                         
+TABLE_NAME       COLUMN_ID COLUMN_NAME            NULLABLE DATA_TYPE            
+---------------- --------- ---------------------- -------- ------------         
+SYSTEM_USER              1 SYSTEM_USER_ID         NOT NULL NUMBER(22)           
+SYSTEM_USER              2 SYSTEM_USER_NAME       NOT NULL VARCHAR2(20)         
+SYSTEM_USER              3 SYSTEM_USER_GROUP_ID   NOT NULL NUMBER(22)           
+SYSTEM_USER              4 SYSTEM_USER_TYPE       NOT NULL NUMBER(22)           
+SYSTEM_USER              5 FIRST_NAME                      VARCHAR2(20)         
+SYSTEM_USER              6 MIDDLE_NAME                     VARCHAR2(20)         
+SYSTEM_USER              7 LAST_NAME                       VARCHAR2(20)         
+SYSTEM_USER              8 CREATED_BY             NOT NULL NUMBER(22)           
+SYSTEM_USER              9 CREATION_DATE          NOT NULL DATE                 
+SYSTEM_USER             10 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+SYSTEM_USER             11 LAST_UPDATE_DATE       NOT NULL DATE                 
 
 11 rows selected.
 
@@ -127,16 +127,15 @@ SQL> SELECT   uc.constraint_name
   8  AND      uc.constraint_type = UPPER('c')
   9  ORDER BY uc.constraint_name;
 
-                                                            C                                                                                                                                           
-Constraint Name        Search Condition                     T                                                                                                                                           
----------------------- ------------------------------------ -                                                                                                                                           
-NN_SYSTEM_USER_1       "SYSTEM_USER_NAME" IS NOT NULL       C                                                                                                                                           
-NN_SYSTEM_USER_2       "SYSTEM_USER_GROUP_ID" IS NOT NULL   C                                                                                                                                           
-NN_SYSTEM_USER_3       "SYSTEM_USER_TYPE" IS NOT NULL       C                                                                                                                                           
-NN_SYSTEM_USER_4       "CREATED_BY" IS NOT NULL             C                                                                                                                                           
-NN_SYSTEM_USER_5       "CREATION_DATE" IS NOT NULL          C                                                                                                                                           
-NN_SYSTEM_USER_6       "LAST_UPDATED_BY" IS NOT NULL        C                                                                                                                                           
-NN_SYSTEM_USER_7       "LAST_UPDATE_DATE" IS NOT NULL       C                                                                                                                                           
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+---------------------- ------------------------------------ -                   
+NN_SYSTEM_USER_1       "SYSTEM_USER_NAME" IS NOT NULL       C                   
+NN_SYSTEM_USER_2       "SYSTEM_USER_GROUP_ID" IS NOT NULL   C                   
+NN_SYSTEM_USER_3       "SYSTEM_USER_TYPE" IS NOT NULL       C                   
+NN_SYSTEM_USER_4       "CREATED_BY" IS NOT NULL             C                   
+NN_SYSTEM_USER_5       "CREATION_DATE" IS NOT NULL          C                   
+NN_SYSTEM_USER_6       "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_SYSTEM_USER_7       "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
 7 rows selected.
 
@@ -159,15 +158,15 @@ SQL> SELECT   uc.constraint_name||CHR(10)
  13  ORDER BY ucc1.table_name
  14  ,	      uc.constraint_name;
 
-Constraint Name:                       References:                                                                                                                                                      
- Table.Column                           Table.Column                                                                                                                                                    
--------------------------------------- ----------------------------------------                                                                                                                         
-FK_SYSTEM_USER_1                       REFERENCES                                                                                                                                                       
-(SYSTEM_USER.CREATED_BY)               (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
-FK_SYSTEM_USER_2                       REFERENCES                                                                                                                                                       
-(SYSTEM_USER.LAST_UPDATED_BY)          (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
+Constraint Name:                       References:                              
+ Table.Column                           Table.Column                            
+-------------------------------------- ---------------------------------------- 
+FK_SYSTEM_USER_1                       REFERENCES                               
+(SYSTEM_USER.CREATED_BY)               (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
+FK_SYSTEM_USER_2                       REFERENCES                               
+(SYSTEM_USER.LAST_UPDATED_BY)          (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
 
 2 rows selected.
 
@@ -185,10 +184,10 @@ SQL> SELECT   index_name
   2  FROM     user_indexes
   3  WHERE    table_name = :table_name;
 
-Index Name                                                                                                                                                                                              
---------------------                                                                                                                                                                                    
-PK_SYSTEM_USER_1                                                                                                                                                                                        
-UQ_SYSTEM_USER_1                                                                                                                                                                                        
+Index Name                                                                      
+--------------------                                                            
+PK_SYSTEM_USER_1                                                                
+UQ_SYSTEM_USER_1                                                                
 
 2 rows selected.
 
@@ -205,9 +204,9 @@ SQL> SELECT   sequence_name
   2  FROM     user_sequences
   3  WHERE    sequence_name = :table_name||'_S1';
 
-Sequence Name                                                                                                                                                                                           
---------------------                                                                                                                                                                                    
-SYSTEM_USER_S1                                                                                                                                                                                          
+Sequence Name                                                                   
+--------------------                                                            
+SYSTEM_USER_S1                                                                  
 
 1 row selected.
 

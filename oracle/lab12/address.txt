@@ -21,9 +21,9 @@ PL/SQL procedure successfully completed.
 SQL> --  Verify table name.
 SQL> SELECT :table_name FROM dual;
 
-:TABLE_NAME                                                                                                                                                                                             
---------------------------------                                                                                                                                                                        
-ADDRESS                                                                                                                                                                                                 
+:TABLE_NAME                                                                     
+--------------------------------                                                
+ADDRESS                                                                         
 
 1 row selected.
 
@@ -97,19 +97,19 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-                           Column                                                                                                                                                                       
-Table Name       Column ID Name                   Nullable Data Type                                                                                                                                    
----------------- --------- ---------------------- -------- ------------                                                                                                                                 
-ADDRESS                  1 ADDRESS_ID             NOT NULL NUMBER(22)                                                                                                                                   
-ADDRESS                  2 CONTACT_ID             NOT NULL NUMBER(22)                                                                                                                                   
-ADDRESS                  3 ADDRESS_TYPE           NOT NULL NUMBER(22)                                                                                                                                   
-ADDRESS                  4 CITY                   NOT NULL VARCHAR2(30)                                                                                                                                 
-ADDRESS                  5 STATE_PROVINCE         NOT NULL VARCHAR2(30)                                                                                                                                 
-ADDRESS                  6 POSTAL_CODE            NOT NULL VARCHAR2(20)                                                                                                                                 
-ADDRESS                  7 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                   
-ADDRESS                  8 CREATION_DATE          NOT NULL DATE                                                                                                                                         
-ADDRESS                  9 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                   
-ADDRESS                 10 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                         
+                           Column                                               
+TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+---------------- --------- ---------------------- -------- ------------         
+ADDRESS                  1 ADDRESS_ID             NOT NULL NUMBER(22)           
+ADDRESS                  2 CONTACT_ID             NOT NULL NUMBER(22)           
+ADDRESS                  3 ADDRESS_TYPE           NOT NULL NUMBER(22)           
+ADDRESS                  4 CITY                   NOT NULL VARCHAR2(30)         
+ADDRESS                  5 STATE_PROVINCE         NOT NULL VARCHAR2(30)         
+ADDRESS                  6 POSTAL_CODE            NOT NULL VARCHAR2(20)         
+ADDRESS                  7 CREATED_BY             NOT NULL NUMBER(22)           
+ADDRESS                  8 CREATION_DATE          NOT NULL DATE                 
+ADDRESS                  9 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+ADDRESS                 10 LAST_UPDATE_DATE       NOT NULL DATE                 
 
 10 rows selected.
 
@@ -129,19 +129,18 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-                                                            C                                                                                                                                           
-Constraint Name        Search Condition                     T                                                                                                                                           
----------------------- ------------------------------------ -                                                                                                                                           
-PK_ADDRESS_1                                                P                                                                                                                                           
-NN_ADDRESS_1           "CONTACT_ID" IS NOT NULL             C                                                                                                                                           
-NN_ADDRESS_2           "ADDRESS_TYPE" IS NOT NULL           C                                                                                                                                           
-NN_ADDRESS_3           "CITY" IS NOT NULL                   C                                                                                                                                           
-NN_ADDRESS_4           "STATE_PROVINCE" IS NOT NULL         C                                                                                                                                           
-NN_ADDRESS_5           "POSTAL_CODE" IS NOT NULL            C                                                                                                                                           
-NN_ADDRESS_6           "CREATED_BY" IS NOT NULL             C                                                                                                                                           
-NN_ADDRESS_7           "CREATION_DATE" IS NOT NULL          C                                                                                                                                           
-NN_ADDRESS_8           "LAST_UPDATED_BY" IS NOT NULL        C                                                                                                                                           
-NN_ADDRESS_9           "LAST_UPDATE_DATE" IS NOT NULL       C                                                                                                                                           
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+---------------------- ------------------------------------ -                   
+PK_ADDRESS_1                                                P                   
+NN_ADDRESS_1           "CONTACT_ID" IS NOT NULL             C                   
+NN_ADDRESS_2           "ADDRESS_TYPE" IS NOT NULL           C                   
+NN_ADDRESS_3           "CITY" IS NOT NULL                   C                   
+NN_ADDRESS_4           "STATE_PROVINCE" IS NOT NULL         C                   
+NN_ADDRESS_5           "POSTAL_CODE" IS NOT NULL            C                   
+NN_ADDRESS_6           "CREATED_BY" IS NOT NULL             C                   
+NN_ADDRESS_7           "CREATION_DATE" IS NOT NULL          C                   
+NN_ADDRESS_8           "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_ADDRESS_9           "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
 10 rows selected.
 
@@ -164,21 +163,21 @@ SQL> SELECT   uc.constraint_name||CHR(10)
  13  ORDER BY ucc1.table_name
  14  ,	      uc.constraint_name;
 
-Constraint Name:                       References:                                                                                                                                                      
- Table.Column                           Table.Column                                                                                                                                                    
--------------------------------------- ----------------------------------------                                                                                                                         
-FK_ADDRESS_1                           REFERENCES                                                                                                                                                       
-(ADDRESS.CONTACT_ID)                   (CONTACT.CONTACT_ID)                                                                                                                                             
-                                                                                                                                                                                                        
-FK_ADDRESS_2                           REFERENCES                                                                                                                                                       
-(ADDRESS.ADDRESS_TYPE)                 (COMMON_LOOKUP.COMMON_LOOKUP_ID)                                                                                                                                 
-                                                                                                                                                                                                        
-FK_ADDRESS_3                           REFERENCES                                                                                                                                                       
-(ADDRESS.CREATED_BY)                   (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
-FK_ADDRESS_4                           REFERENCES                                                                                                                                                       
-(ADDRESS.LAST_UPDATED_BY)              (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
+Constraint Name:                       References:                              
+ Table.Column                           Table.Column                            
+-------------------------------------- ---------------------------------------- 
+FK_ADDRESS_1                           REFERENCES                               
+(ADDRESS.CONTACT_ID)                   (CONTACT.CONTACT_ID)                     
+                                                                                
+FK_ADDRESS_2                           REFERENCES                               
+(ADDRESS.ADDRESS_TYPE)                 (COMMON_LOOKUP.COMMON_LOOKUP_ID)         
+                                                                                
+FK_ADDRESS_3                           REFERENCES                               
+(ADDRESS.CREATED_BY)                   (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
+FK_ADDRESS_4                           REFERENCES                               
+(ADDRESS.LAST_UPDATED_BY)              (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
 
 4 rows selected.
 
@@ -209,11 +208,11 @@ SQL> SELECT   ui.index_name
  10  ORDER BY ui.index_name
  11  ,	      uic.column_position;
 
-                       Column Column                                                                                                                                                                    
-Index Name           Position Name                                                                                                                                                                      
--------------------- -------- ----------------------                                                                                                                                                    
-ADDRESS_N1                  1 CONTACT_ID                                                                                                                                                                
-ADDRESS_N2                  1 ADDRESS_TYPE                                                                                                                                                              
+                       Column Column                                            
+Index Name           Position Name                                              
+-------------------- -------- ----------------------                            
+ADDRESS_N1                  1 CONTACT_ID                                        
+ADDRESS_N2                  1 ADDRESS_TYPE                                      
 
 2 rows selected.
 
@@ -230,9 +229,9 @@ SQL> SELECT   sequence_name
   2  FROM     user_sequences
   3  WHERE    sequence_name = :table_name||'_S1';
 
-Sequence Name                                                                                                                                                                                           
---------------------                                                                                                                                                                                    
-ADDRESS_S1                                                                                                                                                                                              
+Sequence Name                                                                   
+--------------------                                                            
+ADDRESS_S1                                                                      
 
 1 row selected.
 

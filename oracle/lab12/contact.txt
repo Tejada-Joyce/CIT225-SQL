@@ -22,9 +22,9 @@ SQL>
 SQL> --  Verify table name.
 SQL> SELECT :table_name FROM dual;
 
-:TABLE_NAME                                                                                                                                                                                             
---------------------------------                                                                                                                                                                        
-CONTACT                                                                                                                                                                                                 
+:TABLE_NAME                                                                     
+--------------------------------                                                
+CONTACT                                                                         
 
 1 row selected.
 
@@ -97,19 +97,19 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-                           Column                                                                                                                                                                       
-Table Name       Column ID Name                   Nullable Data Type                                                                                                                                    
----------------- --------- ---------------------- -------- ------------                                                                                                                                 
-CONTACT                  1 CONTACT_ID             NOT NULL NUMBER(22)                                                                                                                                   
-CONTACT                  2 MEMBER_ID              NOT NULL NUMBER(22)                                                                                                                                   
-CONTACT                  3 CONTACT_TYPE           NOT NULL NUMBER(22)                                                                                                                                   
-CONTACT                  4 FIRST_NAME             NOT NULL VARCHAR2(20)                                                                                                                                 
-CONTACT                  5 MIDDLE_NAME                     VARCHAR2(20)                                                                                                                                 
-CONTACT                  6 LAST_NAME              NOT NULL VARCHAR2(20)                                                                                                                                 
-CONTACT                  7 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                   
-CONTACT                  8 CREATION_DATE          NOT NULL DATE                                                                                                                                         
-CONTACT                  9 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                   
-CONTACT                 10 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                         
+                           Column                                               
+TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+---------------- --------- ---------------------- -------- ------------         
+CONTACT                  1 CONTACT_ID             NOT NULL NUMBER(22)           
+CONTACT                  2 MEMBER_ID              NOT NULL NUMBER(22)           
+CONTACT                  3 CONTACT_TYPE           NOT NULL NUMBER(22)           
+CONTACT                  4 FIRST_NAME             NOT NULL VARCHAR2(20)         
+CONTACT                  5 MIDDLE_NAME                     VARCHAR2(20)         
+CONTACT                  6 LAST_NAME              NOT NULL VARCHAR2(20)         
+CONTACT                  7 CREATED_BY             NOT NULL NUMBER(22)           
+CONTACT                  8 CREATION_DATE          NOT NULL DATE                 
+CONTACT                  9 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+CONTACT                 10 LAST_UPDATE_DATE       NOT NULL DATE                 
 
 10 rows selected.
 
@@ -129,18 +129,17 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-                                                            C                                                                                                                                           
-Constraint Name        Search Condition                     T                                                                                                                                           
----------------------- ------------------------------------ -                                                                                                                                           
-PK_CONTACT_1                                                P                                                                                                                                           
-NN_CONTACT_1           "MEMBER_ID" IS NOT NULL              C                                                                                                                                           
-NN_CONTACT_2           "CONTACT_TYPE" IS NOT NULL           C                                                                                                                                           
-NN_CONTACT_3           "FIRST_NAME" IS NOT NULL             C                                                                                                                                           
-NN_CONTACT_4           "LAST_NAME" IS NOT NULL              C                                                                                                                                           
-NN_CONTACT_5           "CREATED_BY" IS NOT NULL             C                                                                                                                                           
-NN_CONTACT_6           "CREATION_DATE" IS NOT NULL          C                                                                                                                                           
-NN_CONTACT_7           "LAST_UPDATED_BY" IS NOT NULL        C                                                                                                                                           
-NN_CONTACT_8           "LAST_UPDATE_DATE" IS NOT NULL       C                                                                                                                                           
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+---------------------- ------------------------------------ -                   
+PK_CONTACT_1                                                P                   
+NN_CONTACT_1           "MEMBER_ID" IS NOT NULL              C                   
+NN_CONTACT_2           "CONTACT_TYPE" IS NOT NULL           C                   
+NN_CONTACT_3           "FIRST_NAME" IS NOT NULL             C                   
+NN_CONTACT_4           "LAST_NAME" IS NOT NULL              C                   
+NN_CONTACT_5           "CREATED_BY" IS NOT NULL             C                   
+NN_CONTACT_6           "CREATION_DATE" IS NOT NULL          C                   
+NN_CONTACT_7           "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_CONTACT_8           "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
 9 rows selected.
 
@@ -163,21 +162,21 @@ SQL> SELECT   uc.constraint_name||CHR(10)
  13  ORDER BY ucc1.table_name
  14  ,	      uc.constraint_name;
 
-Constraint Name:                       References:                                                                                                                                                      
- Table.Column                           Table.Column                                                                                                                                                    
--------------------------------------- ----------------------------------------                                                                                                                         
-FK_CONTACT_1                           REFERENCES                                                                                                                                                       
-(CONTACT.MEMBER_ID)                    (MEMBER.MEMBER_ID)                                                                                                                                               
-                                                                                                                                                                                                        
-FK_CONTACT_2                           REFERENCES                                                                                                                                                       
-(CONTACT.CONTACT_TYPE)                 (COMMON_LOOKUP.COMMON_LOOKUP_ID)                                                                                                                                 
-                                                                                                                                                                                                        
-FK_CONTACT_3                           REFERENCES                                                                                                                                                       
-(CONTACT.CREATED_BY)                   (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
-FK_CONTACT_4                           REFERENCES                                                                                                                                                       
-(CONTACT.LAST_UPDATED_BY)              (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
+Constraint Name:                       References:                              
+ Table.Column                           Table.Column                            
+-------------------------------------- ---------------------------------------- 
+FK_CONTACT_1                           REFERENCES                               
+(CONTACT.MEMBER_ID)                    (MEMBER.MEMBER_ID)                       
+                                                                                
+FK_CONTACT_2                           REFERENCES                               
+(CONTACT.CONTACT_TYPE)                 (COMMON_LOOKUP.COMMON_LOOKUP_ID)         
+                                                                                
+FK_CONTACT_3                           REFERENCES                               
+(CONTACT.CREATED_BY)                   (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
+FK_CONTACT_4                           REFERENCES                               
+(CONTACT.LAST_UPDATED_BY)              (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
 
 4 rows selected.
 
@@ -208,11 +207,11 @@ SQL> SELECT   ui.index_name
  10  ORDER BY ui.index_name
  11  ,	      uic.column_position;
 
-                       Column Column                                                                                                                                                                    
-Index Name           Position Name                                                                                                                                                                      
--------------------- -------- ----------------------                                                                                                                                                    
-CONTACT_N1                  1 MEMBER_ID                                                                                                                                                                 
-CONTACT_N2                  1 CONTACT_TYPE                                                                                                                                                              
+                       Column Column                                            
+Index Name           Position Name                                              
+-------------------- -------- ----------------------                            
+CONTACT_N1                  1 MEMBER_ID                                         
+CONTACT_N2                  1 CONTACT_TYPE                                      
 
 2 rows selected.
 
@@ -229,9 +228,9 @@ SQL> SELECT   sequence_name
   2  FROM     user_sequences
   3  WHERE    sequence_name = :table_name||'_S1';
 
-Sequence Name                                                                                                                                                                                           
---------------------                                                                                                                                                                                    
-CONTACT_S1                                                                                                                                                                                              
+Sequence Name                                                                   
+--------------------                                                            
+CONTACT_S1                                                                      
 
 1 row selected.
 

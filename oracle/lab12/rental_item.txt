@@ -22,9 +22,9 @@ SQL>
 SQL> --  Verify table name.
 SQL> SELECT :table_name FROM dual;
 
-:TABLE_NAME                                                                                                                                                                                             
---------------------------------                                                                                                                                                                        
-RENTAL_ITEM                                                                                                                                                                                             
+:TABLE_NAME                                                                     
+--------------------------------                                                
+RENTAL_ITEM                                                                     
 
 1 row selected.
 
@@ -94,16 +94,16 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-                           Column                                                                                                                                                                       
-Table Name       Column ID Name                   Nullable Data Type                                                                                                                                    
----------------- --------- ---------------------- -------- ------------                                                                                                                                 
-RENTAL_ITEM              1 RENTAL_ITEM_ID         NOT NULL NUMBER(22)                                                                                                                                   
-RENTAL_ITEM              2 RENTAL_ID              NOT NULL NUMBER(22)                                                                                                                                   
-RENTAL_ITEM              3 ITEM_ID                NOT NULL NUMBER(22)                                                                                                                                   
-RENTAL_ITEM              4 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                   
-RENTAL_ITEM              5 CREATION_DATE          NOT NULL DATE                                                                                                                                         
-RENTAL_ITEM              6 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                   
-RENTAL_ITEM              7 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                         
+                           Column                                               
+TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+---------------- --------- ---------------------- -------- ------------         
+RENTAL_ITEM              1 RENTAL_ITEM_ID         NOT NULL NUMBER(22)           
+RENTAL_ITEM              2 RENTAL_ID              NOT NULL NUMBER(22)           
+RENTAL_ITEM              3 ITEM_ID                NOT NULL NUMBER(22)           
+RENTAL_ITEM              4 CREATED_BY             NOT NULL NUMBER(22)           
+RENTAL_ITEM              5 CREATION_DATE          NOT NULL DATE                 
+RENTAL_ITEM              6 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+RENTAL_ITEM              7 LAST_UPDATE_DATE       NOT NULL DATE                 
 
 7 rows selected.
 
@@ -123,16 +123,15 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-                                                            C                                                                                                                                           
-Constraint Name        Search Condition                     T                                                                                                                                           
----------------------- ------------------------------------ -                                                                                                                                           
-PK_RENTAL_ITEM_1                                            P                                                                                                                                           
-NN_RENTAL_ITEM_1       "RENTAL_ID" IS NOT NULL              C                                                                                                                                           
-NN_RENTAL_ITEM_2       "ITEM_ID" IS NOT NULL                C                                                                                                                                           
-NN_RENTAL_ITEM_3       "CREATED_BY" IS NOT NULL             C                                                                                                                                           
-NN_RENTAL_ITEM_4       "CREATION_DATE" IS NOT NULL          C                                                                                                                                           
-NN_RENTAL_ITEM_5       "LAST_UPDATED_BY" IS NOT NULL        C                                                                                                                                           
-NN_RENTAL_ITEM_6       "LAST_UPDATE_DATE" IS NOT NULL       C                                                                                                                                           
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+---------------------- ------------------------------------ -                   
+PK_RENTAL_ITEM_1                                            P                   
+NN_RENTAL_ITEM_1       "RENTAL_ID" IS NOT NULL              C                   
+NN_RENTAL_ITEM_2       "ITEM_ID" IS NOT NULL                C                   
+NN_RENTAL_ITEM_3       "CREATED_BY" IS NOT NULL             C                   
+NN_RENTAL_ITEM_4       "CREATION_DATE" IS NOT NULL          C                   
+NN_RENTAL_ITEM_5       "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_RENTAL_ITEM_6       "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
 7 rows selected.
 
@@ -155,21 +154,21 @@ SQL> SELECT   uc.constraint_name||CHR(10)
  13  ORDER BY ucc1.table_name
  14  ,	      uc.constraint_name;
 
-Constraint Name:                       References:                                                                                                                                                      
- Table.Column                           Table.Column                                                                                                                                                    
--------------------------------------- ----------------------------------------                                                                                                                         
-FK_RENTAL_ITEM_1                       REFERENCES                                                                                                                                                       
-(RENTAL_ITEM.RENTAL_ID)                (RENTAL.RENTAL_ID)                                                                                                                                               
-                                                                                                                                                                                                        
-FK_RENTAL_ITEM_2                       REFERENCES                                                                                                                                                       
-(RENTAL_ITEM.ITEM_ID)                  (ITEM.ITEM_ID)                                                                                                                                                   
-                                                                                                                                                                                                        
-FK_RENTAL_ITEM_3                       REFERENCES                                                                                                                                                       
-(RENTAL_ITEM.CREATED_BY)               (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
-FK_RENTAL_ITEM_4                       REFERENCES                                                                                                                                                       
-(RENTAL_ITEM.LAST_UPDATED_BY)          (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
+Constraint Name:                       References:                              
+ Table.Column                           Table.Column                            
+-------------------------------------- ---------------------------------------- 
+FK_RENTAL_ITEM_1                       REFERENCES                               
+(RENTAL_ITEM.RENTAL_ID)                (RENTAL.RENTAL_ID)                       
+                                                                                
+FK_RENTAL_ITEM_2                       REFERENCES                               
+(RENTAL_ITEM.ITEM_ID)                  (ITEM.ITEM_ID)                           
+                                                                                
+FK_RENTAL_ITEM_3                       REFERENCES                               
+(RENTAL_ITEM.CREATED_BY)               (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
+FK_RENTAL_ITEM_4                       REFERENCES                               
+(RENTAL_ITEM.LAST_UPDATED_BY)          (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
 
 4 rows selected.
 
@@ -186,9 +185,9 @@ SQL> SELECT   sequence_name
   2  FROM     user_sequences
   3  WHERE    sequence_name = :table_name||'_S1';
 
-Sequence Name                                                                                                                                                                                           
---------------------                                                                                                                                                                                    
-RENTAL_ITEM_S1                                                                                                                                                                                          
+Sequence Name                                                                   
+--------------------                                                            
+RENTAL_ITEM_S1                                                                  
 
 1 row selected.
 

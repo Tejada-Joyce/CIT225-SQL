@@ -22,9 +22,9 @@ SQL>
 SQL> --  Verify table name.
 SQL> SELECT :table_name FROM dual;
 
-:TABLE_NAME                                                                                                                                                                                             
---------------------------------                                                                                                                                                                        
-ITEM                                                                                                                                                                                                    
+:TABLE_NAME                                                                     
+--------------------------------                                                
+ITEM                                                                            
 
 1 row selected.
 
@@ -97,20 +97,20 @@ SQL> SELECT   table_name
  15  WHERE    table_name = :table_name
  16  ORDER BY 2;
 
-                           Column                                                                                                                                                                       
-Table Name       Column ID Name                   Nullable Data Type                                                                                                                                    
----------------- --------- ---------------------- -------- ------------                                                                                                                                 
-ITEM                     1 ITEM_ID                NOT NULL NUMBER(22)                                                                                                                                   
-ITEM                     2 ITEM_BARCODE           NOT NULL VARCHAR2(14)                                                                                                                                 
-ITEM                     3 ITEM_TYPE              NOT NULL NUMBER(22)                                                                                                                                   
-ITEM                     4 ITEM_TITLE             NOT NULL VARCHAR2(60)                                                                                                                                 
-ITEM                     5 ITEM_SUBTITLE                   VARCHAR2(60)                                                                                                                                 
-ITEM                     6 ITEM_RATING            NOT NULL VARCHAR2(8)                                                                                                                                  
-ITEM                     7 ITEM_RELEASE_DATE      NOT NULL DATE                                                                                                                                         
-ITEM                     8 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                   
-ITEM                     9 CREATION_DATE          NOT NULL DATE                                                                                                                                         
-ITEM                    10 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                   
-ITEM                    11 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                         
+                           Column                                               
+TABLE_NAME       COLUMN_ID Name                   NULLABLE DATA_TYPE            
+---------------- --------- ---------------------- -------- ------------         
+ITEM                     1 ITEM_ID                NOT NULL NUMBER(22)           
+ITEM                     2 ITEM_BARCODE           NOT NULL VARCHAR2(14)         
+ITEM                     3 ITEM_TYPE              NOT NULL NUMBER(22)           
+ITEM                     4 ITEM_TITLE             NOT NULL VARCHAR2(60)         
+ITEM                     5 ITEM_SUBTITLE                   VARCHAR2(60)         
+ITEM                     6 ITEM_RATING            NOT NULL VARCHAR2(8)          
+ITEM                     7 ITEM_RELEASE_DATE      NOT NULL DATE                 
+ITEM                     8 CREATED_BY             NOT NULL NUMBER(22)           
+ITEM                     9 CREATION_DATE          NOT NULL DATE                 
+ITEM                    10 LAST_UPDATED_BY        NOT NULL NUMBER(22)           
+ITEM                    11 LAST_UPDATE_DATE       NOT NULL DATE                 
 
 11 rows selected.
 
@@ -130,19 +130,18 @@ SQL> SELECT   uc.constraint_name
   9  ORDER BY uc.constraint_type DESC
  10  ,	      uc.constraint_name;
 
-                                                            C                                                                                                                                           
-Constraint Name        Search Condition                     T                                                                                                                                           
----------------------- ------------------------------------ -                                                                                                                                           
-PK_ITEM_1                                                   P                                                                                                                                           
-NN_ITEM_1              "ITEM_BARCODE" IS NOT NULL           C                                                                                                                                           
-NN_ITEM_2              "ITEM_TYPE" IS NOT NULL              C                                                                                                                                           
-NN_ITEM_3              "ITEM_TITLE" IS NOT NULL             C                                                                                                                                           
-NN_ITEM_4              "ITEM_RATING" IS NOT NULL            C                                                                                                                                           
-NN_ITEM_5              "ITEM_RELEASE_DATE" IS NOT NULL      C                                                                                                                                           
-NN_ITEM_6              "CREATED_BY" IS NOT NULL             C                                                                                                                                           
-NN_ITEM_7              "CREATION_DATE" IS NOT NULL          C                                                                                                                                           
-NN_ITEM_8              "LAST_UPDATED_BY" IS NOT NULL        C                                                                                                                                           
-NN_ITEM_9              "LAST_UPDATE_DATE" IS NOT NULL       C                                                                                                                                           
+CONSTRAINT_NAME        SEARCH_CONDITION                     C                   
+---------------------- ------------------------------------ -                   
+PK_ITEM_1                                                   P                   
+NN_ITEM_1              "ITEM_BARCODE" IS NOT NULL           C                   
+NN_ITEM_2              "ITEM_TYPE" IS NOT NULL              C                   
+NN_ITEM_3              "ITEM_TITLE" IS NOT NULL             C                   
+NN_ITEM_4              "ITEM_RATING" IS NOT NULL            C                   
+NN_ITEM_5              "ITEM_RELEASE_DATE" IS NOT NULL      C                   
+NN_ITEM_6              "CREATED_BY" IS NOT NULL             C                   
+NN_ITEM_7              "CREATION_DATE" IS NOT NULL          C                   
+NN_ITEM_8              "LAST_UPDATED_BY" IS NOT NULL        C                   
+NN_ITEM_9              "LAST_UPDATE_DATE" IS NOT NULL       C                   
 
 10 rows selected.
 
@@ -165,18 +164,18 @@ SQL> SELECT   uc.constraint_name||CHR(10)
  13  ORDER BY ucc1.table_name
  14  ,	      uc.constraint_name;
 
-Constraint Name:                       References:                                                                                                                                                      
- Table.Column                           Table.Column                                                                                                                                                    
--------------------------------------- ----------------------------------------                                                                                                                         
-FK_ITEM_1                              REFERENCES                                                                                                                                                       
-(ITEM.ITEM_TYPE)                       (COMMON_LOOKUP.COMMON_LOOKUP_ID)                                                                                                                                 
-                                                                                                                                                                                                        
-FK_ITEM_2                              REFERENCES                                                                                                                                                       
-(ITEM.CREATED_BY)                      (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
-FK_ITEM_3                              REFERENCES                                                                                                                                                       
-(ITEM.LAST_UPDATED_BY)                 (SYSTEM_USER.SYSTEM_USER_ID)                                                                                                                                     
-                                                                                                                                                                                                        
+Constraint Name:                       References:                              
+ Table.Column                           Table.Column                            
+-------------------------------------- ---------------------------------------- 
+FK_ITEM_1                              REFERENCES                               
+(ITEM.ITEM_TYPE)                       (COMMON_LOOKUP.COMMON_LOOKUP_ID)         
+                                                                                
+FK_ITEM_2                              REFERENCES                               
+(ITEM.CREATED_BY)                      (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
+FK_ITEM_3                              REFERENCES                               
+(ITEM.LAST_UPDATED_BY)                 (SYSTEM_USER.SYSTEM_USER_ID)             
+                                                                                
 
 3 rows selected.
 
@@ -193,9 +192,9 @@ SQL> SELECT   sequence_name
   2  FROM     user_sequences
   3  WHERE    sequence_name = :table_name||'_S1';
 
-Sequence Name                                                                                                                                                                                           
---------------------                                                                                                                                                                                    
-ITEM_S1                                                                                                                                                                                                 
+Sequence Name                                                                   
+--------------------                                                            
+ITEM_S1                                                                         
 
 1 row selected.
 

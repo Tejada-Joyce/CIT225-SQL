@@ -445,12 +445,12 @@ SQL> SELECT   m.account_number
  12  	      telephone t ON c.contact_id = t.contact_id AND a.address_id = t.address_id
  13  WHERE    c.last_name = 'Sweeney';
 
-Account    Name                                                                                                                                                                                         
-Number     (Last, First MI) City         State      Telephone                                                                                                                                           
----------- ---------------- ------------ ---------- ------------------                                                                                                                                  
-B293-71447 Sweeney, Meaghan San Jose     CA         USA-(408) 333-3333                                                                                                                                  
-B293-71447 Sweeney, Matthew San Jose     CA         USA-(408) 333-3333                                                                                                                                  
-B293-71447 Sweeney, Ian M   San Jose     CA         USA-(408) 333-3333                                                                                                                                  
+Account    Name                                                                 
+Number     (Last, First MI) City         State      Telephone                   
+---------- ---------------- ------------ ---------- ------------------          
+B293-71447 Sweeney, Meaghan San Jose     CA         USA-(408) 333-3333          
+B293-71447 Sweeney, Matthew San Jose     CA         USA-(408) 333-3333          
+B293-71447 Sweeney, Ian M   San Jose     CA         USA-(408) 333-3333          
 
 3 rows selected.
 

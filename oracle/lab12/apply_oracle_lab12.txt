@@ -244,15 +244,25 @@ SQL> --  Step #3 : Upload and transform data.
 SQL> -- --------------------------------------------------------------------------------
 SQL> 
 SQL> -- Conditionally drop table.
-SQL> -- SELECT 'Conditionally drop TRANSACTION_REVERSAL table.' AS "Statement" FROM dual;
-SQL> -- BEGIN
-SQL> --   FOR i IN (SELECT table_name
-SQL> -- 	    FROM   user_tables
-SQL> -- 	    WHERE  table_name = 'TRANSACTION_REVERSAL') LOOP
-SQL> --     EXECUTE IMMEDIATE 'DROP TABLE '||i.table_name||' CASCADE CONSTRAINTS';
-SQL> --   END LOOP;
-SQL> -- END;
-SQL> -- /
+SQL> SELECT 'Conditionally drop TRANSACTION_REVERSAL table.' AS "Statement" FROM dual;
+
+Statement                                                                                                                                                                                               
+----------------------------------------------                                                                                                                                                          
+Conditionally drop TRANSACTION_REVERSAL table.                                                                                                                                                          
+
+1 row selected.
+
+SQL> BEGIN
+  2    FOR i IN (SELECT table_name
+  3  		 FROM	user_tables
+  4  		 WHERE	table_name = 'TRANSACTION_REVERSAL') LOOP
+  5  	 EXECUTE IMMEDIATE 'DROP TABLE '||i.table_name||' CASCADE CONSTRAINTS';
+  6    END LOOP;
+  7  END;
+  8  /
+
+PL/SQL procedure successfully completed.
+
 SQL> 
 SQL> -- --------------------------------------------------------------------------------
 SQL> --  Step #3 : Upload and transform data.
@@ -261,47 +271,158 @@ SQL>
 SQL> -- --------------------------------------------------------------------------------
 SQL> --  Step #3 : Create the TRANSACTION_REVERSAL table.
 SQL> -- --------------------------------------------------------------------------------
+SQL> CREATE TABLE transaction_reversal
+  2  ( transaction_id		 NUMBER(22)
+  3  ,	 transaction_account	 VARCHAR2(15)
+  4  ,	 transaction_type	 NUMBER(22)
+  5  ,	 transaction_date	 DATE
+  6  ,	 transaction_amount	 NUMBER(22)
+  7  ,	 rental_id		 NUMBER(22)
+  8  ,	 payment_method_type	 NUMBER(22)
+  9  ,	 payment_account_number  VARCHAR2(19)
+ 10  ,	 created_by		 NUMBER(22)
+ 11  ,	 creation_date		 DATE
+ 12  ,	 last_updated_by	 NUMBER(22)
+ 13  ,	 last_update_date	 DATE)
+ 14    ORGANIZATION EXTERNAL
+ 15    ( TYPE oracle_loader
+ 16  	 DEFAULT DIRECTORY upload
+ 17  	 ACCESS PARAMETERS
+ 18  	 ( RECORDS DELIMITED BY NEWLINE CHARACTERSET US7ASCII
+ 19  	   BADFILE	 'UPLOAD' : 'transaction_upload2.bad'
+ 20  	   DISCARDFILE	 'UPLOAD' : 'transaction_upload2.dis'
+ 21  	   LOGFILE	 'UPLOAD' : 'transaction_upload2.log'
+ 22  	   FIELDS TERMINATED BY ','
+ 23  	   OPTIONALLY ENCLOSED BY "'"
+ 24  	   MISSING FIELD VALUES ARE NULL )
+ 25  	   LOCATION ('transaction_upload2.csv'))
+ 26  REJECT LIMIT UNLIMITED;
+
+Table created.
+
 SQL> 
 SQL> 
+SQL> -- Set environment variables.
+SQL> SET LONG 200000
 SQL> 
+SQL> -- Set a local variable of a character large object (CLOB).
+SQL> VARIABLE ddl_text CLOB
 SQL> 
-SQL> 
-SQL> 
-SQL> 
+SQL> -- Get the internal DDL command for the external TRANSACTION_REVERSAL table from the data dictionary.
+SQL> SELECT dbms_metadata.get_ddl('TABLE','TRANSACTION_REVERSAL') FROM dual;
+
+DBMS_METADATA.GET_DDL('TABLE','TRANSACTION_REVERSAL')                                                                                                                                                   
+--------------------------------------------------------------------------------                                                                                                                        
+                                                                                                                                                                                                        
+  CREATE TABLE "STUDENT"."TRANSACTION_REVERSAL"                                                                                                                                                         
+   (	"TRANSACTION_ID" NUMBER(22,0),                                                                                                                                                                     
+	"TRANSACTION_ACCOUNT" VARCHAR2(15),                                                                                                                                                                    
+	"TRANSACTION_TYPE" NUMBER(22,0),                                                                                                                                                                       
+	"TRANSACTION_DATE" DATE,                                                                                                                                                                               
+	"TRANSACTION_AMOUNT" NUMBER(22,0),                                                                                                                                                                     
+	"RENTAL_ID" NUMBER(22,0),                                                                                                                                                                              
+	"PAYMENT_METHOD_TYPE" NUMBER(22,0),                                                                                                                                                                    
+	"PAYMENT_ACCOUNT_NUMBER" VARCHAR2(19),                                                                                                                                                                 
+	"CREATED_BY" NUMBER(22,0),                                                                                                                                                                             
+	"CREATION_DATE" DATE,                                                                                                                                                                                  
+	"LAST_UPDATED_BY" NUMBER(22,0),                                                                                                                                                                        
+	"LAST_UPDATE_DATE" DATE                                                                                                                                                                                
+   )                                                                                                                                                                                                    
+   ORGANIZATION EXTERNAL                                                                                                                                                                                
+    ( TYPE ORACLE_LOADER                                                                                                                                                                                
+      DEFAULT DIRECTORY "UPLOAD"                                                                                                                                                                        
+      ACCESS PARAMETERS                                                                                                                                                                                 
+      ( RECORDS DELIMITED BY NEWLINE CHARAC                                                                                                                                                             
+TERSET US7ASCII                                                                                                                                                                                         
+      BADFILE       'UPLOAD' : 'transaction_                                                                                                                                                            
+upload2.bad'                                                                                                                                                                                            
+      DISCARDFILE   'UPLOAD' : 'transaction_upl                                                                                                                                                         
+oad2.dis'                                                                                                                                                                                               
+      LOGFILE       'UPLOAD' : 'transaction_upload                                                                                                                                                      
+2.log'                                                                                                                                                                                                  
+      FIELDS TERMINATED BY ','                                                                                                                                                                          
+      OPTIONALLY ENCLOSED BY "'"                                                                                                                                                                        
+      MISSING FIELD VALUES ARE NULL     )                                                                                                                                                               
+      LOCATION                                                                                                                                                                                          
+       ( 'transaction_upload2.csv'                                                                                                                                                                      
+       )                                                                                                                                                                                                
+    )                                                                                                                                                                                                   
+   REJECT LIMIT UNLIMITED                                                                                                                                                                               
+                                                                                                                                                                                                        
+                                                                                                                                                                                                        
+
+1 row selected.
+
 SQL> 
 SQL> 
 SQL> 
 SQL> -- Select the uploaded records.
-SQL> -- SELECT COUNT(*) FROM transaction_reversal;
+SQL> SELECT COUNT(*) FROM transaction_reversal;
+
+  COUNT(*)                                                                                                                                                                                              
+----------                                                                                                                                                                                              
+      1170                                                                                                                                                                                              
+
+1 row selected.
+
 SQL> 
 SQL> -- Select the uploaded records.
 SQL> -- DELETE FROM transaction WHERE transaction_account = '222-222-222-222';
 SQL> 
 SQL> -- --------------------------------------------------------------------------------
-SQL> --  Step #3 : Insert records into the TRANSACTION_REVERSAL table.
+SQL> --  Step #3(b) : Insert records into the TRANSACTION_REVERSAL table.
 SQL> -- --------------------------------------------------------------------------------
 SQL> 
-SQL> 
-SQL> 
-SQL> 
-SQL> 
-SQL> 
-SQL> 
-SQL> 
+SQL> -- Move the data from TRANSACTION_REVERSAL to TRANSACTION.
+SQL> INSERT INTO transaction
+  2  (SELECT transaction_s1.nextval
+  3  ,	 transaction_account
+  4  ,	 transaction_type
+  5  ,	 transaction_date
+  6  ,	 transaction_amount
+  7  ,	 rental_id
+  8  ,	 payment_method_type
+  9  ,	 payment_account_number
+ 10  ,	 created_by
+ 11  ,	 creation_date
+ 12  ,	 last_updated_by
+ 13  ,	 last_update_date
+ 14   FROM    transaction_reversal);
+
+1170 rows created.
+
 SQL> 
 SQL> 
 SQL> -- --------------------------------------------------------------------------------
-SQL> --  Step #3 : Verify insert of records into the TRANSACTION_REVERSAL table.
+SQL> --  Step #3(c) : Verify insert of records into the TRANSACTION_REVERSAL table.
 SQL> -- --------------------------------------------------------------------------------
-SQL> -- COLUMN "Debit Transactions"  FORMAT A20
-SQL> -- COLUMN "Credit Transactions" FORMAT A20
-SQL> -- COLUMN "All Transactions"    FORMAT A20
-SQL> -- SELECT	 LPAD(TO_CHAR(c1.transaction_count,'99,999'),19,' ') AS "Debit Transactions"
-SQL> -- ,	 LPAD(TO_CHAR(c2.transaction_count,'99,999'),19,' ') AS "Credit Transactions"
-SQL> -- ,	 LPAD(TO_CHAR(c3.transaction_count,'99,999'),19,' ') AS "All Transactions"
-SQL> -- FROM	(SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '111-111-111-111') c1 CROSS JOIN
-SQL> -- 	(SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '222-222-222-222') c2 CROSS JOIN
-SQL> -- 	(SELECT COUNT(*) AS transaction_count FROM transaction) c3;
+SQL> COLUMN "Debit Transactions"  FORMAT A20
+SQL> COLUMN "Credit Transactions" FORMAT A20
+SQL> COLUMN "All Transactions"	  FORMAT A20
+SQL> 
+SQL> -- Check current contents of the model.
+SQL> SELECT 'SELECT record counts' AS "Statement" FROM dual;
+
+Statement                                                                                                                                                                                               
+--------------------                                                                                                                                                                                    
+SELECT record counts                                                                                                                                                                                    
+
+1 row selected.
+
+SQL> SELECT   LPAD(TO_CHAR(c1.transaction_count,'99,999'),19,' ') AS "Debit Transactions"
+  2  ,	      LPAD(TO_CHAR(c2.transaction_count,'99,999'),19,' ') AS "Credit Transactions"
+  3  ,	      LPAD(TO_CHAR(c3.transaction_count,'99,999'),19,' ') AS "All Transactions"
+  4  FROM    (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '111-111-111-111') c1 CROSS JOIN
+  5  	     (SELECT COUNT(*) AS transaction_count FROM transaction WHERE transaction_account = '222-222-222-222') c2 CROSS JOIN
+  6  	     (SELECT COUNT(*) AS transaction_count FROM transaction) c3;
+
+Debit Transactions   Credit Transactions  All Transactions                                                                                                                                              
+-------------------- -------------------- --------------------                                                                                                                                          
+              4,681                1,170                5,851                                                                                                                                           
+
+1 row selected.
+
+SQL> 
 SQL> 
 SQL> -- --------------------------------------------------------------------------------
 SQL> --  Step #4 : Query data.

@@ -76,10 +76,10 @@ SQL> SELECT   common_lookup_table
   6  AND      common_lookup_column = 'ACTIVE_FLAG'
   7  ORDER BY 1, 2, 3 DESC;
 
-COMMON_LOOKUP_TABLE  COMMON_LOOKUP_COLUMN COMMON_LOOKUP_TYPE                                                                                                                                            
--------------------- -------------------- --------------------                                                                                                                                          
-PRICE                ACTIVE_FLAG          YES                                                                                                                                                           
-PRICE                ACTIVE_FLAG          NO                                                                                                                                                            
+COMMON_LOOKUP_TABLE  COMMON_LOOKUP_COLUMN COMMON_LOOKUP_TYPE                    
+-------------------- -------------------- --------------------                  
+PRICE                ACTIVE_FLAG          YES                                   
+PRICE                ACTIVE_FLAG          NO                                    
 
 2 rows selected.
 
@@ -257,14 +257,14 @@ SQL> SELECT   common_lookup_table
   6  AND      common_lookup_column IN ('PRICE_TYPE','RENTAL_ITEM_TYPE')
   7  ORDER BY 1, 3;
 
-COMMON_LOOKUP_TABLE  COMMON_LOOKUP_COLUMN COMMON_LOOKUP_TYPE                                                                                                                                            
--------------------- -------------------- --------------------                                                                                                                                          
-PRICE                PRICE_TYPE           1-DAY RENTAL                                                                                                                                                  
-PRICE                PRICE_TYPE           3-DAY RENTAL                                                                                                                                                  
-PRICE                PRICE_TYPE           5-DAY RENTAL                                                                                                                                                  
-RENTAL_ITEM          RENTAL_ITEM_TYPE     1-DAY RENTAL                                                                                                                                                  
-RENTAL_ITEM          RENTAL_ITEM_TYPE     3-DAY RENTAL                                                                                                                                                  
-RENTAL_ITEM          RENTAL_ITEM_TYPE     5-DAY RENTAL                                                                                                                                                  
+COMMON_LOOKUP_TABLE  COMMON_LOOKUP_COLUMN COMMON_LOOKUP_TYPE                    
+-------------------- -------------------- --------------------                  
+PRICE                PRICE_TYPE           1-DAY RENTAL                          
+PRICE                PRICE_TYPE           3-DAY RENTAL                          
+PRICE                PRICE_TYPE           5-DAY RENTAL                          
+RENTAL_ITEM          RENTAL_ITEM_TYPE     1-DAY RENTAL                          
+RENTAL_ITEM          RENTAL_ITEM_TYPE     3-DAY RENTAL                          
+RENTAL_ITEM          RENTAL_ITEM_TYPE     5-DAY RENTAL                          
 
 6 rows selected.
 
@@ -293,18 +293,18 @@ SQL> SELECT   table_name
  15  WHERE    table_name = 'RENTAL_ITEM'
  16  ORDER BY 2;
 
-                         Column                                                                                                                                                                         
-Table Name     Column ID Name                   Nullable Data Type                                                                                                                                      
--------------- --------- ---------------------- -------- ------------                                                                                                                                   
-RENTAL_ITEM            1 RENTAL_ITEM_ID         NOT NULL NUMBER(22)                                                                                                                                     
-RENTAL_ITEM            2 RENTAL_ID              NOT NULL NUMBER(22)                                                                                                                                     
-RENTAL_ITEM            3 ITEM_ID                NOT NULL NUMBER(22)                                                                                                                                     
-RENTAL_ITEM            4 CREATED_BY             NOT NULL NUMBER(22)                                                                                                                                     
-RENTAL_ITEM            5 CREATION_DATE          NOT NULL DATE                                                                                                                                           
-RENTAL_ITEM            6 LAST_UPDATED_BY        NOT NULL NUMBER(22)                                                                                                                                     
-RENTAL_ITEM            7 LAST_UPDATE_DATE       NOT NULL DATE                                                                                                                                           
-RENTAL_ITEM            8 RENTAL_ITEM_PRICE               NUMBER(22)                                                                                                                                     
-RENTAL_ITEM            9 RENTAL_ITEM_TYPE                NUMBER(22)                                                                                                                                     
+                         Column                                                 
+Table Name     COLUMN_ID Name                   NULLABLE DATA_TYPE              
+-------------- --------- ---------------------- -------- ------------           
+RENTAL_ITEM            1 RENTAL_ITEM_ID         NOT NULL NUMBER(22)             
+RENTAL_ITEM            2 RENTAL_ID              NOT NULL NUMBER(22)             
+RENTAL_ITEM            3 ITEM_ID                NOT NULL NUMBER(22)             
+RENTAL_ITEM            4 CREATED_BY             NOT NULL NUMBER(22)             
+RENTAL_ITEM            5 CREATION_DATE          NOT NULL DATE                   
+RENTAL_ITEM            6 LAST_UPDATED_BY        NOT NULL NUMBER(22)             
+RENTAL_ITEM            7 LAST_UPDATE_DATE       NOT NULL DATE                   
+RENTAL_ITEM            8 RENTAL_ITEM_PRICE               NUMBER(22)             
+RENTAL_ITEM            9 RENTAL_ITEM_TYPE                NUMBER(22)             
 
 9 rows selected.
 
@@ -335,9 +335,9 @@ SQL> SELECT   ROW_COUNT
   6  	      FROM     rental_item
   7  	      WHERE    rental_item_type IS NOT NULL) cc;
 
- ROW_COUNT  COL_COUNT                                                                                                                                                                                   
----------- ----------                                                                                                                                                                                   
-        13         13                                                                                                                                                                                   
+ ROW_COUNT  COL_COUNT                                                           
+---------- ----------                                                           
+        13         13                                                           
 
 1 row selected.
 
@@ -370,24 +370,24 @@ SQL> SELECT   ROWNUM
  17  ORDER BY r.rental_id
  18  ,	      ri.rental_id;
 
-                                                                  Rental                                                                                                                                
-         Rental  Common Common                                      Item                                                                                                                                
-    Row    Item  Lookup Lookup Return      Check Out      Rental  Rental                                                                                                                                
- Number    Type    ID # Code   Date        Date        L    ID #    ID #                                                                                                                                
-------- ------- ------- ------ ----------- ----------- - ------- -------                                                                                                                                
-      1    1025    1025 5      07-DEC-19   02-DEC-19   5    1001    1001                                                                                                                                
-      2    1025    1025 5      07-DEC-19   02-DEC-19   5    1001    1001                                                                                                                                
-      3    1025    1025 5      07-DEC-19   02-DEC-19   5    1001    1001                                                                                                                                
-      4    1025    1025 5      07-DEC-19   02-DEC-19   5    1002    1002                                                                                                                                
-      5    1025    1025 5      07-DEC-19   02-DEC-19   5    1002    1002                                                                                                                                
-      6    1025    1025 5      07-DEC-19   02-DEC-19   5    1003    1003                                                                                                                                
-      7    1025    1025 5      07-DEC-19   02-DEC-19   5    1004    1004                                                                                                                                
-      8    1025    1025 5      07-DEC-19   02-DEC-19   5    1005    1005                                                                                                                                
-      9    1025    1025 5      07-DEC-19   02-DEC-19   5    1005    1005                                                                                                                                
-     10    1023    1023 1      03-DEC-19   02-DEC-19   1    1006    1006                                                                                                                                
-     11    1023    1023 1      03-DEC-19   02-DEC-19   1    1006    1006                                                                                                                                
-     12    1024    1024 3      05-DEC-19   02-DEC-19   3    1007    1007                                                                                                                                
-     13    1025    1025 5      07-DEC-19   02-DEC-19   5    1008    1008                                                                                                                                
+                                                                  Rental        
+         Rental  Common Common                                      Item        
+    Row    Item  Lookup Lookup Return      Check Out      Rental  Rental        
+ Number    Type    ID # Code   Date        Date        L    ID #    ID #        
+------- ------- ------- ------ ----------- ----------- - ------- -------        
+      1    1025    1025 5      19-DEC-19   14-DEC-19   5    1001    1001        
+      2    1025    1025 5      19-DEC-19   14-DEC-19   5    1001    1001        
+      3    1025    1025 5      19-DEC-19   14-DEC-19   5    1001    1001        
+      4    1025    1025 5      19-DEC-19   14-DEC-19   5    1002    1002        
+      5    1025    1025 5      19-DEC-19   14-DEC-19   5    1002    1002        
+      6    1025    1025 5      19-DEC-19   14-DEC-19   5    1003    1003        
+      7    1025    1025 5      19-DEC-19   14-DEC-19   5    1004    1004        
+      8    1025    1025 5      19-DEC-19   14-DEC-19   5    1005    1005        
+      9    1025    1025 5      19-DEC-19   14-DEC-19   5    1005    1005        
+     10    1023    1023 1      15-DEC-19   14-DEC-19   1    1006    1006        
+     11    1023    1023 1      15-DEC-19   14-DEC-19   1    1006    1006        
+     12    1024    1024 3      17-DEC-19   14-DEC-19   3    1007    1007        
+     13    1025    1025 5      19-DEC-19   14-DEC-19   5    1008    1008        
 
 13 rows selected.
 
@@ -422,10 +422,10 @@ SQL> SELECT   uc.table_name
  10  WHERE    uc.table_name = 'RENTAL_ITEM'
  11  AND      ucc.column_name = 'RENTAL_ITEM_TYPE';
 
-                                CONSTRAINT                                                                                                                                                              
-TABLE NAME   CONSTRAINT NAME    TYPE         COLUMN NAME                                                                                                                                                
------------- ------------------ ------------ ------------------                                                                                                                                         
-RENTAL_ITEM  FK_RENTAL_ITEM_7   FOREIGN KEY  RENTAL_ITEM_TYPE                                                                                                                                           
+                                CONSTRAINT                                      
+TABLE NAME   CONSTRAINT NAME    TYPE         COLUMN NAME                        
+------------ ------------------ ------------ ------------------                 
+RENTAL_ITEM  FK_RENTAL_ITEM_7   FOREIGN KEY  RENTAL_ITEM_TYPE                   
 
 1 row selected.
 
@@ -454,9 +454,9 @@ SQL> SELECT   TABLE_NAME
   8  WHERE    TABLE_NAME = 'RENTAL_ITEM'
   9  AND      column_name = 'RENTAL_ITEM_TYPE';
 
-TABLE NAME   COLUMN NAME        CONSTRAINT                                                                                                                                                              
------------- ------------------ ----------                                                                                                                                                              
-RENTAL_ITEM  RENTAL_ITEM_TYPE   NOT NULL                                                                                                                                                                
+TABLE NAME   COLUMN NAME        CONSTRAINT                                      
+------------ ------------------ ----------                                      
+RENTAL_ITEM  RENTAL_ITEM_TYPE   NOT NULL                                        
 
 1 row selected.
 
@@ -519,144 +519,144 @@ SQL> SELECT   i.item_id
  45  AND NOT ( af.active_flag = 'N' AND (TRUNC(SYSDATE) - 30) < i.release_date )
  46  ORDER BY 1, 2, 3;
 
- ITEM ACTIVE PRICE              START      END                                                                                                                                                          
-   ID FLAG    TYPE PRICE DESC   DATE       DATE       AMOUNT                                                                                                                                            
------ ------ ----- ------------ ---------- ---------- ------                                                                                                                                            
- 1001 N       1020 1-DAY RENTAL 02-MAR-90  01-APR-90       3                                                                                                                                            
- 1001 N       1021 3-DAY RENTAL 02-MAR-90  01-APR-90      10                                                                                                                                            
- 1001 N       1022 5-DAY RENTAL 02-MAR-90  01-APR-90      15                                                                                                                                            
- 1001 Y       1020 1-DAY RENTAL 02-APR-90                  1                                                                                                                                            
- 1001 Y       1021 3-DAY RENTAL 02-APR-90                  3                                                                                                                                            
- 1001 Y       1022 5-DAY RENTAL 02-APR-90                  5                                                                                                                                            
- 1002 N       1020 1-DAY RENTAL 04-MAY-99  03-JUN-99       3                                                                                                                                            
- 1002 N       1021 3-DAY RENTAL 04-MAY-99  03-JUN-99      10                                                                                                                                            
- 1002 N       1022 5-DAY RENTAL 04-MAY-99  03-JUN-99      15                                                                                                                                            
- 1002 Y       1020 1-DAY RENTAL 04-JUN-99                  1                                                                                                                                            
- 1002 Y       1021 3-DAY RENTAL 04-JUN-99                  3                                                                                                                                            
- 1002 Y       1022 5-DAY RENTAL 04-JUN-99                  5                                                                                                                                            
- 1003 N       1020 1-DAY RENTAL 16-MAY-02  15-JUN-02       3                                                                                                                                            
- 1003 N       1021 3-DAY RENTAL 16-MAY-02  15-JUN-02      10                                                                                                                                            
- 1003 N       1022 5-DAY RENTAL 16-MAY-02  15-JUN-02      15                                                                                                                                            
- 1003 Y       1020 1-DAY RENTAL 16-JUN-02                  1                                                                                                                                            
- 1003 Y       1021 3-DAY RENTAL 16-JUN-02                  3                                                                                                                                            
- 1003 Y       1022 5-DAY RENTAL 16-JUN-02                  5                                                                                                                                            
- 1004 N       1020 1-DAY RENTAL 16-MAY-02  15-JUN-02       3                                                                                                                                            
- 1004 N       1021 3-DAY RENTAL 16-MAY-02  15-JUN-02      10                                                                                                                                            
- 1004 N       1022 5-DAY RENTAL 16-MAY-02  15-JUN-02      15                                                                                                                                            
- 1004 Y       1020 1-DAY RENTAL 16-JUN-02                  1                                                                                                                                            
- 1004 Y       1021 3-DAY RENTAL 16-JUN-02                  3                                                                                                                                            
- 1004 Y       1022 5-DAY RENTAL 16-JUN-02                  5                                                                                                                                            
- 1005 N       1020 1-DAY RENTAL 19-MAY-05  18-JUN-05       3                                                                                                                                            
- 1005 N       1021 3-DAY RENTAL 19-MAY-05  18-JUN-05      10                                                                                                                                            
- 1005 N       1022 5-DAY RENTAL 19-MAY-05  18-JUN-05      15                                                                                                                                            
- 1005 Y       1020 1-DAY RENTAL 19-JUN-05                  1                                                                                                                                            
- 1005 Y       1021 3-DAY RENTAL 19-JUN-05                  3                                                                                                                                            
- 1005 Y       1022 5-DAY RENTAL 19-JUN-05                  5                                                                                                                                            
- 1006 N       1020 1-DAY RENTAL 16-MAY-02  15-JUN-02       3                                                                                                                                            
- 1006 N       1021 3-DAY RENTAL 16-MAY-02  15-JUN-02      10                                                                                                                                            
- 1006 N       1022 5-DAY RENTAL 16-MAY-02  15-JUN-02      15                                                                                                                                            
- 1006 Y       1020 1-DAY RENTAL 16-JUN-02                  1                                                                                                                                            
- 1006 Y       1021 3-DAY RENTAL 16-JUN-02                  3                                                                                                                                            
- 1006 Y       1022 5-DAY RENTAL 16-JUN-02                  5                                                                                                                                            
- 1007 N       1020 1-DAY RENTAL 24-JUL-03  23-AUG-03       3                                                                                                                                            
- 1007 N       1021 3-DAY RENTAL 24-JUL-03  23-AUG-03      10                                                                                                                                            
- 1007 N       1022 5-DAY RENTAL 24-JUL-03  23-AUG-03      15                                                                                                                                            
- 1007 Y       1020 1-DAY RENTAL 24-AUG-03                  1                                                                                                                                            
- 1007 Y       1021 3-DAY RENTAL 24-AUG-03                  3                                                                                                                                            
- 1007 Y       1022 5-DAY RENTAL 24-AUG-03                  5                                                                                                                                            
- 1008 N       1020 1-DAY RENTAL 30-JUN-03  30-JUL-03       3                                                                                                                                            
- 1008 N       1021 3-DAY RENTAL 30-JUN-03  30-JUL-03      10                                                                                                                                            
- 1008 N       1022 5-DAY RENTAL 30-JUN-03  30-JUL-03      15                                                                                                                                            
- 1008 Y       1020 1-DAY RENTAL 31-JUL-03                  1                                                                                                                                            
- 1008 Y       1021 3-DAY RENTAL 31-JUL-03                  3                                                                                                                                            
- 1008 Y       1022 5-DAY RENTAL 31-JUL-03                  5                                                                                                                                            
- 1009 N       1020 1-DAY RENTAL 30-JUN-03  30-JUL-03       3                                                                                                                                            
- 1009 N       1021 3-DAY RENTAL 30-JUN-03  30-JUL-03      10                                                                                                                                            
- 1009 N       1022 5-DAY RENTAL 30-JUN-03  30-JUL-03      15                                                                                                                                            
- 1009 Y       1020 1-DAY RENTAL 31-JUL-03                  1                                                                                                                                            
- 1009 Y       1021 3-DAY RENTAL 31-JUL-03                  3                                                                                                                                            
- 1009 Y       1022 5-DAY RENTAL 31-JUL-03                  5                                                                                                                                            
- 1010 N       1020 1-DAY RENTAL 17-NOV-03  17-DEC-03       3                                                                                                                                            
- 1010 N       1021 3-DAY RENTAL 17-NOV-03  17-DEC-03      10                                                                                                                                            
- 1010 N       1022 5-DAY RENTAL 17-NOV-03  17-DEC-03      15                                                                                                                                            
- 1010 Y       1020 1-DAY RENTAL 18-DEC-03                  1                                                                                                                                            
- 1010 Y       1021 3-DAY RENTAL 18-DEC-03                  3                                                                                                                                            
- 1010 Y       1022 5-DAY RENTAL 18-DEC-03                  5                                                                                                                                            
- 1011 N       1020 1-DAY RENTAL 08-APR-03  08-MAY-03       3                                                                                                                                            
- 1011 N       1021 3-DAY RENTAL 08-APR-03  08-MAY-03      10                                                                                                                                            
- 1011 N       1022 5-DAY RENTAL 08-APR-03  08-MAY-03      15                                                                                                                                            
- 1011 Y       1020 1-DAY RENTAL 09-MAY-03                  1                                                                                                                                            
- 1011 Y       1021 3-DAY RENTAL 09-MAY-03                  3                                                                                                                                            
- 1011 Y       1022 5-DAY RENTAL 09-MAY-03                  5                                                                                                                                            
- 1012 N       1020 1-DAY RENTAL 15-NOV-04  15-DEC-04       3                                                                                                                                            
- 1012 N       1021 3-DAY RENTAL 15-NOV-04  15-DEC-04      10                                                                                                                                            
- 1012 N       1022 5-DAY RENTAL 15-NOV-04  15-DEC-04      15                                                                                                                                            
- 1012 Y       1020 1-DAY RENTAL 16-DEC-04                  1                                                                                                                                            
- 1012 Y       1021 3-DAY RENTAL 16-DEC-04                  3                                                                                                                                            
- 1012 Y       1022 5-DAY RENTAL 16-DEC-04                  5                                                                                                                                            
- 1013 N       1020 1-DAY RENTAL 19-MAY-06  18-JUN-06       3                                                                                                                                            
- 1013 N       1021 3-DAY RENTAL 19-MAY-06  18-JUN-06      10                                                                                                                                            
- 1013 N       1022 5-DAY RENTAL 19-MAY-06  18-JUN-06      15                                                                                                                                            
- 1013 Y       1020 1-DAY RENTAL 19-JUN-06                  1                                                                                                                                            
- 1013 Y       1021 3-DAY RENTAL 19-JUN-06                  3                                                                                                                                            
- 1013 Y       1022 5-DAY RENTAL 19-JUN-06                  5                                                                                                                                            
- 1014 N       1020 1-DAY RENTAL 28-APR-06  28-MAY-06       3                                                                                                                                            
- 1014 N       1021 3-DAY RENTAL 28-APR-06  28-MAY-06      10                                                                                                                                            
- 1014 N       1022 5-DAY RENTAL 28-APR-06  28-MAY-06      15                                                                                                                                            
- 1014 Y       1020 1-DAY RENTAL 29-MAY-06                  1                                                                                                                                            
- 1014 Y       1021 3-DAY RENTAL 29-MAY-06                  3                                                                                                                                            
- 1014 Y       1022 5-DAY RENTAL 29-MAY-06                  5                                                                                                                                            
- 1015 N       1020 1-DAY RENTAL 01-MAR-92  31-MAR-92       3                                                                                                                                            
- 1015 N       1021 3-DAY RENTAL 01-MAR-92  31-MAR-92      10                                                                                                                                            
- 1015 N       1022 5-DAY RENTAL 01-MAR-92  31-MAR-92      15                                                                                                                                            
- 1015 Y       1020 1-DAY RENTAL 01-APR-92                  1                                                                                                                                            
- 1015 Y       1021 3-DAY RENTAL 01-APR-92                  3                                                                                                                                            
- 1015 Y       1022 5-DAY RENTAL 01-APR-92                  5                                                                                                                                            
- 1016 N       1020 1-DAY RENTAL 05-JAN-98  04-FEB-98       3                                                                                                                                            
- 1016 N       1021 3-DAY RENTAL 05-JAN-98  04-FEB-98      10                                                                                                                                            
- 1016 N       1022 5-DAY RENTAL 05-JAN-98  04-FEB-98      15                                                                                                                                            
- 1016 Y       1020 1-DAY RENTAL 05-FEB-98                  1                                                                                                                                            
- 1016 Y       1021 3-DAY RENTAL 05-FEB-98                  3                                                                                                                                            
- 1016 Y       1022 5-DAY RENTAL 05-FEB-98                  5                                                                                                                                            
- 1017 N       1020 1-DAY RENTAL 02-NOV-99  02-DEC-99       3                                                                                                                                            
- 1017 N       1021 3-DAY RENTAL 02-NOV-99  02-DEC-99      10                                                                                                                                            
- 1017 N       1022 5-DAY RENTAL 02-NOV-99  02-DEC-99      15                                                                                                                                            
- 1017 Y       1020 1-DAY RENTAL 03-DEC-99                  1                                                                                                                                            
- 1017 Y       1021 3-DAY RENTAL 03-DEC-99                  3                                                                                                                                            
- 1017 Y       1022 5-DAY RENTAL 03-DEC-99                  5                                                                                                                                            
- 1018 N       1020 1-DAY RENTAL 28-JUN-94  28-JUL-94       3                                                                                                                                            
- 1018 N       1021 3-DAY RENTAL 28-JUN-94  28-JUL-94      10                                                                                                                                            
- 1018 N       1022 5-DAY RENTAL 28-JUN-94  28-JUL-94      15                                                                                                                                            
- 1018 Y       1020 1-DAY RENTAL 29-JUL-94                  1                                                                                                                                            
- 1018 Y       1021 3-DAY RENTAL 29-JUL-94                  3                                                                                                                                            
- 1018 Y       1022 5-DAY RENTAL 29-JUL-94                  5                                                                                                                                            
- 1019 N       1020 1-DAY RENTAL 11-DEC-91  10-JAN-92       3                                                                                                                                            
- 1019 N       1021 3-DAY RENTAL 11-DEC-91  10-JAN-92      10                                                                                                                                            
- 1019 N       1022 5-DAY RENTAL 11-DEC-91  10-JAN-92      15                                                                                                                                            
- 1019 Y       1020 1-DAY RENTAL 11-JAN-92                  1                                                                                                                                            
- 1019 Y       1021 3-DAY RENTAL 11-JAN-92                  3                                                                                                                                            
- 1019 Y       1022 5-DAY RENTAL 11-JAN-92                  5                                                                                                                                            
- 1020 N       1020 1-DAY RENTAL 04-DEC-92  03-JAN-93       3                                                                                                                                            
- 1020 N       1021 3-DAY RENTAL 04-DEC-92  03-JAN-93      10                                                                                                                                            
- 1020 N       1022 5-DAY RENTAL 04-DEC-92  03-JAN-93      15                                                                                                                                            
- 1020 Y       1020 1-DAY RENTAL 04-JAN-93                  1                                                                                                                                            
- 1020 Y       1021 3-DAY RENTAL 04-JAN-93                  3                                                                                                                                            
- 1020 Y       1022 5-DAY RENTAL 04-JAN-93                  5                                                                                                                                            
- 1021 N       1020 1-DAY RENTAL 15-MAY-98  14-JUN-98       3                                                                                                                                            
- 1021 N       1021 3-DAY RENTAL 15-MAY-98  14-JUN-98      10                                                                                                                                            
- 1021 N       1022 5-DAY RENTAL 15-MAY-98  14-JUN-98      15                                                                                                                                            
- 1021 Y       1020 1-DAY RENTAL 15-JUN-98                  1                                                                                                                                            
- 1021 Y       1021 3-DAY RENTAL 15-JUN-98                  3                                                                                                                                            
- 1021 Y       1022 5-DAY RENTAL 15-JUN-98                  5                                                                                                                                            
- 1022 Y       1020 1-DAY RENTAL 01-DEC-19                  3                                                                                                                                            
- 1022 Y       1021 3-DAY RENTAL 01-DEC-19                 10                                                                                                                                            
- 1022 Y       1022 5-DAY RENTAL 01-DEC-19                 15                                                                                                                                            
- 1023 Y       1020 1-DAY RENTAL 01-DEC-19                  3                                                                                                                                            
- 1023 Y       1021 3-DAY RENTAL 01-DEC-19                 10                                                                                                                                            
- 1023 Y       1022 5-DAY RENTAL 01-DEC-19                 15                                                                                                                                            
- 1024 Y       1020 1-DAY RENTAL 01-DEC-19                  3                                                                                                                                            
- 1024 Y       1021 3-DAY RENTAL 01-DEC-19                 10                                                                                                                                            
- 1024 Y       1022 5-DAY RENTAL 01-DEC-19                 15                                                                                                                                            
+ ITEM ACTIVE PRICE              START      END                                  
+   ID FLAG    TYPE PRICE DESC   DATE       DATE       AMOUNT                    
+----- ------ ----- ------------ ---------- ---------- ------                    
+ 1001 N       1020 1-DAY RENTAL 02-MAR-90  01-APR-90       3                    
+ 1001 N       1021 3-DAY RENTAL 02-MAR-90  01-APR-90      10                    
+ 1001 N       1022 5-DAY RENTAL 02-MAR-90  01-APR-90      15                    
+ 1001 Y       1020 1-DAY RENTAL 02-APR-90                  1                    
+ 1001 Y       1021 3-DAY RENTAL 02-APR-90                  3                    
+ 1001 Y       1022 5-DAY RENTAL 02-APR-90                  5                    
+ 1002 N       1020 1-DAY RENTAL 04-MAY-99  03-JUN-99       3                    
+ 1002 N       1021 3-DAY RENTAL 04-MAY-99  03-JUN-99      10                    
+ 1002 N       1022 5-DAY RENTAL 04-MAY-99  03-JUN-99      15                    
+ 1002 Y       1020 1-DAY RENTAL 04-JUN-99                  1                    
+ 1002 Y       1021 3-DAY RENTAL 04-JUN-99                  3                    
+ 1002 Y       1022 5-DAY RENTAL 04-JUN-99                  5                    
+ 1003 N       1020 1-DAY RENTAL 16-MAY-02  15-JUN-02       3                    
+ 1003 N       1021 3-DAY RENTAL 16-MAY-02  15-JUN-02      10                    
+ 1003 N       1022 5-DAY RENTAL 16-MAY-02  15-JUN-02      15                    
+ 1003 Y       1020 1-DAY RENTAL 16-JUN-02                  1                    
+ 1003 Y       1021 3-DAY RENTAL 16-JUN-02                  3                    
+ 1003 Y       1022 5-DAY RENTAL 16-JUN-02                  5                    
+ 1004 N       1020 1-DAY RENTAL 16-MAY-02  15-JUN-02       3                    
+ 1004 N       1021 3-DAY RENTAL 16-MAY-02  15-JUN-02      10                    
+ 1004 N       1022 5-DAY RENTAL 16-MAY-02  15-JUN-02      15                    
+ 1004 Y       1020 1-DAY RENTAL 16-JUN-02                  1                    
+ 1004 Y       1021 3-DAY RENTAL 16-JUN-02                  3                    
+ 1004 Y       1022 5-DAY RENTAL 16-JUN-02                  5                    
+ 1005 N       1020 1-DAY RENTAL 19-MAY-05  18-JUN-05       3                    
+ 1005 N       1021 3-DAY RENTAL 19-MAY-05  18-JUN-05      10                    
+ 1005 N       1022 5-DAY RENTAL 19-MAY-05  18-JUN-05      15                    
+ 1005 Y       1020 1-DAY RENTAL 19-JUN-05                  1                    
+ 1005 Y       1021 3-DAY RENTAL 19-JUN-05                  3                    
+ 1005 Y       1022 5-DAY RENTAL 19-JUN-05                  5                    
+ 1006 N       1020 1-DAY RENTAL 16-MAY-02  15-JUN-02       3                    
+ 1006 N       1021 3-DAY RENTAL 16-MAY-02  15-JUN-02      10                    
+ 1006 N       1022 5-DAY RENTAL 16-MAY-02  15-JUN-02      15                    
+ 1006 Y       1020 1-DAY RENTAL 16-JUN-02                  1                    
+ 1006 Y       1021 3-DAY RENTAL 16-JUN-02                  3                    
+ 1006 Y       1022 5-DAY RENTAL 16-JUN-02                  5                    
+ 1007 N       1020 1-DAY RENTAL 24-JUL-03  23-AUG-03       3                    
+ 1007 N       1021 3-DAY RENTAL 24-JUL-03  23-AUG-03      10                    
+ 1007 N       1022 5-DAY RENTAL 24-JUL-03  23-AUG-03      15                    
+ 1007 Y       1020 1-DAY RENTAL 24-AUG-03                  1                    
+ 1007 Y       1021 3-DAY RENTAL 24-AUG-03                  3                    
+ 1007 Y       1022 5-DAY RENTAL 24-AUG-03                  5                    
+ 1008 N       1020 1-DAY RENTAL 30-JUN-03  30-JUL-03       3                    
+ 1008 N       1021 3-DAY RENTAL 30-JUN-03  30-JUL-03      10                    
+ 1008 N       1022 5-DAY RENTAL 30-JUN-03  30-JUL-03      15                    
+ 1008 Y       1020 1-DAY RENTAL 31-JUL-03                  1                    
+ 1008 Y       1021 3-DAY RENTAL 31-JUL-03                  3                    
+ 1008 Y       1022 5-DAY RENTAL 31-JUL-03                  5                    
+ 1009 N       1020 1-DAY RENTAL 30-JUN-03  30-JUL-03       3                    
+ 1009 N       1021 3-DAY RENTAL 30-JUN-03  30-JUL-03      10                    
+ 1009 N       1022 5-DAY RENTAL 30-JUN-03  30-JUL-03      15                    
+ 1009 Y       1020 1-DAY RENTAL 31-JUL-03                  1                    
+ 1009 Y       1021 3-DAY RENTAL 31-JUL-03                  3                    
+ 1009 Y       1022 5-DAY RENTAL 31-JUL-03                  5                    
+ 1010 N       1020 1-DAY RENTAL 17-NOV-03  17-DEC-03       3                    
+ 1010 N       1021 3-DAY RENTAL 17-NOV-03  17-DEC-03      10                    
+ 1010 N       1022 5-DAY RENTAL 17-NOV-03  17-DEC-03      15                    
+ 1010 Y       1020 1-DAY RENTAL 18-DEC-03                  1                    
+ 1010 Y       1021 3-DAY RENTAL 18-DEC-03                  3                    
+ 1010 Y       1022 5-DAY RENTAL 18-DEC-03                  5                    
+ 1011 N       1020 1-DAY RENTAL 08-APR-03  08-MAY-03       3                    
+ 1011 N       1021 3-DAY RENTAL 08-APR-03  08-MAY-03      10                    
+ 1011 N       1022 5-DAY RENTAL 08-APR-03  08-MAY-03      15                    
+ 1011 Y       1020 1-DAY RENTAL 09-MAY-03                  1                    
+ 1011 Y       1021 3-DAY RENTAL 09-MAY-03                  3                    
+ 1011 Y       1022 5-DAY RENTAL 09-MAY-03                  5                    
+ 1012 N       1020 1-DAY RENTAL 15-NOV-04  15-DEC-04       3                    
+ 1012 N       1021 3-DAY RENTAL 15-NOV-04  15-DEC-04      10                    
+ 1012 N       1022 5-DAY RENTAL 15-NOV-04  15-DEC-04      15                    
+ 1012 Y       1020 1-DAY RENTAL 16-DEC-04                  1                    
+ 1012 Y       1021 3-DAY RENTAL 16-DEC-04                  3                    
+ 1012 Y       1022 5-DAY RENTAL 16-DEC-04                  5                    
+ 1013 N       1020 1-DAY RENTAL 19-MAY-06  18-JUN-06       3                    
+ 1013 N       1021 3-DAY RENTAL 19-MAY-06  18-JUN-06      10                    
+ 1013 N       1022 5-DAY RENTAL 19-MAY-06  18-JUN-06      15                    
+ 1013 Y       1020 1-DAY RENTAL 19-JUN-06                  1                    
+ 1013 Y       1021 3-DAY RENTAL 19-JUN-06                  3                    
+ 1013 Y       1022 5-DAY RENTAL 19-JUN-06                  5                    
+ 1014 N       1020 1-DAY RENTAL 28-APR-06  28-MAY-06       3                    
+ 1014 N       1021 3-DAY RENTAL 28-APR-06  28-MAY-06      10                    
+ 1014 N       1022 5-DAY RENTAL 28-APR-06  28-MAY-06      15                    
+ 1014 Y       1020 1-DAY RENTAL 29-MAY-06                  1                    
+ 1014 Y       1021 3-DAY RENTAL 29-MAY-06                  3                    
+ 1014 Y       1022 5-DAY RENTAL 29-MAY-06                  5                    
+ 1015 N       1020 1-DAY RENTAL 01-MAR-92  31-MAR-92       3                    
+ 1015 N       1021 3-DAY RENTAL 01-MAR-92  31-MAR-92      10                    
+ 1015 N       1022 5-DAY RENTAL 01-MAR-92  31-MAR-92      15                    
+ 1015 Y       1020 1-DAY RENTAL 01-APR-92                  1                    
+ 1015 Y       1021 3-DAY RENTAL 01-APR-92                  3                    
+ 1015 Y       1022 5-DAY RENTAL 01-APR-92                  5                    
+ 1016 N       1020 1-DAY RENTAL 05-JAN-98  04-FEB-98       3                    
+ 1016 N       1021 3-DAY RENTAL 05-JAN-98  04-FEB-98      10                    
+ 1016 N       1022 5-DAY RENTAL 05-JAN-98  04-FEB-98      15                    
+ 1016 Y       1020 1-DAY RENTAL 05-FEB-98                  1                    
+ 1016 Y       1021 3-DAY RENTAL 05-FEB-98                  3                    
+ 1016 Y       1022 5-DAY RENTAL 05-FEB-98                  5                    
+ 1017 N       1020 1-DAY RENTAL 02-NOV-99  02-DEC-99       3                    
+ 1017 N       1021 3-DAY RENTAL 02-NOV-99  02-DEC-99      10                    
+ 1017 N       1022 5-DAY RENTAL 02-NOV-99  02-DEC-99      15                    
+ 1017 Y       1020 1-DAY RENTAL 03-DEC-99                  1                    
+ 1017 Y       1021 3-DAY RENTAL 03-DEC-99                  3                    
+ 1017 Y       1022 5-DAY RENTAL 03-DEC-99                  5                    
+ 1018 N       1020 1-DAY RENTAL 28-JUN-94  28-JUL-94       3                    
+ 1018 N       1021 3-DAY RENTAL 28-JUN-94  28-JUL-94      10                    
+ 1018 N       1022 5-DAY RENTAL 28-JUN-94  28-JUL-94      15                    
+ 1018 Y       1020 1-DAY RENTAL 29-JUL-94                  1                    
+ 1018 Y       1021 3-DAY RENTAL 29-JUL-94                  3                    
+ 1018 Y       1022 5-DAY RENTAL 29-JUL-94                  5                    
+ 1019 N       1020 1-DAY RENTAL 11-DEC-91  10-JAN-92       3                    
+ 1019 N       1021 3-DAY RENTAL 11-DEC-91  10-JAN-92      10                    
+ 1019 N       1022 5-DAY RENTAL 11-DEC-91  10-JAN-92      15                    
+ 1019 Y       1020 1-DAY RENTAL 11-JAN-92                  1                    
+ 1019 Y       1021 3-DAY RENTAL 11-JAN-92                  3                    
+ 1019 Y       1022 5-DAY RENTAL 11-JAN-92                  5                    
+ 1020 N       1020 1-DAY RENTAL 04-DEC-92  03-JAN-93       3                    
+ 1020 N       1021 3-DAY RENTAL 04-DEC-92  03-JAN-93      10                    
+ 1020 N       1022 5-DAY RENTAL 04-DEC-92  03-JAN-93      15                    
+ 1020 Y       1020 1-DAY RENTAL 04-JAN-93                  1                    
+ 1020 Y       1021 3-DAY RENTAL 04-JAN-93                  3                    
+ 1020 Y       1022 5-DAY RENTAL 04-JAN-93                  5                    
+ 1021 N       1020 1-DAY RENTAL 15-MAY-98  14-JUN-98       3                    
+ 1021 N       1021 3-DAY RENTAL 15-MAY-98  14-JUN-98      10                    
+ 1021 N       1022 5-DAY RENTAL 15-MAY-98  14-JUN-98      15                    
+ 1021 Y       1020 1-DAY RENTAL 15-JUN-98                  1                    
+ 1021 Y       1021 3-DAY RENTAL 15-JUN-98                  3                    
+ 1021 Y       1022 5-DAY RENTAL 15-JUN-98                  5                    
+ 1022 Y       1020 1-DAY RENTAL 13-DEC-19                  3                    
+ 1022 Y       1021 3-DAY RENTAL 13-DEC-19                 10                    
+ 1022 Y       1022 5-DAY RENTAL 13-DEC-19                 15                    
+ 1023 Y       1020 1-DAY RENTAL 13-DEC-19                  3                    
+ 1023 Y       1021 3-DAY RENTAL 13-DEC-19                 10                    
+ 1023 Y       1022 5-DAY RENTAL 13-DEC-19                 15                    
+ 1024 Y       1020 1-DAY RENTAL 13-DEC-19                  3                    
+ 1024 Y       1021 3-DAY RENTAL 13-DEC-19                 10                    
+ 1024 Y       1022 5-DAY RENTAL 13-DEC-19                 15                    
 
 135 rows selected.
 

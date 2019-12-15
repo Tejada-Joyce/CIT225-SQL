@@ -313,11 +313,11 @@ SQL> SELECT   m.account_number
  12  	      telephone t ON c.contact_id = t.contact_id AND a.address_id = t.address_id
  13  WHERE    c.last_name = 'Vizquel';
 
-Account    Name                                                                                                                                                                                         
-Number     (Last, First MI) City         State      Telephone                                                                                                                                           
----------- ---------------- ------------ ---------- ------------------                                                                                                                                  
-B293-71446 Vizquel, Oscar   San Jose     CA         USA-(408) 222-2222                                                                                                                                  
-B293-71446 Vizquel, Doreen  San Jose     CA         USA-(408) 222-2222                                                                                                                                  
+Account    Name                                                                 
+Number     (Last, First MI) City         State      Telephone                   
+---------- ---------------- ------------ ---------- ------------------          
+B293-71446 Vizquel, Oscar   San Jose     CA         USA-(408) 222-2222          
+B293-71446 Vizquel, Doreen  San Jose     CA         USA-(408) 222-2222          
 
 2 rows selected.
 
